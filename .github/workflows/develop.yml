@@ -1,0 +1,44 @@
+name: CI and CD
+
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Merge a rama de develop
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "actions"
+          git fetch origin ${{ github.event.pull_request.head.ref }}
+          git fetch --all
+          git switch develop
+          git pull origin develop
+          git switch ${{ github.event.pull_request.head.ref }}
+          git rebase develop
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Run Lint checks
+        run: ./gradlew lint
+
+      - name: Upload Lint Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lint-report
+          path: /home/runner/work/vinylOS-ua/vinylOS-ua/app/build/reports/lint/lint-report.html
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck

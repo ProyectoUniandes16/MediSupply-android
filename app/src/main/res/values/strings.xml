@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MediSupply</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="home">Home</string>
+    <string name="clients">Clients</string>
+    <string name="routes">Routes</string>
+    <string name="orders">Orders</string>
+</resources>
