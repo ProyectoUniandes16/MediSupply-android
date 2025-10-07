@@ -60,7 +60,7 @@ private val BOTTOM_ITEMS = listOf(
 @Composable
 fun HomeClientNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    var selectedTab = remember { mutableStateOf(BOTTOM_ITEMS[0]) }
+    val selectedTab = remember { mutableStateOf(BOTTOM_ITEMS[0]) }
 
     Scaffold(
         topBar = {

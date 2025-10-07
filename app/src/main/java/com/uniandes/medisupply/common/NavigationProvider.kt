@@ -1,8 +1,10 @@
 package com.uniandes.medisupply.common
 
 import android.app.Activity
+import android.os.Parcelable
 import android.util.Log
 import com.uniandes.medisupply.HomeClientActivity
+import kotlinx.android.parcel.Parcelize
 
 interface NavigationProvider {
     fun init(activity: Activity)
@@ -27,7 +29,13 @@ class NavigationProviderImpl : NavigationProvider {
            val intent = when (appDestination) {
                is AppDestination.HomeClient -> HomeClientActivity.createIntent(activity)
            }.apply {
-               putExtras(appDestination.extras)
+               appDestination.extras.forEach {
+                   if (it.value is Parcelable) {
+                       putExtra(it.key, it.value as Parcelable)
+                   } else {
+                       Log.w(TAG, "Extra ${it.key} is not a parcelable")
+                   }
+               }
            }
            activity.startActivity(intent)
        } ?: run { Log.w(TAG, "Activity is null") }

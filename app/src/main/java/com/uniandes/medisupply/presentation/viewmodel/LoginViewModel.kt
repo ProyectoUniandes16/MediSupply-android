@@ -9,6 +9,8 @@ import com.uniandes.medisupply.common.NavigationProvider
 import com.uniandes.medisupply.domain.model.User
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.model.LoginUiState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,11 +18,11 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class LoginViewModel: ViewModel(), KoinComponent {
-
-    private val userRepository: UserRepository by inject()
-    private val navigationProvider: NavigationProvider by inject()
-
+class LoginViewModel(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val navigationProvider: NavigationProvider,
+    private val userRepository: UserRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginUiState(isLoading = false, email = "", password = "")
     )
@@ -49,7 +51,7 @@ class LoginViewModel: ViewModel(), KoinComponent {
         _uiState.update {
             it.copy(isLoading = true)
         }
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             val result = userRepository.login(
                 _uiState.value.email,
                 _uiState.value.password
@@ -60,9 +62,7 @@ class LoginViewModel: ViewModel(), KoinComponent {
                 }
                 navigationProvider.requestDestination(
                     AppDestination.HomeClient(
-                        bundle = Bundle().apply {
-                            putParcelable(USER_KEY, it)
-                        }
+                        extraMap = mapOf(USER_KEY to it)
                     )
                 )
             }
@@ -72,13 +72,11 @@ class LoginViewModel: ViewModel(), KoinComponent {
                 }
                 navigationProvider.requestDestination(
                     AppDestination.HomeClient(
-                        bundle = Bundle().apply {
-                            putParcelable(USER_KEY, User(
+                        extraMap = mapOf(USER_KEY to User(
                                 10,
                                 "name",
                                 "email")
-                            )
-                        }
+                        )
                     )
                 )
             }
