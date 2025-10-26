@@ -58,7 +58,7 @@ class NewClientViewModelTest {
 
     @Test
     fun `fill all client fields successfully WHEN all fields are valid`() = runTest {
-        //Given
+        // Given
         coEvery { clientRepository.addClient(
             name,
             type,
@@ -72,7 +72,7 @@ class NewClientViewModelTest {
             companyEmail
         ) } returns Result.success(true)
 
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNameChange(name))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnTypeChange(type))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange(nit))
@@ -85,7 +85,7 @@ class NewClientViewModelTest {
         viewModel.onEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange(companyEmail))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnSaveClientClick)
 
-        //Then
+        // Then
         assertEquals(name, viewModel.uiState.value.name)
         assertEquals(type, viewModel.uiState.value.type)
         assertEquals(nit, viewModel.uiState.value.nit)
@@ -99,7 +99,7 @@ class NewClientViewModelTest {
         assertEquals(true, viewModel.uiState.value.primaryButtonEnabled)
         assertEquals(false, viewModel.uiState.value.showError)
         assertEquals(false, viewModel.uiState.value.isLoading)
-        coVerify{
+        coVerify {
             clientRepository.addClient(
                 name,
                 type,
@@ -120,10 +120,9 @@ class NewClientViewModelTest {
         }
     }
 
-
     @Test
     fun `onEvent OnSaveClientClick SHOULD show error when failed`() = runTest {
-        //Given
+        // Given
         val errorMessage = "Network Error"
         coEvery {
             clientRepository.addClient(
@@ -140,7 +139,7 @@ class NewClientViewModelTest {
             )
         } returns Result.failure(Exception(errorMessage))
 
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNameChange(name))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnTypeChange(type))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange(nit))
@@ -153,8 +152,8 @@ class NewClientViewModelTest {
         viewModel.onEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange(companyEmail))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnSaveClientClick)
 
-        //Then
-        coVerify{
+        // Then
+        coVerify {
             clientRepository.addClient(
                 name,
                 type,
@@ -171,12 +170,11 @@ class NewClientViewModelTest {
         assertEquals(true, viewModel.uiState.value.showError)
         assertEquals(errorMessage, viewModel.uiState.value.error)
         assertEquals(false, viewModel.uiState.value.isLoading)
-
     }
 
     @Test
     fun `onEvent OnDismissErrorDialog SHOULD hide error dialog`() = runTest {
-        //Given
+        // Given
         val errorMessage = "Network Error"
         coEvery {
             clientRepository.addClient(
@@ -193,7 +191,7 @@ class NewClientViewModelTest {
             )
         } returns Result.failure(Exception(errorMessage))
 
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNameChange(name))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnTypeChange(type))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange(nit))
@@ -206,19 +204,19 @@ class NewClientViewModelTest {
         viewModel.onEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange(companyEmail))
         viewModel.onEvent(NewClientViewModel.UserEvent.OnSaveClientClick)
 
-        //Then
+        // Then
         viewModel.onEvent(NewClientViewModel.UserEvent.OnDismissErrorDialog)
 
-        //Then
+        // Then
         assertEquals(false, viewModel.uiState.value.showError)
     }
 
     @Test
     fun `onEvent OnBackClick SHOULD navigate back`() = runTest {
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnBackClick)
 
-        //Then
+        // Then
         coVerify {
             navigationProvider.finishCurrentDestination()
         }
@@ -226,37 +224,36 @@ class NewClientViewModelTest {
 
     @Test
     fun `button SHOULD be disabled WHEN fields are empty`() = runTest {
-        //Then
+        // Then
         assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
     }
 
     @Test
     fun `onEvent OnCompanyEmailChange SHOULD show error WHEN email is invalid`() = runTest {
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange("invalidEmail"))
 
-        //Then
+        // Then
         assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
         assertNotNull(viewModel.uiState.value.errorCompanyEmail)
     }
 
-
     @Test
     fun `onEvent OnContactEmailChange SHOULD show error WHEN email is invalid`() = runTest {
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnContactEmailChange("invalidEmail"))
 
-        //Then
+        // Then
         assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
         assertNotNull(viewModel.uiState.value.errorContactEmail)
     }
 
     @Test
     fun `onEvent OnContactPhoneChange SHOULD show error WHEN email is invalid`() = runTest {
-        //When
+        // When
         viewModel.onEvent(NewClientViewModel.UserEvent.OnContactPhoneChange("invalidEmail"))
 
-        //Then
+        // Then
         assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
         assertNotNull(viewModel.uiState.value.errorContactPhone)
     }

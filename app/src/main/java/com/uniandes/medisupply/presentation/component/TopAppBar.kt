@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
@@ -22,7 +21,7 @@ fun TopAppBar(
     expandedHeight: Dp = TopAppBarDefaults.TopAppBarExpandedHeight,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior? = null
-)  = androidx.compose.material3.TopAppBar(
+) = androidx.compose.material3.TopAppBar(
     colors = TopAppBarDefaults.topAppBarColors().copy(
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ),

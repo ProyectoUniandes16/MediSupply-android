@@ -20,7 +20,6 @@ class UserDataProviderTest {
 
     @Test
     fun `getAccessToken SHOULD return access token from user preferences`() {
-
         // Given
         val expectedToken = "mocked_access_token"
         every { userPreferences.getAccessToken() } returns expectedToken
@@ -33,7 +32,6 @@ class UserDataProviderTest {
 
     @Test
     fun `setAccessToken SHOULD call setAccessToken on user preferences`() {
-
         // Given
         val expectedToken = "mocked_access_token"
         // When
@@ -45,7 +43,6 @@ class UserDataProviderTest {
 
     @Test
     fun `isLoggedIn SHOULD return value from user preferences`() {
-
         // Given
         every { userPreferences.isLoggedIn() } returns false
         // When
@@ -57,7 +54,6 @@ class UserDataProviderTest {
 
     @Test
     fun `setUserLoggedIn SHOULD call setAccessToken on user preferences`() {
-
         // Given
         val expectedValue = true
         // When

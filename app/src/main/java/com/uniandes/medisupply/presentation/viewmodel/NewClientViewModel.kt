@@ -111,8 +111,8 @@ class NewClientViewModel(
                 onSaveClient()
             }
             is UserEvent.OnNitChange -> {
-                val isValidNit = event.nit.isNotBlank() && event.nit.all { it.isDigit() }
-                        && event.nit.length in 9..10
+                val isValidNit = event.nit.isNotBlank() && event.nit.all { it.isDigit() } &&
+                        event.nit.length in 9..10
                 _uiState.update {
                     it.copy(nit = event.nit,
                         errorNit = if (isValidNit.not()) resourcesProvider.getString(R.string.required_field) else null

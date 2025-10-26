@@ -40,10 +40,10 @@ class ClientListViewModelTest {
 
     @Test
     fun `onEvent  SHOULD update name`() = runTest {
-        //when
+        // when
         clientListViewModel.onEvent(ClientListViewModel.ClientListEvent.OnNewClientClick)
 
-        //then
+        // then
         val slot = slot<AppDestination>()
         val slotRequest = slot<Int>()
         // capture both arguments: the destination and the optional request code

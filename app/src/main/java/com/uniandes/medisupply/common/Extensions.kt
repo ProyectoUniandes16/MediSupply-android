@@ -9,5 +9,3 @@ fun String.isValidPhone(): Boolean {
     val phoneRegex = "^[+]?[0-9]{7,15}\$"
     return this.isNotBlank() && Regex(phoneRegex).matches(this)
 }
-
-

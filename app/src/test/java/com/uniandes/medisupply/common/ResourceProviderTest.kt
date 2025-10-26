@@ -31,5 +31,4 @@ class ResourceProviderTest {
         // assertEquals expects (expected, actual)
         assertEquals(expectedString, result)
     }
-
 }

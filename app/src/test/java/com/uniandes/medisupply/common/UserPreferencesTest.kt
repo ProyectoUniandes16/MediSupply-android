@@ -1,7 +1,11 @@
 import android.content.Context
 import android.content.SharedPreferences
 import com.uniandes.medisupply.common.UserPreferences
-import io.mockk.*
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -33,7 +37,6 @@ class UserPreferencesTest {
 
         userPreferences = UserPreferences.getInstance(context)
     }
-
 
     @Test
     fun `save and get access token`() {
