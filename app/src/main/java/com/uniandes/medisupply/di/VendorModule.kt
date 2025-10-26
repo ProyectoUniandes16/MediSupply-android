@@ -20,6 +20,7 @@ val vendorModule = module {
     viewModel {
         NewClientViewModel(
             get(),
+            get(),
             get()
         )
     }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,7 +37,7 @@ fun TextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
-    supportingText: @Composable (() -> Unit)? = null,
+    supportingText: String? = null,
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -59,7 +60,11 @@ fun TextField(
     trailingIcon = trailingIcon,
     prefix = prefix,
     suffix = suffix,
-    supportingText = supportingText,
+    supportingText = {
+        if (supportingText != null) {
+            Text(text = supportingText)
+        }
+    },
     isError = isError,
     visualTransformation = visualTransformation,
     keyboardOptions = keyboardOptions,
@@ -85,7 +90,7 @@ fun SecureTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
-    supportingText: @Composable (() -> Unit)? = null,
+    supportingText: String? = null,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -123,8 +128,12 @@ fun SecureTextField(
         },
         prefix = prefix,
         suffix = suffix,
-        supportingText = supportingText,
         isError = isError,
+        supportingText = {
+            if (supportingText != null) {
+                Text(text = supportingText)
+            }
+        },
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

@@ -28,4 +28,7 @@
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
     <string name="password_empty">Password is empty</string>
+    <string name="required_field">Field is requierd</string>
+    <string name="back">Back</string>
+    <string name="error_client">Client error</string>
 </resources>

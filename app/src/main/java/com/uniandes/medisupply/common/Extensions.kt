@@ -1,15 +1,13 @@
 package com.uniandes.medisupply.common
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-
-@Composable
-fun <T> Flow<T>.ObserveAsActions(onEach: (T) -> Unit) {
-    val flow = this
-    LaunchedEffect(key1 = flow) {
-        flow.onEach(onEach).collect()
-    }
+fun String.isValidEmail(): Boolean {
+    val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
+    return this.isNotBlank() && Regex(emailRegex).matches(this)
 }
+
+fun String.isValidPhone(): Boolean {
+    val phoneRegex = "^[+]?[0-9]{7,15}\$"
+    return this.isNotBlank() && Regex(phoneRegex).matches(this)
+}
+
+

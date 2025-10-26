@@ -2,32 +2,47 @@ package com.uniandes.medisupply.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.NavigationProvider
+import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.domain.repository.ClientRepository
+import com.uniandes.medisupply.common.isValidEmail
+import com.uniandes.medisupply.common.isValidPhone
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class NewClientUiState(
-    val name: String = "Clinica A",
-    val type: String = "Clinica",
-    val contactName: String = "jose perez",
-    val contactPhone: String = "5533325122",
-    val contactEmail: String = "joseperez@clinicaa.com",
-    val address: String = "av siempre viva 123",
-    val position: String = "Gerente",
-    val nit: String = "00000002",
-    val country: String = "mexico",
-    val companyEmail: String = "admin@clinicaa.com",
+    val name: String = "",
+    val type: String = "",
+    val contactName: String = "",
+    val contactPhone: String = "",
+    val contactEmail: String = "",
+    val address: String = "",
+    val position: String = "",
+    val nit: String = "",
+    val country: String = "",
+    val companyEmail: String = "",
     val isLoading: Boolean = false,
     val showError: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val errorName: String? = null,
+    val errorContactName: String? = null,
+    val errorContactPhone: String? = null,
+    val errorContactEmail: String? = null,
+    val errorAddress: String? = null,
+    val errorPosition: String? = null,
+    val errorNit: String? = null,
+    val errorCountry: String? = null,
+    val errorCompanyEmail: String? = null,
+    val primaryButtonEnabled: Boolean = false
 )
 
 class NewClientViewModel(
     private val clientRepository: ClientRepository,
-    private val navigationProvider: NavigationProvider
+    private val navigationProvider: NavigationProvider,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NewClientUiState())
@@ -37,65 +52,115 @@ class NewClientViewModel(
         when (event) {
             is UserEvent.OnNameChange -> {
                 _uiState.update {
-                    it.copy(name = event.name)
+                    it.copy(
+                        name = event.name,
+                        errorName = if (event.name.isBlank()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
 
             is UserEvent.OnTypeChange -> {
                 _uiState.update {
-                    it.copy(type = event.type)
+                    it.copy(
+                        type = event.type
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnContactNameChange -> {
                 _uiState.update {
-                    it.copy(contactName = event.contactName)
+                    it.copy(contactName = event.contactName,
+                        errorContactName = if (event.contactName.isBlank()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnContactPhoneChange -> {
                 _uiState.update {
-                    it.copy(contactPhone = event.contactPhone)
+                    it.copy(contactPhone = event.contactPhone,
+                        errorContactPhone = if (event.contactPhone.isValidPhone().not()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
             }
             is UserEvent.OnContactEmailChange -> {
                 _uiState.update {
-                    it.copy(contactEmail = event.contactEmail)
+                    it.copy(contactEmail = event.contactEmail,
+                        errorContactEmail = if (event.contactEmail.isValidEmail().not()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnAddressChange -> {
                 _uiState.update {
-                    it.copy(address = event.address)
+                    it.copy(address = event.address,
+                        errorAddress = if (event.address.isBlank()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnPositionChange -> {
                 _uiState.update {
-                    it.copy(position = event.position)
+                    it.copy(position = event.position,
+                        errorPosition = if (event.position.isBlank()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnSaveClientClick -> {
                 onSaveClient()
             }
             is UserEvent.OnNitChange -> {
+                val isValidNit = event.nit.isNotBlank() && event.nit.all { it.isDigit() }
+                        && event.nit.length in 9..10
                 _uiState.update {
-                    it.copy(nit = event.nit)
+                    it.copy(nit = event.nit,
+                        errorNit = if (isValidNit.not()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnCountryChange -> {
                 _uiState.update {
                     it.copy(country = event.country)
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnCompanyEmailChange -> {
                 _uiState.update {
-                    it.copy(companyEmail = event.companyEmail)
+                    it.copy(companyEmail = event.companyEmail,
+                        errorCompanyEmail = if (event.companyEmail.isValidEmail().not()) resourcesProvider.getString(R.string.required_field) else null
+                    )
                 }
+                checkButtonEnable()
             }
             is UserEvent.OnDismissErrorDialog -> {
                 _uiState.update {
                     it.copy(showError = false, error = null)
                 }
             }
+            is UserEvent.OnBackClick -> {
+                navigationProvider.finishCurrentDestination()
+            }
             else -> {}
         }
+    }
+
+    private fun checkButtonEnable(): Boolean {
+        val state = uiState.value
+        val validForm = state.name.isNotBlank() &&
+                state.contactName.isNotBlank() &&
+                state.contactPhone.isValidPhone() &&
+                state.contactEmail.isValidEmail() &&
+                state.address.isNotBlank() &&
+                state.position.isNotBlank() &&
+                state.nit.isNotBlank() &&
+                state.country.isNotBlank() &&
+                state.companyEmail.isValidEmail()
+        _uiState.update {
+            it.copy(primaryButtonEnabled = validForm)
+        }
+        return validForm
     }
 
     private fun onSaveClient() {
@@ -137,6 +202,7 @@ class NewClientViewModel(
         data class OnCountryChange(val country: String) : UserEvent()
         data class OnCompanyEmailChange(val companyEmail: String) : UserEvent()
         data object OnDismissErrorDialog : UserEvent()
+        data object OnBackClick : UserEvent()
         data object OnSaveClientClick : UserEvent()
     }
 }

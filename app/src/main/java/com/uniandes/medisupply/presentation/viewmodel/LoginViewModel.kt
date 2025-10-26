@@ -10,7 +10,7 @@ import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.model.LoginUiState
-import com.uniandes.medisupply.presentation.utils.isValidEmail
+import com.uniandes.medisupply.common.isValidEmail
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

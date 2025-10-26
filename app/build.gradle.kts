@@ -67,6 +67,7 @@ kover {
             excludes {
                 classes(
                     "com.uniandes.medisupply.MediSupplyApp*",
+                    "com.uniandes.medisupply.common.BaseActivity*",
                     "com.uniandes.medisupply.presentation.navigation.*",
                     "com.uniandes.medisupply.presentation.containers.*",
                     "com.uniandes.medisupply.presentation.component.*",

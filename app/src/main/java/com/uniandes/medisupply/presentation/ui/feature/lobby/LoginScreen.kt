@@ -85,11 +85,7 @@ fun LoginContent(
                         Text(stringResource(R.string.email))
                     },
                     isError = uiState.emailError != null,
-                    supportingText = {
-                        if (uiState.emailError != null) {
-                            Text(text = uiState.emailError)
-                        }
-                    },
+                    supportingText = uiState.emailError,
                     modifier = Modifier.fillMaxWidth()
                 )
                 SecureTextField(
@@ -99,11 +95,7 @@ fun LoginContent(
                         Text(stringResource(R.string.password))
                     },
                     isError = uiState.passwordError != null,
-                    supportingText = {
-                        if (uiState.passwordError != null) {
-                            Text(text = uiState.passwordError)
-                        }
-                    },
+                    supportingText = uiState.passwordError,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Button(
