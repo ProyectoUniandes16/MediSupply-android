@@ -68,6 +68,8 @@ kover {
                 classes(
                     "com.uniandes.medisupply.MediSupplyApp*",
                     "com.uniandes.medisupply.common.BaseActivity*",
+                    "com.uniandes.medisupply.common.NetworkModule*",
+                    "com.uniandes.medisupply.common.NavigationProvider*",
                     "com.uniandes.medisupply.presentation.navigation.*",
                     "com.uniandes.medisupply.presentation.containers.*",
                     "com.uniandes.medisupply.presentation.component.*",

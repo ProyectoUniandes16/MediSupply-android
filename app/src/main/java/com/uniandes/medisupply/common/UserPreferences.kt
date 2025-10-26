@@ -24,6 +24,11 @@ class UserPreferences private constructor(private val prefs: SharedPreferences) 
                 ).also { INSTANCE = it }
             }
         }
+
+        //Only for test unitarios
+        internal fun clearInstanceForTests() {
+            INSTANCE = null
+        }
     }
 
     fun clearAll() {
