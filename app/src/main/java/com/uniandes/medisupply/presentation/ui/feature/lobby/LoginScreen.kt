@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,8 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.presentation.component.SecureTextField
+import com.uniandes.medisupply.presentation.component.TextField
 import com.uniandes.medisupply.presentation.model.LoginUiState
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
+import com.uniandes.medisupply.presentation.ui.theme.spaces
 import com.uniandes.medisupply.presentation.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -43,9 +48,28 @@ fun LoginContent(
     onEvent: (LoginViewModel.UserEvent) -> Unit = {}
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spaces.medium),
         contentAlignment = Alignment.Center
     ) {
+        if (uiState.showError) {
+            AlertDialog(
+                onDismissRequest = {
+                    onEvent(LoginViewModel.UserEvent.OnDismissErrorDialog)
+                },
+                title = { Text(stringResource(R.string.error_login)) },
+                text = { Text(uiState.error ?: stringResource(R.string.default_error)) },
+                confirmButton = {
+                    Button(onClick = {
+                        onEvent(LoginViewModel.UserEvent.OnDismissErrorDialog)
+                    }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            )
+        }
+
         if (uiState.isLoading) {
             CircularProgressIndicator()
         } else {
@@ -61,19 +85,32 @@ fun LoginContent(
                     label = {
                         Text(stringResource(R.string.email))
                     },
+                    isError = uiState.emailError != null,
+                    supportingText = {
+                        if (uiState.emailError != null) {
+                            Text(text = uiState.emailError)
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
-                TextField(
+                SecureTextField(
                     value = uiState.password,
                     onValueChange = { onEvent(LoginViewModel.UserEvent.OnPasswordChange(it)) },
                     label = {
                         Text(stringResource(R.string.password))
                     },
+                    isError = uiState.passwordError != null,
+                    supportingText = {
+                        if (uiState.passwordError != null) {
+                            Text(text = uiState.passwordError)
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Button(
                     onClick = { onEvent(LoginViewModel.UserEvent.OnPrimaryButtonClick) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = uiState.loginButtonEnable
                 ) {
                     Text(stringResource(R.string.login))
                 }

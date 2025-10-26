@@ -1,4 +1,4 @@
-package com.uniandes.medisupply
+package com.uniandes.medisupply.presentation.containers
 
 import android.os.Bundle
 import androidx.activity.compose.setContent

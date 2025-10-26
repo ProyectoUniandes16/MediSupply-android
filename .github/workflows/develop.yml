@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: lint-report
-          path: /home/runner/work/vinylOS-ua/vinylOS-ua/app/build/reports/lint/lint-report.html
+          path: /home/runner/work/MediSupply/MediSupply/app/build/reports/lint/lint-report.html
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2

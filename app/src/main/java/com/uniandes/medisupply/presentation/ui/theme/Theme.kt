@@ -8,8 +8,12 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -251,15 +255,31 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+@Immutable
+data class Spacing(
+    val xSmall: Dp = 4.dp,
+    val small: Dp = 8.dp,
+    val medium: Dp = 16.dp,
+    val large: Dp = 24.dp,
+    val xLarge: Dp = 28.dp
+)
+
+val LocalSpacing = staticCompositionLocalOf { Spacing() }
+
 @Composable
 fun MediSupplyTheme(
     content: @Composable() () -> Unit
 ) {
-  val colorScheme = lightScheme
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = AppTypography,
-    content = content
-  )
+  val spacing = Spacing()
+  CompositionLocalProvider(LocalSpacing provides spacing) {
+    MaterialTheme(
+      colorScheme = lightScheme,
+      typography = AppTypography,
+      content = content
+    )
+  }
 }
 
+val androidx.compose.material3.MaterialTheme.spaces: Spacing
+  @Composable
+  get() = LocalSpacing.current

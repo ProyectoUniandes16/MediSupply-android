@@ -41,6 +41,22 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.0"
     }
+
+    // Exclude duplicate META-INF files that come from test/runtime dependencies
+    // This resolves DuplicateRelativeFileException during merge of java/resources
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -57,6 +73,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.converter)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation(libs.androidx.compose.material)
     implementation(libs.coil.compose)
     implementation(libs.material3)
@@ -73,6 +90,8 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose.viewmodel)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     testImplementation(libs.androidx.junit)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)

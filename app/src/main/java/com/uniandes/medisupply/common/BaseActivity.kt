@@ -1,11 +1,11 @@
 package com.uniandes.medisupply.common
 
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import org.koin.android.ext.android.inject
 
 open class BaseActivity: ComponentActivity() {
     private val navigationProvider: NavigationProvider by inject()
-
     override fun onResume() {
         super.onResume()
         navigationProvider.init(this)

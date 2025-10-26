@@ -1,4 +1,4 @@
-package com.uniandes.vynilos.common
+package com.uniandes.medisupply.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

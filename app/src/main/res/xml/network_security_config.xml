@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Deny cleartext by default -->
+    <base-config cleartextTrafficPermitted="false" />
+
+    <!-- Allow cleartext only for the development host IP -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain>192.168.68.106</domain>
+    </domain-config>
+</network-security-config>
+
