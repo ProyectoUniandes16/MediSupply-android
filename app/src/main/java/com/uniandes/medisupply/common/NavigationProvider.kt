@@ -9,7 +9,7 @@ import com.uniandes.medisupply.presentation.containers.NewClientActivity
 interface NavigationProvider {
     fun init(activity: Activity)
     fun requestDestination(appDestination: AppDestination, requestResultCode: Int? = null)
-    fun finishCurrentDestination(extras: Map<String, Any> = emptyMap(), success: Boolean = true)
+    fun finishCurrentDestination(extras: Map<String, Any> = emptyMap(), success: Boolean = false)
     fun tearDown()
 }
 

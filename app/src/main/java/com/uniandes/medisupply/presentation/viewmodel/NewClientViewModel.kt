@@ -79,14 +79,14 @@ class NewClientViewModel(
             is UserEvent.OnContactPhoneChange -> {
                 _uiState.update {
                     it.copy(contactPhone = event.contactPhone,
-                        errorContactPhone = if (event.contactPhone.isValidPhone().not()) resourcesProvider.getString(R.string.required_field) else null
+                        errorContactPhone = if (event.contactPhone.isValidPhone().not()) resourcesProvider.getString(R.string.invalid_phone) else null
                     )
                 }
             }
             is UserEvent.OnContactEmailChange -> {
                 _uiState.update {
                     it.copy(contactEmail = event.contactEmail,
-                        errorContactEmail = if (event.contactEmail.isValidEmail().not()) resourcesProvider.getString(R.string.required_field) else null
+                        errorContactEmail = if (event.contactEmail.isValidEmail().not()) resourcesProvider.getString(R.string.invalid_email) else null
                     )
                 }
                 checkButtonEnable()
@@ -111,11 +111,10 @@ class NewClientViewModel(
                 onSaveClient()
             }
             is UserEvent.OnNitChange -> {
-                val isValidNit = event.nit.isNotBlank() && event.nit.all { it.isDigit() } &&
-                        event.nit.length in 9..10
+                val isValidNit = isValidNit(event.nit)
                 _uiState.update {
                     it.copy(nit = event.nit,
-                        errorNit = if (isValidNit.not()) resourcesProvider.getString(R.string.required_field) else null
+                        errorNit = if (isValidNit.not()) resourcesProvider.getString(R.string.invalid_nit) else null
                     )
                 }
                 checkButtonEnable()
@@ -129,7 +128,7 @@ class NewClientViewModel(
             is UserEvent.OnCompanyEmailChange -> {
                 _uiState.update {
                     it.copy(companyEmail = event.companyEmail,
-                        errorCompanyEmail = if (event.companyEmail.isValidEmail().not()) resourcesProvider.getString(R.string.required_field) else null
+                        errorCompanyEmail = if (event.companyEmail.isValidEmail().not()) resourcesProvider.getString(R.string.invalid_email) else null
                     )
                 }
                 checkButtonEnable()
@@ -146,6 +145,11 @@ class NewClientViewModel(
         }
     }
 
+    private fun isValidNit(nit: String): Boolean {
+        return nit.isNotBlank() && nit.all { it.isDigit() } &&
+                nit.length in 9..10
+    }
+
     private fun checkButtonEnable(): Boolean {
         val state = uiState.value
         val validForm = state.name.isNotBlank() &&
@@ -154,7 +158,7 @@ class NewClientViewModel(
                 state.contactEmail.isValidEmail() &&
                 state.address.isNotBlank() &&
                 state.position.isNotBlank() &&
-                state.nit.isNotBlank() &&
+                isValidNit(state.nit) &&
                 state.country.isNotBlank() &&
                 state.companyEmail.isValidEmail()
         _uiState.update {

@@ -31,7 +31,7 @@ class NewClientViewModelTest {
     companion object {
         const val name = "name"
         const val type = "type"
-        const val nit = "nit"
+        const val nit = "0000000001"
         const val address = "address"
         const val country = "country"
         const val position = "position"

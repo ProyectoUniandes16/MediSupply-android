@@ -8,7 +8,7 @@
     <string name="routes">Routes</string>
     <string name="orders">Orders</string>
     <string name="new_client">New Client</string>
-    <string name="error_login">Login error\n</string>
+    <string name="error_login">Login error</string>
     <string name="default_error">Error en el servicio</string>
     <string name="ok">Ok</string>
     <string name="client_data">Client Data</string>
@@ -31,4 +31,7 @@
     <string name="required_field">Field is requierd</string>
     <string name="back">Back</string>
     <string name="error_client">Client error</string>
+    <string name="invalid_phone">Invalid phone number</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_nit">NIT must be between 9 and 10 characters</string>
 </resources>
