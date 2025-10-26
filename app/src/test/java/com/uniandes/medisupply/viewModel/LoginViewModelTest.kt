@@ -2,6 +2,7 @@ package com.uniandes.medisupply.viewModel
 
 import com.uniandes.medisupply.common.AppDestination
 import com.uniandes.medisupply.common.NavigationProvider
+import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.model.User
 import com.uniandes.medisupply.domain.repository.UserRepository
@@ -31,6 +32,7 @@ class LoginViewModelTest {
     private val navigationProvider: NavigationProvider = mockk(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
     private val userDataProvider = mockk<UserDataProvider>(relaxed = true)
+    private val resourcesProvider = mockk<ResourcesProvider>(relaxed = true)
 
     @Before
     fun setUp() {
@@ -40,7 +42,8 @@ class LoginViewModelTest {
             testDispatcher,
             navigationProvider,
             userRepository,
-            userDataProvider
+            userDataProvider,
+            resourcesProvider
         )
     }
 

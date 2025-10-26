@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id("org.jetbrains.kotlinx.kover") version "0.9.3"
 }
 
 android {
@@ -59,6 +60,31 @@ android {
     }
 }
 
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "com.uniandes.medisupply.MediSupplyApp*",
+                    "com.uniandes.medisupply.presentation.navigation.*",
+                    "com.uniandes.medisupply.presentation.containers.*",
+                    "com.uniandes.medisupply.presentation.component.*",
+                    "com.uniandes.medisupply.di.*",
+                    "com.uniandes.medisupply.presentation.ui.*"
+                )
+            }
+        }
+        verify {
+            rule {
+                disabled = false
+                bound {
+                    minValue = 80
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
@@ -97,6 +123,4 @@ dependencies {
     testImplementation(libs.mockk.agent)
     testImplementation(libs.koin.test)
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
-
-
 }

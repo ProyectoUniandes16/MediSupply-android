@@ -2,9 +2,11 @@ package com.uniandes.medisupply.presentation.utils
 
 
 fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
+    return this.isNotBlank() && Regex(emailRegex).matches(this)
 }
 
 fun String.isValidPhone(): Boolean {
-    return android.util.Patterns.PHONE.matcher(this).matches()
+    val phoneRegex = "^[+]?[0-9]{7,15}\$"
+    return this.isNotBlank() && Regex(phoneRegex).matches(this)
 }
