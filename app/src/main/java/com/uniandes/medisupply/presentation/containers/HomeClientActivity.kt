@@ -1,6 +1,5 @@
 package com.uniandes.medisupply.presentation.containers
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -17,14 +16,13 @@ import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.presentation.navigation.navhost.HomeClientNavHost
 import kotlinx.coroutines.launch
 
-class HomeClientActivity: BaseActivity() {
+class HomeClientActivity : BaseActivity() {
 
     private val snackbarHostState = SnackbarHostState()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         intent.extras?.let {
-
         }
         setContent {
             Scaffold(

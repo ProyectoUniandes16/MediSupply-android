@@ -4,6 +4,7 @@ plugins {
     id("kotlin-parcelize")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.3"
+    alias(libs.plugins.ktlint)
 }
 
 android {

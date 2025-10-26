@@ -123,7 +123,7 @@ private fun BottomBar(
     val items = BOTTOM_ITEMS
 
     Box {
-        BottomAppBar (
+        BottomAppBar(
             modifier = Modifier.fillMaxWidth(),
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ) {

@@ -28,7 +28,7 @@ data class NewClientUiState(
 class NewClientViewModel(
     private val clientRepository: ClientRepository,
     private val navigationProvider: NavigationProvider
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NewClientUiState())
     val uiState = _uiState.asStateFlow()

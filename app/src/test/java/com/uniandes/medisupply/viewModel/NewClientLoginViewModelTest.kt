@@ -1,17 +1,9 @@
 package com.uniandes.medisupply.viewModel
 
-import com.uniandes.medisupply.common.AppDestination
 import com.uniandes.medisupply.common.NavigationProvider
-import com.uniandes.medisupply.common.UserDataProvider
-import com.uniandes.medisupply.domain.model.User
 import com.uniandes.medisupply.domain.repository.ClientRepository
-import com.uniandes.medisupply.domain.repository.UserRepository
-import com.uniandes.medisupply.presentation.viewmodel.LoginViewModel.UserEvent
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

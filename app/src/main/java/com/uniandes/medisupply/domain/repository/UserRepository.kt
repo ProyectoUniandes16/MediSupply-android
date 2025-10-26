@@ -10,7 +10,7 @@ interface UserRepository {
 
 class UserRepositoryImpl(
     private val loginService: LoginService
-): UserRepository  {
+) : UserRepository {
     override suspend fun login(email: String, password: String): Result<Pair<User, String>> {
         return try {
             val response = loginService.login(

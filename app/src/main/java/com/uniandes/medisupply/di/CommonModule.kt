@@ -12,6 +12,6 @@ import org.koin.dsl.module
 val commonModule = module {
     single<UserPreferences> { UserPreferences.getInstance(get()) }
     single<NavigationProvider> { NavigationProviderImpl() }
-    single<UserDataProvider>{ UserDataProviderImpl(get()) }
+    single<UserDataProvider> { UserDataProviderImpl(get()) }
     single<ResourcesProvider> { ResourcesProviderImpl(get()) }
 }

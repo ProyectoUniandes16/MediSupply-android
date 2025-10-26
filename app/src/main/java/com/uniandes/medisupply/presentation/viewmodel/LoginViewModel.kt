@@ -24,7 +24,7 @@ class LoginViewModel(
     private val userRepository: UserRepository,
     private val userDataProvider: UserDataProvider,
     private val resourcesProvider: ResourcesProvider
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginUiState(isLoading = false, email = "", password = "")
     )
@@ -63,7 +63,6 @@ class LoginViewModel(
     }
 
     private fun onPasswordChange(password: String) {
-
         _uiState.update {
             it.copy(
                 password = password,
@@ -72,7 +71,6 @@ class LoginViewModel(
         }
         checkLoginButtonEnable()
     }
-
 
     private fun onEmailChange(email: String) {
         val isValidEmail = email.isValidEmail()

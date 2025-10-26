@@ -82,7 +82,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `onEvent PrimaryButtonClicked SHOULD show error when login failed`() = runTest {// Given
+    fun `onEvent PrimaryButtonClicked SHOULD show error when login failed`() = runTest { // Given
         val email = "john.archibald.campbell@example-pet-store.com"
         val password = "password"
         val token = "token_123"

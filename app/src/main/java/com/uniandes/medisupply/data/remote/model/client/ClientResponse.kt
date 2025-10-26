@@ -1,6 +1,5 @@
 package com.uniandes.medisupply.data.remote.model.client
 
-import com.uniandes.medisupply.data.remote.model.user.UserResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

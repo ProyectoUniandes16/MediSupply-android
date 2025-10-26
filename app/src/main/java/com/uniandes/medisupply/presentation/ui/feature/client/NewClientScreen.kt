@@ -52,7 +52,6 @@ internal fun NewClientContent(
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {
-
         }
     ) { innerPadding ->
         Box(
@@ -151,7 +150,7 @@ internal fun NewClientContent(
                     )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value =  uiState.position,
+                        value = uiState.position,
                         onValueChange = {
                             onUserEvent(NewClientViewModel.UserEvent.OnPositionChange(it))
                         },
@@ -167,7 +166,7 @@ internal fun NewClientContent(
                     )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = uiState.contactEmail    ,
+                        value = uiState.contactEmail,
                         onValueChange = {
                             onUserEvent(NewClientViewModel.UserEvent.OnContactEmailChange(it))
                         },

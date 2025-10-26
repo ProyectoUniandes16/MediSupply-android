@@ -6,7 +6,7 @@ import com.uniandes.medisupply.common.NavigationProvider
 
 class ClientListViewModel(
     private val navigationProvider: NavigationProvider
-): ViewModel() {
+) : ViewModel() {
 
     fun onEvent(event: ClientListEvent) {
         when (event) {

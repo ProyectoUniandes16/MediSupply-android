@@ -39,7 +39,6 @@ internal fun ClientDetailContent(
 ) {
     Scaffold(
         topBar = {
-
         }
     ) { innerPadding ->
         Box(

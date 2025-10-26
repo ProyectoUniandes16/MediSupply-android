@@ -77,7 +77,6 @@ fun LoginContent(
                 modifier = modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 Text(text = stringResource(R.string.login))
                 TextField(
                     value = uiState.email,

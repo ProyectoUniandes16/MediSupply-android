@@ -62,8 +62,7 @@ class UserRepositoryTest {
         assertTrue(result.isSuccess)
         assertNotNull(result.getOrNull())
         val user: User = result.getOrNull()!!.first
-        assertEquals(user,result.getOrNull()!!.first)
-        assertEquals(token,result.getOrNull()!!.second)
+        assertEquals(user, result.getOrNull()!!.first)
+        assertEquals(token, result.getOrNull()!!.second)
     }
-
 }

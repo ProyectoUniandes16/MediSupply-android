@@ -1,7 +1,5 @@
 package com.uniandes.medisupply.presentation.model
 
-import java.lang.Error
-
 data class LoginUiState(
     val isLoading: Boolean,
     val email: String,

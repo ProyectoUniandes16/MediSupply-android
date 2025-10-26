@@ -1,13 +1,11 @@
 package com.uniandes.medisupply.repository
 
-
 import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.data.remote.model.common.DataResponse
 import com.uniandes.medisupply.data.remote.service.ClientService
 import com.uniandes.medisupply.domain.repository.ClientRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -107,5 +105,4 @@ class ClientRepositoryTest {
         assertTrue(result.isFailure)
         assertNotNull(result.exceptionOrNull())
     }
-
 }

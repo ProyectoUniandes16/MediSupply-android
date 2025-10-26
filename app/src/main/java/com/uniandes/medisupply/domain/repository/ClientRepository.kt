@@ -1,6 +1,5 @@
 package com.uniandes.medisupply.domain.repository
 
-import com.uniandes.medisupply.R
 import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.data.remote.service.ClientService
 

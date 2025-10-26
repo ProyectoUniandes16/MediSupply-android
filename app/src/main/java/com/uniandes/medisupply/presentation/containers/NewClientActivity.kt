@@ -1,6 +1,5 @@
 package com.uniandes.medisupply.presentation.containers
 
-import android.app.ComponentCaller
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +13,7 @@ import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.ui.feature.client.NewClientScreen
 
-class NewClientActivity: BaseActivity() {
+class NewClientActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,7 +27,6 @@ class NewClientActivity: BaseActivity() {
         }
     }
 }
-
 
 @Composable
 private fun NewClientNavHost(modifier: Modifier = Modifier) {
