@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">MediSupply</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="home">Home</string>
+    <string name="clients">Clients</string>
+    <string name="routes">Routes</string>
+    <string name="orders">Orders</string>
+    <string name="new_client">New Client</string>
+    <string name="error_login">Login error</string>
+    <string name="default_error">Error en el servicio</string>
+    <string name="ok">Ok</string>
+    <string name="client_data">Client Data</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="position">Cargo</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="register_client">Register Client</string>
+    <string name="nit">NIT</string>
+    <string name="country">Country</string>
+    <string name="email_contact">Email Contact</string>
+    <string name="email_company">Email Company</string>
+    <string name="client_created">Client created</string>
+    <string name="not_valid_email">Not valid email format</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="password_empty">Password is empty</string>
+    <string name="required_field">Field is requierd</string>
+    <string name="back">Back</string>
+    <string name="error_client">Client error</string>
+    <string name="invalid_phone">Invalid phone number</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_nit">NIT must be between 9 and 10 characters</string>
+</resources>
