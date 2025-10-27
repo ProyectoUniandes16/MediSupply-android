@@ -1,5 +1,6 @@
 package com.uniandes.medisupply.domain.repository
 
+import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.LoginService
 import com.uniandes.medisupply.data.remote.model.LoginRequest
 import com.uniandes.medisupply.domain.model.User
@@ -12,13 +13,13 @@ class UserRepositoryImpl(
     private val loginService: LoginService
 ) : UserRepository {
     override suspend fun login(email: String, password: String): Result<Pair<User, String>> {
-        return try {
+        return resultOrError {
             val response = loginService.login(
                 LoginRequest(email, password)
             )
             val user = response.data.user
             val token = response.data.accessToken
-            val pair = Pair(
+            Pair(
                 User(
                     id = user.id,
                     name = user.name + " " + user.lastName,
@@ -26,9 +27,6 @@ class UserRepositoryImpl(
                 ),
                 token
             )
-            Result.success(pair)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 }
