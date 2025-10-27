@@ -8,4 +8,3 @@ class NetworkException(
         return "NetworkException(code=$code, message=$message)"
     }
 }
-
