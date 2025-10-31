@@ -2,6 +2,7 @@ package com.uniandes.medisupply.viewModel
 
 import com.uniandes.medisupply.common.NavigationProvider
 import com.uniandes.medisupply.common.ResourcesProvider
+import com.uniandes.medisupply.domain.model.ClientType
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import io.mockk.coEvery
@@ -30,7 +31,7 @@ class NewClientViewModelTest {
 
     companion object {
         const val name = "name"
-        const val type = "type"
+        val type = "Hospital"
         const val nit = "0000000001"
         const val address = "address"
         const val country = "country"
@@ -44,6 +45,9 @@ class NewClientViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery {
+            resourcesProvider.getString(any())
+        } returns "Hospital"
         viewModel = NewClientViewModel(
             clientRepository,
             navigationProvider,
