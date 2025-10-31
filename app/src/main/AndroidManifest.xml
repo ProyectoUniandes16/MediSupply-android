@@ -28,6 +28,7 @@
         </activity>
         <activity android:name=".presentation.containers.HomeClientActivity"/>
         <activity android:name=".presentation.containers.NewClientActivity"/>
+        <activity android:name=".presentation.containers.NewOrderActivity"/>
     </application>
 
 </manifest>

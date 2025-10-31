@@ -9,7 +9,7 @@ import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val vendorModule = module {
+val clientModule = module {
     single<ClientService> { createAuthService(ClientService::class.java) }
     single<ClientRepository> { ClientRepositoryImpl(get()) }
     viewModel {

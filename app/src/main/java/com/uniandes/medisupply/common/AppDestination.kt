@@ -6,4 +6,7 @@ AppDestination(val extras: Map<String, Any> = emptyMap()) {
     data object NewClient : AppDestination() {
         const val REQUEST_CODE = 1001
     }
+    data object NewOrder : AppDestination() {
+        const val REQUEST_CODE = 1002
+    }
 }

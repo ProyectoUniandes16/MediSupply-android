@@ -17,3 +17,18 @@ enum class Country(val displayName: String) {
     PERU("Perú"),
     ECUADOR("Ecuador"),
 }
+
+data class Client(
+    val id: Int,
+    val name: String,
+    val address: String,
+    val email: String,
+    val contactInfo: ClientContactInfo
+)
+
+data class ClientContactInfo(
+    val name: String,
+    val phone: String,
+    val email: String,
+    val position: String
+)

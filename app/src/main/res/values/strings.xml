@@ -42,4 +42,21 @@
     <string name="eps_eapb">EPS/EAPB</string>
     <string name="ips">IPS</string>
     <string name="other">Other</string>
+    <string name="new_order">New Order</string>
+    <string name="select_client">Select client</string>
+    <string name="products_added">%n Products added</string>
+    <string name="total_price">Total: $%s</string>
+    <string name="confirm_order">Confirm order</string>
+    <string name="add_product">Add product</string>
+    <string name="retry">Retry</string>
+    <string name="complete_order">Complete order</string>
+    <string name="product_list">Product list</string>
+    <string name="price_value">$%s</string>
+    <string name="empty_order">Empty order</string>
+    <string name="available_stock">Available: %s</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
+    <string name="edit_order">Edit Order</string>
+    <string name="order_created">Order Created</string>
+    <string name="cancel">Cancel</string>
 </resources>

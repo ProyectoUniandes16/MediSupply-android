@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
+import com.uniandes.medisupply.presentation.ui.feature.home.OrderListScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -53,7 +54,7 @@ private val BOTTOM_ITEMS = listOf(
         icon = R.drawable.commute
     ),
     BottomTabItem(
-        destination = Destination.HomeVendor,
+        destination = Destination.OrderList,
         title = R.string.orders,
         icon = R.drawable.orders
     )
@@ -96,8 +97,8 @@ fun HomeClientNavHost(modifier: Modifier = Modifier) {
             composable<Destination.HomeVendor> {
                 Text(text = "Home Client")
             }
-            composable<Destination.HomeVendor> {
-                Text(text = "Home Client")
+            composable<Destination.OrderList> {
+                OrderListScreen()
             }
         }
     }

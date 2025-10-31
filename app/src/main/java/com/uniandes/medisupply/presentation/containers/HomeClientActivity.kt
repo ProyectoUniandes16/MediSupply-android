@@ -37,10 +37,20 @@ class HomeClientActivity : BaseActivity() {
     @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppDestination.NewClient.REQUEST_CODE && resultCode == RESULT_OK) {
-            val textToShow = getString(R.string.client_created)
+        var textToShow: String? = null
+        when (requestCode) {
+            AppDestination.NewClient.REQUEST_CODE -> if (resultCode == RESULT_OK) {
+                textToShow = getString(R.string.client_created)
+            }
+            AppDestination.NewOrder.REQUEST_CODE -> if (resultCode == RESULT_OK) {
+                textToShow = getString(R.string.order_created)
+            }
+            else -> {}
+        }
+
+        textToShow?.let { message ->
             lifecycleScope.launch {
-                snackbarHostState.showSnackbar(textToShow)
+                snackbarHostState.showSnackbar(message)
             }
         }
     }

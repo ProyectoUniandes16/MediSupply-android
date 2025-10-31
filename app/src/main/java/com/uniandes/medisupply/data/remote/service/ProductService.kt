@@ -1,0 +1,11 @@
+package com.uniandes.medisupply.data.remote.service
+
+import com.uniandes.medisupply.data.remote.model.common.DataResponse
+import com.uniandes.medisupply.data.remote.model.product.ProductWrapperResponse
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface ProductService {
+    @GET("/movil-producto/producto")
+    suspend fun getProducts(@Query("per_page") size: Int=500): DataResponse<ProductWrapperResponse>
+}
