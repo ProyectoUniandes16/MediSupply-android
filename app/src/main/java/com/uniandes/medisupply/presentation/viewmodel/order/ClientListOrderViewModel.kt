@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 data class ClientsOrderState(
     val isLoading: Boolean = false,
     val clients: List<Client> = emptyList(),
@@ -21,7 +20,7 @@ data class ClientsOrderState(
 class ClientListOrderViewModel(
     private val clientRepository: ClientRepository,
     private val internalNavigator: InternalNavigator
-): ViewModel() {
+) : ViewModel() {
 
     private val _clientsUiState = MutableStateFlow(
         ClientsOrderState(
@@ -55,7 +54,7 @@ class ClientListOrderViewModel(
     }
 
     fun onEvent(event: UserEvent) {
-        when(event) {
+        when (event) {
             is UserEvent.OnClientClicked -> {
                 internalNavigator.navigateTo(
                     Destination.CreateOrder,
@@ -76,9 +75,9 @@ class ClientListOrderViewModel(
         }
     }
 
-    sealed class UserEvent{
-        data class OnClientClicked(val client: Client): UserEvent()
-        data object OnBackClicked: UserEvent()
-        data object OnErrorDialogDismissed: UserEvent()
+    sealed class UserEvent {
+        data class OnClientClicked(val client: Client) : UserEvent()
+        data object OnBackClicked : UserEvent()
+        data object OnErrorDialogDismissed : UserEvent()
     }
 }

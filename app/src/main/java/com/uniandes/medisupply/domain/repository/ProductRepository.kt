@@ -10,8 +10,8 @@ interface ProductRepository {
 
 class ProductRepositoryImpl(private val productService: ProductService) : ProductRepository {
     override suspend fun getProducts(): Result<List<Product>> {
-        val response = productService.getProducts()
         return resultOrError {
+            val response = productService.getProducts()
             response.data.products.map {
                 Product(
                     id = it.id,

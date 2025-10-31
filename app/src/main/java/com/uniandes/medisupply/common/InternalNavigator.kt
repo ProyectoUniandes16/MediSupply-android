@@ -16,12 +16,11 @@ interface InternalNavigator {
 
 class InternalNavigatorImpl(
     private val navigationProvider: NavigationProvider
-): InternalNavigator {
+) : InternalNavigator {
 
     private var navController: NavController? = null
     private var params: MutableMap<String, Any> = mutableMapOf()
     private var activity: Activity? = null
-
 
     override fun init(navController: NavController, activity: Activity) {
         this.navController = navController
@@ -51,7 +50,6 @@ class InternalNavigatorImpl(
     override fun finishCurrentDestination(extras: Map<String, Any>, success: Boolean) {
         navigationProvider.finishCurrentDestination(extras, success)
     }
-
 
     override fun stepBack() {
         navController?.let {

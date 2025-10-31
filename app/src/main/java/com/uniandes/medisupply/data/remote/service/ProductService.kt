@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface ProductService {
     @GET("/movil-producto/producto")
-    suspend fun getProducts(@Query("per_page") size: Int=500): DataResponse<ProductWrapperResponse>
+    suspend fun getProducts(@Query("per_page") size: Int = 500): DataResponse<ProductWrapperResponse>
 }

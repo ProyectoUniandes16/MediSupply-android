@@ -11,7 +11,7 @@ interface OrderRepository {
 
 class OrderRepositoryImpl(
     private val service: OrderService
-): OrderRepository {
+) : OrderRepository {
 
     override suspend fun placeOrder(order: Order): Result<Unit> {
         return resultOrError {

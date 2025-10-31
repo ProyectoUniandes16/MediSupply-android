@@ -53,7 +53,6 @@ private fun ClientOrderListContent(
     uiState: ClientsOrderState,
     onEvent: (ClientListOrderViewModel.UserEvent) -> Unit
 ) {
-
     if (uiState.showError) {
         AlertDialog(
             title = stringResource(R.string.default_error),
@@ -79,7 +78,7 @@ private fun ClientOrderListContent(
         Box(
             modifier = modifier.padding(innerPadding).fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .padding(MaterialTheme.spaces.medium)

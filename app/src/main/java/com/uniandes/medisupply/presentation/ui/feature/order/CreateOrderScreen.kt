@@ -140,7 +140,6 @@ fun ClientOrderContent(
                     },
                     isConfirmation = uiState.isConfirmation
                 )
-
             }
             if (uiState.isConfirmation.not() && uiState.productOrder.isNotEmpty()) {
                 FloatingActionButton(
@@ -304,13 +303,13 @@ private fun ProductOrderItem(
             IconButton(
                 onClick = onDecreaseClicked
             ) {
-                Icon(painterResource(R.drawable.remove), contentDescription = stringResource(R.string.remove) )
+                Icon(painterResource(R.drawable.remove), contentDescription = stringResource(R.string.remove))
             }
             Text("${productItem.second}", modifier = Modifier.align(Alignment.CenterVertically))
             IconButton(
                 onClick = onIncreaseClicked
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add) )
+                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
         }
     }
@@ -362,7 +361,6 @@ fun ClientOrderScreenPreview() {
         ),
         uiState = CreateOrderUiState(),
         onEvent = {
-
         }
     )
 }

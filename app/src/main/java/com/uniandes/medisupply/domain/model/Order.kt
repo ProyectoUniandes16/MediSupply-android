@@ -10,7 +10,6 @@ data class Order(
     val status: String? = null
 )
 
-
 fun Order.toDataModel() = PlaceOrderRequest(
     clientId = clientId,
     products = products.toDataModel(),

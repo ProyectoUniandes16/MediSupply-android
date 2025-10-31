@@ -29,14 +29,14 @@ class CreateOrderViewModel(
     private val internalNavigator: InternalNavigator,
     private val productRepository: ProductRepository,
     private val orderRepository: OrderRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateOrderUiState())
     val uiState = _uiState.asStateFlow()
     val client: Client = internalNavigator.getParam(Destination.CreateOrder.CLIENT) as Client
 
     fun onEvent(event: UserEvent) {
-        when(event) {
+        when (event) {
             is UserEvent.OnBackClicked -> {
                 internalNavigator.stepBack()
             }

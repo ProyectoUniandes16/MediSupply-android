@@ -17,7 +17,7 @@ import com.uniandes.medisupply.presentation.ui.feature.order.ClientOrderScreen
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class NewOrderActivity: BaseActivity(), KoinComponent {
+class NewOrderActivity : BaseActivity(), KoinComponent {
 
     private val internalNavigator: InternalNavigator by inject()
 
