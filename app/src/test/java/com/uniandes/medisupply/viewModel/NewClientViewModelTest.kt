@@ -2,7 +2,6 @@ package com.uniandes.medisupply.viewModel
 
 import com.uniandes.medisupply.common.NavigationProvider
 import com.uniandes.medisupply.common.ResourcesProvider
-import com.uniandes.medisupply.domain.model.ClientType
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import io.mockk.coEvery
