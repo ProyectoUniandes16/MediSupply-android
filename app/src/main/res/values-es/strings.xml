@@ -34,4 +34,12 @@
     <string name="invalid_phone">Número de teléfono no válido</string>
     <string name="invalid_email">Correo electrónico no válido</string>
     <string name="invalid_nit">El NIT debe tener entre 9 y 10 caracteres</string>
+    <string name="dropdown_icon_description">Desplegar opciones</string>
+    <string name="hospital">Hospital</string>
+    <string name="clinic">Clinica</string>
+    <string name="laboratory">Laboratorio</string>
+    <string name="distributor">Distribuidor</string>
+    <string name="eps_eapb">EPS/EAPB</string>
+    <string name="ips">IPS</string>
+    <string name="other">Otro</string>
 </resources>

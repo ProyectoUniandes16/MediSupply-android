@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.presentation.component.SpinnerDropdown
 import com.uniandes.medisupply.presentation.component.TextField
 import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
@@ -123,13 +124,12 @@ internal fun NewClientContent(
                         supportingText = uiState.errorName,
                         label = { Text(stringResource(R.string.name)) }
                     )
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uiState.type,
-                        onValueChange = {
+                    SpinnerDropdown(
+                        options = uiState.clientTypes.values.toList(),
+                        label = stringResource(R.string.type),
+                        onOptionSelected = {
                             onUserEvent(NewClientViewModel.UserEvent.OnTypeChange(it))
-                        },
-                        label = { Text(stringResource(R.string.type)) }
+                        }
                     )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -142,13 +142,12 @@ internal fun NewClientContent(
                         supportingText = uiState.errorNit
                     )
 
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uiState.country,
-                        onValueChange = {
+                    SpinnerDropdown(
+                        options = uiState.countryList,
+                        label = stringResource(R.string.country),
+                        onOptionSelected = {
                             onUserEvent(NewClientViewModel.UserEvent.OnCountryChange(it))
-                        },
-                        label = { Text(stringResource(R.string.country)) }
+                        }
                     )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
