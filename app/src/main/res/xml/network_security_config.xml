@@ -5,7 +5,7 @@
 
     <!-- Allow cleartext only for the development host IP -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain>192.168.68.106</domain>
+        <domain>192.168.68.100</domain>
     </domain-config>
 </network-security-config>
 

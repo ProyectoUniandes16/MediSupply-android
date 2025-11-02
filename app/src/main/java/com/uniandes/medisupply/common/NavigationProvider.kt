@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.util.Log
 import com.uniandes.medisupply.presentation.containers.HomeClientActivity
 import com.uniandes.medisupply.presentation.containers.NewClientActivity
+import com.uniandes.medisupply.presentation.containers.NewOrderActivity
 
 interface NavigationProvider {
     fun init(activity: Activity)
@@ -29,6 +30,9 @@ class NavigationProviderImpl : NavigationProvider {
                is AppDestination.HomeClient -> HomeClientActivity.createIntent(activity)
                is AppDestination.NewClient -> {
                    NewClientActivity.createIntent(activity)
+               }
+               is AppDestination.NewOrder -> {
+                    NewOrderActivity.createIntent(activity)
                }
                else -> {
                    Log.w(TAG, "Unknown destination: $appDestination")
