@@ -2,7 +2,6 @@ package com.uniandes.medisupply.repository
 
 import com.uniandes.medisupply.data.remote.model.common.DataResponse
 import com.uniandes.medisupply.data.remote.model.product.ProductResponse
-import com.uniandes.medisupply.data.remote.model.product.ProductWrapperResponse
 import com.uniandes.medisupply.data.remote.service.ProductService
 import com.uniandes.medisupply.domain.repository.ProductRepositoryImpl
 import io.mockk.coEvery
@@ -21,7 +20,7 @@ class ProductRepositoryTest {
         // GIVEN
         val productList = PRODUCT_LIST
         coEvery { productService.getProducts() } returns DataResponse(
-            ProductWrapperResponse(PRODUCT_LIST)
+            PRODUCT_LIST
         )
 
         // WHEN

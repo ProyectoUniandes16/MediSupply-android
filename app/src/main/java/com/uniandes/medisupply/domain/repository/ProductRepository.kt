@@ -12,7 +12,7 @@ class ProductRepositoryImpl(private val productService: ProductService) : Produc
     override suspend fun getProducts(): Result<List<Product>> {
         return resultOrError {
             val response = productService.getProducts()
-            response.data.products.map {
+            response.data.map {
                 Product(
                     id = it.id,
                     name = it.name,

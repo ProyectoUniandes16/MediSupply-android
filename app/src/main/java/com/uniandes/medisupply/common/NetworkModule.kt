@@ -13,7 +13,7 @@ import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
 
 object NetworkModule {
-    private const val BASE_URL = "http://192.168.68.100"
+    private const val BASE_URL = "http://192.168.1.77"
     private val userDataProvider: UserDataProvider by inject(UserDataProvider::class.java)
 
     private class LoggingInterceptor(private val tag: String = "Network") : Interceptor {
