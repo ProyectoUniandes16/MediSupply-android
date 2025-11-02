@@ -5,6 +5,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface OrderService {
-    @POST("/movil/pedido")
+    @POST("/movil-producto/pedido")
     suspend fun placeOrder(@Body request: PlaceOrderRequest)
 }

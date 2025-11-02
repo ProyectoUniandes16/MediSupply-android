@@ -4,12 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProductWrapperResponse(
-    @SerialName("productos")
-    val products: List<ProductResponse>
-)
-
-@Serializable
 data class ProductResponse(
     @SerialName("cantidad_disponible")
     val availableStock: Int,
