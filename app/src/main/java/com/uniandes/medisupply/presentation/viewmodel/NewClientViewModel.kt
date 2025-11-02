@@ -8,6 +8,8 @@ import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.common.isValidEmail
 import com.uniandes.medisupply.common.isValidPhone
+import com.uniandes.medisupply.domain.model.ClientType
+import com.uniandes.medisupply.domain.model.Country
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -36,7 +38,9 @@ data class NewClientUiState(
     val errorNit: String? = null,
     val errorCountry: String? = null,
     val errorCompanyEmail: String? = null,
-    val primaryButtonEnabled: Boolean = false
+    val primaryButtonEnabled: Boolean = false,
+    val clientTypes: Map<ClientType, String> = emptyMap(),
+    val countryList: List<String> = Country.entries.toList().map { it.displayName }
 )
 
 class NewClientViewModel(
@@ -45,7 +49,19 @@ class NewClientViewModel(
     private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(NewClientUiState())
+    private val _uiState = MutableStateFlow(NewClientUiState(
+        clientTypes = ClientType.entries.associateWith { type ->
+            when (type) {
+                ClientType.IPS -> resourcesProvider.getString(R.string.ips)
+                ClientType.OTHER -> resourcesProvider.getString(R.string.other)
+                ClientType.CLINIC -> resourcesProvider.getString(R.string.clinic)
+                ClientType.DISTRIBUTOR -> resourcesProvider.getString(R.string.distributor)
+                ClientType.EPS_EAPB -> resourcesProvider.getString(R.string.eps_eapb)
+                ClientType.HOSPITAL -> resourcesProvider.getString(R.string.hospital)
+                ClientType.LABORATORY -> resourcesProvider.getString(R.string.laboratory)
+            }
+        }
+    ))
     val uiState = _uiState.asStateFlow()
 
     fun onEvent(event: UserEvent) {
@@ -172,7 +188,7 @@ class NewClientViewModel(
             _uiState.update { it.copy(isLoading = true) }
             val result = clientRepository.addClient(
                 name = uiState.value.name,
-                type = uiState.value.type,
+                type = resolveType(uiState.value.type).displayName,
                 nit = uiState.value.nit,
                 address = uiState.value.address,
                 country = uiState.value.country,
@@ -192,6 +208,10 @@ class NewClientViewModel(
                 _uiState.update { it.copy(isLoading = false, showError = true, error = result.exceptionOrNull()?.message) }
             }
         }
+    }
+
+    private fun resolveType(type: String): ClientType {
+        return uiState.value.clientTypes.entries.firstOrNull { it.value == type }?.key ?: throw IllegalArgumentException("Invalid client type")
     }
 
     sealed class UserEvent {

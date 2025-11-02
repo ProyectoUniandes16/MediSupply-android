@@ -30,7 +30,7 @@ class NewClientViewModelTest {
 
     companion object {
         const val name = "name"
-        const val type = "type"
+        val type = "Hospital"
         const val nit = "0000000001"
         const val address = "address"
         const val country = "country"
@@ -44,6 +44,9 @@ class NewClientViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery {
+            resourcesProvider.getString(any())
+        } returns "Hospital"
         viewModel = NewClientViewModel(
             clientRepository,
             navigationProvider,
