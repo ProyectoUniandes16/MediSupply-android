@@ -5,6 +5,7 @@ interface UserDataProvider {
     fun setAccessToken(accessToken: String)
     fun setUserLoggedIn(loggedIn: Boolean)
     fun isUserLoggedIn(): Boolean
+    fun setBaseUrl(baseUrl: String)
 }
 
 class UserDataProviderImpl(
@@ -29,5 +30,9 @@ class UserDataProviderImpl(
 
     override fun isUserLoggedIn(): Boolean {
         return userPreferences.isLoggedIn()
+    }
+
+    override fun setBaseUrl(baseUrl: String) {
+        userPreferences.setBaseUrl(baseUrl)
     }
 }
