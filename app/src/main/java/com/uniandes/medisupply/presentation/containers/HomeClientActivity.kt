@@ -13,35 +13,22 @@ import androidx.lifecycle.lifecycleScope
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.AppDestination
 import com.uniandes.medisupply.common.BaseActivity
-import com.uniandes.medisupply.common.UserDataProvider
-import com.uniandes.medisupply.domain.model.UserRole
 import com.uniandes.medisupply.presentation.navigation.navhost.HomeClientNavHost
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 class HomeClientActivity : BaseActivity() {
 
     private val snackbarHostState = SnackbarHostState()
-    private val userDataProvider: UserDataProvider by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val role: UserRole
-        try {
-            role = UserRole.fromDisplayName(userDataProvider.getRole()) ?: throw Exception("Invalid role")
-        } catch (e: Exception) {
-            userDataProvider.clearAll()
-            finish()
-            return
+        intent.extras?.let {
         }
         setContent {
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
             ) { paddingValues ->
-                HomeClientNavHost(
-                    modifier = Modifier.padding(paddingValues),
-                    isVendor = role == UserRole.VENDOR
-                )
+                HomeClientNavHost(modifier = Modifier.padding(paddingValues))
             }
         }
     }

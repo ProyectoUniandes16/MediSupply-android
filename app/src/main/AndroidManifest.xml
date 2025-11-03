@@ -29,7 +29,6 @@
         <activity android:name=".presentation.containers.HomeClientActivity"/>
         <activity android:name=".presentation.containers.NewClientActivity"/>
         <activity android:name=".presentation.containers.NewOrderActivity"/>
-        <activity android:name=".presentation.containers.ComposableActivity"/>
     </application>
 
 </manifest>

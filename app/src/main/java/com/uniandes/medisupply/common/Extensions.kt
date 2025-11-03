@@ -1,15 +1,9 @@
 package com.uniandes.medisupply.common
 
-import android.content.Intent
-import android.os.Build
-import android.os.Parcelable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
-import java.text.NumberFormat
-import java.util.Currency
-import java.util.Locale
 
 fun String.isValidEmail(): Boolean {
     val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
@@ -44,28 +38,5 @@ inline fun <T> resultOrError(block: () -> T): Result<T> {
             }
         }
         Result.failure(mappedException)
-    }
-}
-
-fun Double.formatCurrency(currencyCode: String? = "USD"): String {
-    val locale = Locale.getDefault()
-    val nf = NumberFormat.getCurrencyInstance(locale)
-    if (currencyCode != null) {
-        try { nf.currency = Currency.getInstance(currencyCode) } catch (_: Exception) {}
-    }
-    return nf.format(this)
-}
-
-@Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FUNCTION)
-annotation class ExcludeFromJacocoGeneratedReport
-
-inline fun <reified T : Parcelable> Intent.getParcelableExtraProvider(key: String): T? {
-    // The 'inline' and 'reified' keywords allow you to get the class type T at runtime.
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getParcelableExtra(key, T::class.java)
-    } else {
-        @Suppress("DEPRECATION")
-        getParcelableExtra(key) as? T
     }
 }

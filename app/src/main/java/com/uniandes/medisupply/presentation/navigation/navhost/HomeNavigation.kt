@@ -26,11 +26,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.navigation.Destination
-import com.uniandes.medisupply.presentation.navigation.HomeClientDestination
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.OrderListScreen
-import com.uniandes.medisupply.presentation.ui.feature.home.VendorHomeScreen
-import com.uniandes.medisupply.presentation.ui.feature.home.VisitVendorScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -40,7 +37,7 @@ private data class BottomTabItem(
     val icon: Int
 )
 
-private val VENDOR_BOTTOM_ITEMS = listOf(
+private val BOTTOM_ITEMS = listOf(
     BottomTabItem(
         destination = Destination.HomeVendor,
         title = R.string.home,
@@ -52,41 +49,22 @@ private val VENDOR_BOTTOM_ITEMS = listOf(
         icon = R.drawable.clients
     ),
     BottomTabItem(
-        destination = Destination.VisitList,
+        destination = Destination.HomeVendor,
         title = R.string.routes,
         icon = R.drawable.commute
     ),
     BottomTabItem(
-        destination = HomeClientDestination.ClientOrderList,
+        destination = Destination.OrderList,
         title = R.string.orders,
         icon = R.drawable.orders
     )
 )
-
-private val CLIENT_BOTTOM_ITEMS = listOf(
-    BottomTabItem(
-        destination = HomeClientDestination.ClientOrderList,
-        title = R.string.orders,
-        icon = R.drawable.orders
-    ),
-    BottomTabItem(
-        destination = HomeClientDestination.ProductList,
-        title = R.string.products,
-        icon = R.drawable.clients
-    )
-)
-
 @Composable
-fun HomeClientNavHost(
-    modifier: Modifier = Modifier,
-    isVendor: Boolean = true,
-) {
-    val tabItems = if (isVendor) VENDOR_BOTTOM_ITEMS else CLIENT_BOTTOM_ITEMS
+fun HomeClientNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val selectedTab = remember { mutableStateOf(tabItems[0]) }
+    val selectedTab = remember { mutableStateOf(BOTTOM_ITEMS[0]) }
 
     Scaffold(
-        modifier = modifier,
         topBar = {
             Box(
                 modifier = Modifier
@@ -99,41 +77,28 @@ fun HomeClientNavHost(
             }
         },
         bottomBar = {
-            BottomBar(
-                selectedTab = selectedTab.value,
-                items = tabItems,
-                onSelectedItem = { selectedItem ->
-                    selectedTab.value = selectedItem
-                    changeScreen(navController, selectedItem)
-                }
-            )
+            BottomBar(selectedTab.value) { selectedItem ->
+                selectedTab.value = selectedItem
+                changeScreen(navController, selectedItem)
+            }
         }) { paddingValue ->
         NavHost(
             modifier = Modifier
                 .padding(paddingValue),
             navController = navController,
-            startDestination = tabItems[0].destination
+            startDestination = Destination.HomeVendor
         ) {
             composable<Destination.HomeVendor> {
-                VendorHomeScreen()
+                Text(text = "Home Client")
             }
             composable<Destination.ClientList> {
                 ClientListScreen()
             }
-            composable<Destination.VendorOrderList> {
+            composable<Destination.HomeVendor> {
                 Text(text = "Home Client")
             }
-            composable<HomeClientDestination.ProductList> {
-                val internalNavController = rememberNavController()
-                ProductNavHost(
-                    navHostController = internalNavController
-                )
-            }
-            composable<HomeClientDestination.ClientOrderList> {
+            composable<Destination.OrderList> {
                 OrderListScreen()
-            }
-            composable<Destination.VisitList> {
-                VisitVendorScreen()
             }
         }
     }
@@ -154,9 +119,10 @@ private fun changeScreen(navController: NavController, navItem: BottomTabItem) {
 @Composable
 private fun BottomBar(
     selectedTab: BottomTabItem,
-    onSelectedItem: (BottomTabItem) -> Unit,
-    items: List<BottomTabItem>
+    onSelectedItem: (BottomTabItem) -> Unit
 ) {
+    val items = BOTTOM_ITEMS
+
     Box {
         BottomAppBar(
             modifier = Modifier.fillMaxWidth(),

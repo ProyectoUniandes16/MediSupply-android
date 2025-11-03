@@ -1,21 +1,12 @@
 package com.uniandes.medisupply.viewModel
 
-import com.uniandes.medisupply.common.AppDestination
-import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.common.NavigationProvider
 import com.uniandes.medisupply.common.ResourcesProvider
-import com.uniandes.medisupply.common.UserDataProvider
-import com.uniandes.medisupply.domain.model.User
-import com.uniandes.medisupply.domain.model.UserRole
 import com.uniandes.medisupply.domain.repository.ClientRepository
-import com.uniandes.medisupply.domain.repository.UserRepository
-import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -26,20 +17,16 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 class NewClientViewModelTest {
 
     private lateinit var viewModel: NewClientViewModel
     private val clientRepository = mockk<ClientRepository>(relaxed = true)
+    private val navigationProvider: NavigationProvider = mockk(relaxed = true)
     private val resourcesProvider = mockk<ResourcesProvider>(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
-    private val userRepository = mockk<UserRepository>(relaxed = true)
-    private val userDataProvider = mockk<UserDataProvider>(relaxed = true)
-    private val internalNavigator = mockk<InternalNavigator>(relaxed = true)
 
     companion object {
         const val name = "name"
@@ -60,16 +47,10 @@ class NewClientViewModelTest {
         coEvery {
             resourcesProvider.getString(any())
         } returns "Hospital"
-        initViewModel()
-    }
-
-    private fun initViewModel() {
         viewModel = NewClientViewModel(
             clientRepository,
-            internalNavigator,
-            resourcesProvider,
-            userRepository,
-            userDataProvider,
+            navigationProvider,
+            resourcesProvider
         )
     }
 
@@ -136,14 +117,14 @@ class NewClientViewModelTest {
             )
         }
         coVerify {
-            internalNavigator.finishCurrentDestination(
+            navigationProvider.finishCurrentDestination(
                 success = true
             )
         }
     }
 
     @Test
-    fun `onEvent OnSaveClientClick SHOULD show error when add client failed`() = runTest {
+    fun `onEvent OnSaveClientClick SHOULD show error when failed`() = runTest {
         // Given
         val errorMessage = "Network Error"
         coEvery {
@@ -240,7 +221,7 @@ class NewClientViewModelTest {
 
         // Then
         coVerify {
-            internalNavigator.stepBack()
+            navigationProvider.finishCurrentDestination()
         }
     }
 
@@ -278,156 +259,5 @@ class NewClientViewModelTest {
         // Then
         assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
         assertNotNull(viewModel.uiState.value.errorContactPhone)
-    }
-
-    @Test
-    fun `onEvent OnNitChange SHOULD show error WHEN NIT is invalid`() = runTest {
-        // When
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange("invalidNIT"))
-
-        // Then
-        assertEquals(false, viewModel.uiState.value.primaryButtonEnabled)
-        assertNotNull(viewModel.uiState.value.errorNit)
-    }
-
-    @Test
-    fun `init SHOULD hide company email field and set up company email and password WHEN is new user`() = runTest {
-        // Given
-        val password = "DEFAULTPASSWORD"
-        every { internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) } returns true
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_EMAIL) } returns companyEmail
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) } returns password
-
-        // When
-        initViewModel()
-
-        // Then
-        assertFalse(viewModel.uiState.value.showCompanyEmailField)
-        assertEquals(companyEmail, viewModel.uiState.value.companyEmail)
-        assertEquals(password, internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD))
-    }
-
-    @Test
-    fun `onEvent OnSaveClientClick SHOULD show error when signUpClient failed`() = runTest {
-        // Given
-        val password = "DEFAULTPASSWORD"
-        every { internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) } returns true
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_EMAIL) } returns companyEmail
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) } returns password
-
-        val errorMessage = "Network Error"
-        coEvery {
-            userRepository.signUpClient(
-                name,
-                companyEmail,
-                password,
-                contactName,
-                contactEmail,
-                contactPhone,
-                address,
-                nit,
-                country,
-                type,
-                position
-            )
-        } returns Result.failure(Exception(errorMessage))
-
-        // When
-        initViewModel()
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnNameChange(name))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnTypeChange(type))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange(nit))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnAddressChange(address))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnCountryChange(country))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnPositionChange(position))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactNameChange(contactName))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactPhoneChange(contactPhone))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactEmailChange(contactEmail))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnSaveClientClick)
-
-        // Then
-        coVerify {
-            userRepository.signUpClient(
-                name,
-                companyEmail,
-                password,
-                contactName,
-                contactEmail,
-                contactPhone,
-                address,
-                nit,
-                country,
-                type,
-                position
-            )
-        }
-        assertEquals(true, viewModel.uiState.value.showError)
-        assertEquals(errorMessage, viewModel.uiState.value.error)
-        assertEquals(false, viewModel.uiState.value.isLoading)
-    }
-
-    @Test
-    fun `onEvent OnSaveClientClick SHOULD request Home destination when signUpClient is successful`() = runTest {
-        // Given
-        val password = "DEFAULTPASSWORD"
-        every { internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) } returns true
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_EMAIL) } returns companyEmail
-        every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) } returns password
-        val user = User(1, name, companyEmail, UserRole.VENDOR)
-        val token = "token_123"
-        val result = Result.success(Pair(user, token))
-        coEvery {
-            userRepository.signUpClient(
-                name,
-                companyEmail,
-                password,
-                contactName,
-                contactEmail,
-                contactPhone,
-                address,
-                nit,
-                country,
-                type,
-                position
-            )
-        } returns result
-
-        // When
-        initViewModel()
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnNameChange(name))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnTypeChange(type))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnNitChange(nit))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnAddressChange(address))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnCountryChange(country))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnPositionChange(position))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactNameChange(contactName))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactPhoneChange(contactPhone))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnContactEmailChange(contactEmail))
-        viewModel.onEvent(NewClientViewModel.UserEvent.OnSaveClientClick)
-
-        // Then
-        coVerify {
-            userRepository.signUpClient(
-                name,
-                companyEmail,
-                password,
-                contactName,
-                contactEmail,
-                contactPhone,
-                address,
-                nit,
-                country,
-                type,
-                position
-            )
-        }
-        val slot = slot<AppDestination>()
-        verify { internalNavigator.requestDestination(capture(slot)) }
-        assertTrue(slot.captured is AppDestination.HomeClient)
-        val userResult = (slot.captured as AppDestination.HomeClient).extras["user"]
-        assertTrue(userResult is User)
-        assertEquals(user, userResult)
-        assertEquals(false, viewModel.uiState.value.showError)
-        assertEquals(false, viewModel.uiState.value.isLoading)
     }
 }

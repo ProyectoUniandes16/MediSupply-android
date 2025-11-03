@@ -1,7 +1,5 @@
 package com.uniandes.medisupply.common
 
-import com.uniandes.medisupply.domain.model.User
-import com.uniandes.medisupply.domain.model.UserRole
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -21,28 +19,6 @@ class UserDataProviderTest {
     }
 
     @Test
-    fun `setUserData SHOULD save  user preferences`() {
-        // Given
-        val user = User(
-            id = 1,
-            name = "John Doe",
-            email = "email@email.com",
-            role = UserRole.VENDOR
-        )
-        val token = "mocked_access_token"
-
-        // When
-        userDataProvider.setUserData(token, user)
-
-        // Then
-        verify {
-            userPreferences.setAccessToken(token)
-            userPreferences.setRole(user.role.displayName)
-            userPreferences.setLoggedIn(true)
-        }
-    }
-
-    @Test
     fun `getAccessToken SHOULD return access token from user preferences`() {
         // Given
         val expectedToken = "mocked_access_token"
@@ -55,37 +31,14 @@ class UserDataProviderTest {
     }
 
     @Test
-    fun `getName SHOULD return name from user preferences`() {
+    fun `setAccessToken SHOULD call setAccessToken on user preferences`() {
         // Given
-        val expectedName = "John Doe"
-        every { userPreferences.getName() } returns expectedName
+        val expectedToken = "mocked_access_token"
         // When
-        val name = userDataProvider.getName()
+        val token = userDataProvider.setAccessToken(expectedToken)
 
         // Then
-        assertEquals(expectedName, name)
-    }
-
-    @Test
-    fun `getEmail SHOULD return email from user preferences`() {
-        // Given
-        val expectedEmail = "email"
-        every { userPreferences.getEmail() } returns expectedEmail
-        // When
-        val email = userDataProvider.getEmail()
-        // Then
-        assertEquals(expectedEmail, email)
-    }
-
-    @Test
-    fun `getPhone SHOULD return phone from user preferences`() {
-        // Given
-        val expectedPhone = "123456789"
-        every { userPreferences.getPhone() } returns expectedPhone
-        // When
-        val phone = userDataProvider.getPhone()
-        // Then
-        assertEquals(expectedPhone, phone)
+        verify { userPreferences.setAccessToken(expectedToken) }
     }
 
     @Test
@@ -97,5 +50,16 @@ class UserDataProviderTest {
 
         // Then
         assertFalse(isLoggedIn)
+    }
+
+    @Test
+    fun `setUserLoggedIn SHOULD call setAccessToken on user preferences`() {
+        // Given
+        val expectedValue = true
+        // When
+        val token = userDataProvider.setUserLoggedIn(expectedValue)
+
+        // Then
+        verify { userPreferences.setLoggedIn(expectedValue) }
     }
 }

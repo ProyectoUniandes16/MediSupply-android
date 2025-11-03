@@ -1,7 +1,5 @@
 package com.uniandes.medisupply.di
 
-import com.uniandes.medisupply.common.ContextProvider
-import com.uniandes.medisupply.common.ContextProviderImpl
 import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.InternalNavigatorImpl
 import com.uniandes.medisupply.common.NavigationProvider
@@ -19,5 +17,4 @@ val commonModule = module {
     single<UserDataProvider> { UserDataProviderImpl(get()) }
     single<ResourcesProvider> { ResourcesProviderImpl(get()) }
     single<InternalNavigator> { InternalNavigatorImpl(get()) }
-    single<ContextProvider> { ContextProviderImpl(get()) }
 }

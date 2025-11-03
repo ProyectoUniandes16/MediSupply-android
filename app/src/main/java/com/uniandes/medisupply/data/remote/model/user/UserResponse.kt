@@ -17,7 +17,6 @@ data class UserResponse(
     val name: String,
     @SerialName("apellido")
     val lastName: String,
-    @SerialName("rol")
-    val role: String,
+    val rol: String,
     val email: String
 )

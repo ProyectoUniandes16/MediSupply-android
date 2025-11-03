@@ -132,4 +132,14 @@ class InternalNavigatorTest {
         assertNull(navControllerValue)
         assertNull(activityValue)
     }
+
+    @Test
+    fun `getParam SHOULD throw IllegalArgumentException WHEN parameter not found`() {
+        val exception = kotlin.runCatching {
+            internalNavigator.getParam("non_existent_param")
+        }.exceptionOrNull()
+
+        assert(exception is IllegalArgumentException)
+        assertEquals("Parameter non_existent_param not found", exception?.message)
+    }
 }

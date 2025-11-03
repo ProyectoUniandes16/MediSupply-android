@@ -5,14 +5,13 @@ import androidx.navigation.NavController
 
 interface InternalNavigator {
     fun stepBack()
-    fun navigateTo(destination: Any, params: Map<String, Any> = emptyMap())
+    fun navigateTo(destination: Any, params: Map<String, Any>)
     fun init(navController: NavController, activity: Activity)
     fun clear()
     fun addParams(params: Map<String, Any>)
-    fun getParam(key: String): Any?
+    fun getParam(params: String): Any
     fun requestDestination(appDestination: AppDestination, requestResultCode: Int? = null)
     fun finishCurrentDestination(extras: Map<String, Any> = emptyMap(), success: Boolean = false)
-    fun getActivity(): Activity?
 }
 
 class InternalNavigatorImpl(
@@ -35,12 +34,13 @@ class InternalNavigatorImpl(
     }
 
     override fun addParams(params: Map<String, Any>) {
-        this.params.putAll(params)
-        this.params
+        params.forEach { (key, value) ->
+            this.params[key] = value
+        }
     }
 
-    override fun getParam(key: String): Any? {
-        return this.params[key]
+    override fun getParam(params: String): Any {
+        return this.params[params] ?: throw IllegalArgumentException("Parameter $params not found")
     }
 
     override fun requestDestination(appDestination: AppDestination, requestResultCode: Int?) {
@@ -49,10 +49,6 @@ class InternalNavigatorImpl(
 
     override fun finishCurrentDestination(extras: Map<String, Any>, success: Boolean) {
         navigationProvider.finishCurrentDestination(extras, success)
-    }
-
-    override fun getActivity(): Activity? {
-        return activity
     }
 
     override fun stepBack() {

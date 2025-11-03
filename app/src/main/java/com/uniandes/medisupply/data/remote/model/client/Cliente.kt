@@ -31,7 +31,7 @@ data class ClientResponse(
     val taxId: String,
     @SerialName("nombre")
     val name: String,
-    @SerialName("zona")
+    @SerialName("pais")
     val country: String,
     @SerialName("tipo")
     val type: String,
