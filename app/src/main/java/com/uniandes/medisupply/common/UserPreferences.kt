@@ -9,6 +9,7 @@ class UserPreferences private constructor(private val prefs: SharedPreferences) 
         private const val PREFS_NAME = "user_prefs"
         private const val KEY_ACCESS_TOKEN = "access_token"
         private const val IS_LOGGED_IN = "is_logged_in"
+        private const val BASE_URL = "base_url"
 
         @Volatile
         private var INSTANCE: UserPreferences? = null
@@ -44,6 +45,11 @@ class UserPreferences private constructor(private val prefs: SharedPreferences) 
     fun isLoggedIn(): Boolean = prefs.getBoolean(IS_LOGGED_IN, false)
     fun setLoggedIn(loggedIn: Boolean) {
         prefs.edit().putBoolean(IS_LOGGED_IN, loggedIn).apply()
+    }
+
+    fun getBaseUrl(): String? = prefs.getString(BASE_URL, null)
+    fun setBaseUrl(baseUrl: String) {
+        prefs.edit().putString(BASE_URL, baseUrl).apply()
     }
 }
 

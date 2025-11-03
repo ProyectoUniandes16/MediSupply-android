@@ -1,5 +1,6 @@
 package com.uniandes.medisupply.presentation.ui.feature.lobby
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,31 @@ fun LoginContent(
             .padding(MaterialTheme.spaces.medium),
         contentAlignment = Alignment.Center
     ) {
+        if (uiState.showHiddenDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    onEvent(LoginViewModel.UserEvent.OnDismissErrorDialog)
+                },
+                title = { Text(stringResource(R.string.error_login)) },
+                text = {
+                    TextField(
+                        value = uiState.baseUrl,
+                        onValueChange = {
+                            onEvent(LoginViewModel.UserEvent.OnBaseUrlChange(it))
+                        },
+                        label = { Text("BASE URL") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        onEvent(LoginViewModel.UserEvent.OnSaveBaseUrl)
+                    }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            )
+        }
         if (uiState.showError) {
             AlertDialog(
                 onDismissRequest = {
@@ -101,10 +127,16 @@ fun LoginContent(
                 Button(
                     onClick = { onEvent(LoginViewModel.UserEvent.OnPrimaryButtonClick) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.loginButtonEnable
+                    enabled = uiState.loginButtonEnable,
+
                 ) {
                     Text(stringResource(R.string.login))
                 }
+                Text(
+                    modifier = Modifier.clickable {
+                        onEvent(LoginViewModel.UserEvent.OnHiddenAccess)
+                    },
+                    text = "Test-app", )
             }
         }
     }

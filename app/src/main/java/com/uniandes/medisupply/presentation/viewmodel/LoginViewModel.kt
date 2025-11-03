@@ -54,10 +54,34 @@ class LoginViewModel(
                 _uiState.update {
                     it.copy(
                         showError = false,
-                        error = null
+                        error = null,
+                        showHiddenDialog = false
                     )
                 }
             }
+            is UserEvent.OnHiddenAccess -> {
+                _uiState.update {
+                    it.copy(
+                        showHiddenDialog = true
+                    )
+                }
+            }
+            is UserEvent.OnBaseUrlChange -> {
+                _uiState.update {
+                    it.copy(
+                        baseUrl = event.baseUrl
+                    )
+                }
+            }
+            is UserEvent.OnSaveBaseUrl -> {
+                _uiState.update {
+                    it.copy(
+                        showHiddenDialog = false
+                    )
+                }
+                userDataProvider.setBaseUrl(_uiState.value.baseUrl)
+            }
+
             else -> {}
         }
     }
@@ -129,5 +153,9 @@ class LoginViewModel(
         data class OnEmailChange(val email: String) : UserEvent()
         data class OnPasswordChange(val password: String) : UserEvent()
         data object OnDismissErrorDialog : UserEvent()
+        data object OnHiddenAccess : UserEvent()
+        data class OnBaseUrlChange(val baseUrl: String) : UserEvent()
+        data object OnSaveBaseUrl : UserEvent()
+
     }
 }
