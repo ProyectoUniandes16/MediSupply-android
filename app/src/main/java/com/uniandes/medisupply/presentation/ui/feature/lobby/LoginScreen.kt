@@ -136,7 +136,8 @@ fun LoginContent(
                     modifier = Modifier.clickable {
                         onEvent(LoginViewModel.UserEvent.OnHiddenAccess)
                     },
-                    text = "Test-app", )
+                    text = "Test-app"
+                )
             }
         }
     }

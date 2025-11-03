@@ -156,6 +156,5 @@ class LoginViewModel(
         data object OnHiddenAccess : UserEvent()
         data class OnBaseUrlChange(val baseUrl: String) : UserEvent()
         data object OnSaveBaseUrl : UserEvent()
-
     }
 }
