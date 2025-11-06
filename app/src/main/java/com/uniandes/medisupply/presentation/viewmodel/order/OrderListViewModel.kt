@@ -12,7 +12,7 @@ class OrderListViewModel(
         when (event) {
             is UserEvent.OnNewOrderClicked -> {
                 navigationProvider.requestDestination(
-                    AppDestination.NewOrder,
+                    AppDestination.NewOrder(),
                     requestResultCode = AppDestination.NewOrder.REQUEST_CODE
                 )
             }

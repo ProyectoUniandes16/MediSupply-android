@@ -9,7 +9,7 @@ interface InternalNavigator {
     fun init(navController: NavController, activity: Activity)
     fun clear()
     fun addParams(params: Map<String, Any>)
-    fun getParam(params: String): Any
+    fun getParam(key: String): Any
     fun requestDestination(appDestination: AppDestination, requestResultCode: Int? = null)
     fun finishCurrentDestination(extras: Map<String, Any> = emptyMap(), success: Boolean = false)
 }
@@ -34,13 +34,12 @@ class InternalNavigatorImpl(
     }
 
     override fun addParams(params: Map<String, Any>) {
-        params.forEach { (key, value) ->
-            this.params[key] = value
-        }
+        this.params.putAll(params)
+        this.params
     }
 
-    override fun getParam(params: String): Any {
-        return this.params[params] ?: throw IllegalArgumentException("Parameter $params not found")
+    override fun getParam(key: String): Any {
+        return this.params[key] ?: throw IllegalArgumentException("Parameter $key not found")
     }
 
     override fun requestDestination(appDestination: AppDestination, requestResultCode: Int?) {

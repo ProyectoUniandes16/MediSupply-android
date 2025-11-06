@@ -22,7 +22,7 @@ class OrderListViewModelTest {
         viewModel.onEvent(OrderListViewModel.UserEvent.OnNewOrderClicked)
 
         verify { navigationProvider.requestDestination(
-            AppDestination.NewOrder,
+            AppDestination.NewOrder(),
             AppDestination.NewOrder.REQUEST_CODE)
         }
     }
