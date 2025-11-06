@@ -1,8 +1,9 @@
 package com.uniandes.medisupply.viewModel.order
 
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.companion.CLIENT
+import com.uniandes.medisupply.companion.CLIENT_LIST
 import com.uniandes.medisupply.domain.model.Client
-import com.uniandes.medisupply.domain.model.ClientContactInfo
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.viewmodel.order.ClientListOrderViewModel
@@ -115,24 +116,5 @@ class ClientListOrderViewModelTest {
         result: Result<List<Client>> = Result.success(CLIENT_LIST)
     ) {
         coEvery { clientRepository.getClients() }.returns(result)
-    }
-
-    private companion object {
-        val CONTACT_INFO = ClientContactInfo(
-            phone = "1234567890",
-            email = "coreo@corre.com",
-            name = "contact name",
-            position = "Manager"
-        )
-        val CLIENT = Client(
-            id = 1,
-            name = "John Doe",
-            email = "correo@correo.com",
-            address = "123 Main St",
-            contactInfo = CONTACT_INFO)
-
-        val CLIENT_LIST = List(10) { index ->
-            CLIENT.copy(id = index + 1, name = "Client $index")
-        }
     }
 }

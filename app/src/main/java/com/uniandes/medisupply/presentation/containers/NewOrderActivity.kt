@@ -6,11 +6,13 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.ui.feature.order.ClientListOrderScreen
 import com.uniandes.medisupply.presentation.ui.feature.order.ClientOrderScreen
@@ -23,16 +25,29 @@ class NewOrderActivity : BaseActivity(), KoinComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val client: Client? = intent.getParcelableExtra(Destination.CreateOrder.CLIENT, Client::class.java)
         setContent {
-            NewOrderNavHost()
+            val navController = rememberNavController()
+            internalNavigator.init(navController, this)
+            NewOrderNavHost(
+                navController = navController,
+                startDestination = if (client != null) {
+                    internalNavigator.addParams(mapOf(Destination.CreateOrder.CLIENT to client))
+                    Destination.CreateOrder
+                } else {
+                    Destination.ClientListOrder
+                }
+            )
         }
     }
 
     @Composable
-    fun NewOrderNavHost(modifier: Modifier = Modifier) {
-        val navController = rememberNavController()
-        internalNavigator.init(navController, this)
-        NavHost(navController = navController, startDestination = Destination.ClientListOrder) {
+    fun NewOrderNavHost(
+        modifier: Modifier = Modifier,
+        navController: NavHostController,
+        startDestination: Destination = Destination.ClientListOrder
+    ) {
+        NavHost(navController = navController, startDestination = startDestination) {
             composable<Destination.ClientListOrder> {
                 ClientListOrderScreen()
             }

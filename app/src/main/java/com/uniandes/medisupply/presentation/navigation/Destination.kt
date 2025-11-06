@@ -17,6 +17,6 @@ sealed class Destination(val route: String) {
     data object OrderList : Destination("OrderList")
     @Serializable
     data object CreateOrder : Destination("ClientProductOrder") {
-        const val CLIENT = "client"
+        const val CLIENT = "CLIENT"
     }
 }

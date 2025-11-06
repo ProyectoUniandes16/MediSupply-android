@@ -14,7 +14,8 @@ val clientModule = module {
     single<ClientRepository> { ClientRepositoryImpl(get()) }
     viewModel {
         ClientListViewModel(
-            navigationProvider = get()
+            navigationProvider = get(),
+            get()
         )
     }
     viewModel {
