@@ -121,9 +121,8 @@ class ProductListViewModelTest {
         verify { internalNavigator.stepBack() }
     }
 
-
     private companion object {
-        val PRODUCT_LIST = List(5){
+        val PRODUCT_LIST = List(5) {
             Product(
                 id = it,
                 name = "Product $it",
