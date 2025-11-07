@@ -60,4 +60,5 @@
     <string name="order_created">Order Created</string>
     <string name="cancel">Cancel</string>
     <string name="order">Order</string>
+    <string name="no_more_products">There are no products to add</string>
 </resources>
