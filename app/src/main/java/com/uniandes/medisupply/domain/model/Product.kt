@@ -7,5 +7,12 @@ data class Product(
     val id: Int,
     val name: String,
     val price: Double,
-    val stock: Int
+    val stock: Int,
+    val category: String,
+    val stockStatus: StockStatus
 )
+enum class StockStatus {
+    IN_STOCK,
+    LOW_STOCK,
+    OUT_OF_STOCK
+}

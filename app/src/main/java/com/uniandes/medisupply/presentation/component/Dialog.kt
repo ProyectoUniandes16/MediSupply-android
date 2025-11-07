@@ -9,7 +9,7 @@ import com.uniandes.medisupply.R
 
 @Composable
 fun AlertDialog(
-    title: String,
+    title: String = stringResource(R.string.default_error_title),
     message: String,
     onDismissRequest: () -> Unit,
     onConfirm: () -> Unit,

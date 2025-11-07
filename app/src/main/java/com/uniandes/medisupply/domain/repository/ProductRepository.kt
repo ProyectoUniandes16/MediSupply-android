@@ -3,6 +3,7 @@ package com.uniandes.medisupply.domain.repository
 import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.ProductService
 import com.uniandes.medisupply.domain.model.Product
+import com.uniandes.medisupply.domain.model.StockStatus
 
 interface ProductRepository {
     suspend fun getProducts(): Result<List<Product>>
@@ -17,7 +18,13 @@ class ProductRepositoryImpl(private val productService: ProductService) : Produc
                     id = it.id,
                     name = it.name,
                     price = it.unitPrice,
-                    stock = it.availableStock
+                    stock = it.availableStock,
+                    category = it.category,
+                    stockStatus = when {
+                        it.availableStock > 10 -> StockStatus.IN_STOCK
+                        it.availableStock in 1..10 -> StockStatus.LOW_STOCK
+                        else -> StockStatus.OUT_OF_STOCK
+                    }
                 )
             }
         }

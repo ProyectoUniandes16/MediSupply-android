@@ -60,4 +60,13 @@
     <string name="order_created">Order Created</string>
     <string name="cancel">Cancel</string>
     <string name="order">Order</string>
+    <string name="products">Products</string>
+    <string name="view_products">View products</string>
+    <string name="in_stock">In stock</string>
+    <string name="low_stock">Low stock</string>
+    <string name="out_stock">Out of stock</string>
+    <string name="no_products_found">There are no products</string>
+    <string name="unit_price">Unit Price</string>
+    <string name="default_error_title">Error</string>
+    <string name="default_error_message">Try again later</string>
 </resources>
