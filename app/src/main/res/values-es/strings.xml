@@ -59,4 +59,14 @@
     <string name="remove">Quitar</string>
     <string name="order_created">Orden Creada</string>
     <string name="cancel">Cancelar</string>
+    <string name="unit_price">Precio unitario</string>
+    <string name="default_error_title">Error</string>
+    <string name="order">Pedido</string>
+    <string name="products">Productos</string>
+    <string name="view_products">Ver productos</string>
+    <string name="in_stock">En stock</string>
+    <string name="low_stock">Bajo stock</string>
+    <string name="out_stock">Agotado</string>
+    <string name="no_products_found">No hay productos</string>
+    <string name="default_error_message">Intenta de nuevo</string>
 </resources>

@@ -5,6 +5,7 @@ import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.ClientContactInfo
 import com.uniandes.medisupply.domain.model.Order
 import com.uniandes.medisupply.domain.model.Product
+import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.navigation.Destination
@@ -179,7 +180,9 @@ class CreateOrderViewModelTest {
             id = 1,
             name = "Product 1",
             price = 10.0,
-            stock = 100
+            stock = 100,
+            category = "Category 1",
+            stockStatus = StockStatus.IN_STOCK
         )
 
         private val PRODUCT_LIST = List(10) {

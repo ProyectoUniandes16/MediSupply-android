@@ -28,6 +28,7 @@ import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.OrderListScreen
+import com.uniandes.medisupply.presentation.ui.feature.home.VendorHomeScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -89,12 +90,12 @@ fun HomeClientNavHost(modifier: Modifier = Modifier) {
             startDestination = Destination.HomeVendor
         ) {
             composable<Destination.HomeVendor> {
-                Text(text = "Home Client")
+                VendorHomeScreen()
             }
             composable<Destination.ClientList> {
                 ClientListScreen()
             }
-            composable<Destination.HomeVendor> {
+            composable<Destination.OrderList> {
                 Text(text = "Home Client")
             }
             composable<Destination.OrderList> {
