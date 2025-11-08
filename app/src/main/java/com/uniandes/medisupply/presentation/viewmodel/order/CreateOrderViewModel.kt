@@ -22,7 +22,8 @@ data class CreateOrderUiState(
     val totalAmount: Double = 0.0,
     val isLoadingConfirmation: Boolean = false,
     val showError: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val isProductLoading: Boolean = false
 )
 
 class CreateOrderViewModel(
@@ -41,7 +42,7 @@ class CreateOrderViewModel(
                 internalNavigator.stepBack()
             }
             is UserEvent.OnAddProductClicked -> {
-                _uiState.update { it.copy(showProductBottomSheet = true) }
+                _uiState.update { it.copy(showProductBottomSheet = true, isProductLoading = true) }
                 viewModelScope.launch {
                     val result = productRepository.getProducts()
                     if (result.isSuccess) {
@@ -49,7 +50,8 @@ class CreateOrderViewModel(
                         val availableProducts = result.getOrNull()?.filterNot { currentOrderProducts.contains(it.id) } ?: emptyList()
                         _uiState.update {
                             it.copy(
-                                productList = availableProducts.sortedBy { p -> p.name }
+                                productList = availableProducts.sortedBy { p -> p.name },
+                                isProductLoading = false
                             )
                         }
                     } else {
