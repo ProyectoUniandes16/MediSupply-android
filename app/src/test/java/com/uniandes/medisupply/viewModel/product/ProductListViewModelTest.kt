@@ -19,6 +19,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.model.PRODUCT_LIST
 import io.mockk.verify
 
 @ExperimentalCoroutinesApi
@@ -54,15 +55,7 @@ class ProductListViewModelTest {
     fun `OnLoadProducts SHOULD fetch products from repository successfully`() {
         // given
         val productList = PRODUCT_LIST.map {
-            ProductUI.fromDomain(
-                it
-            ).copy(
-                stockStatus = when (it.stockStatus) {
-                    StockStatus.IN_STOCK -> "In Stock"
-                    StockStatus.LOW_STOCK -> "Low Stock"
-                    StockStatus.OUT_OF_STOCK -> "Out Stock"
-                }
-            )
+            ProductUI.fromDomain(it)
         }
         // when init view model
         viewModel.onEvent(ProductListViewModel.UserEvent.OnLoadProducts)
@@ -119,18 +112,5 @@ class ProductListViewModelTest {
         viewModel.onEvent(ProductListViewModel.UserEvent.OnBackClicked)
         // then
         verify { internalNavigator.stepBack() }
-    }
-
-    private companion object {
-        val PRODUCT_LIST = List(5) {
-            Product(
-                id = it,
-                name = "Product $it",
-                price = 10.0,
-                stock = 100,
-                stockStatus = StockStatus.IN_STOCK,
-                category = "category"
-            )
-        }
     }
 }

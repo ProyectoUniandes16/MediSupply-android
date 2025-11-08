@@ -59,7 +59,7 @@ fun ProductDetailScreen(
 @Composable
 fun ProductDetailContent(
     modifier: Modifier = Modifier,
-    onUserEvent: (ProductDetailViewModel.OnEvent) -> Unit,
+    onUserEvent: (ProductDetailViewModel.UserEvent) -> Unit,
     uiState: ProductDetailState
 ) {
     Scaffold(
@@ -68,7 +68,7 @@ fun ProductDetailContent(
             TopAppBar(
                 title = "",
                 navigationIcon = BackNavigation {
-                    onUserEvent(ProductDetailViewModel.OnEvent.OnBackClicked)
+                    onUserEvent(ProductDetailViewModel.UserEvent.OnBackClicked)
                 }
             )
         },
@@ -82,7 +82,7 @@ fun ProductDetailContent(
             Button(
                 modifier = Modifier.padding(MaterialTheme.spaces.medium).fillMaxWidth(),
                 onClick = {
-                    onUserEvent(ProductDetailViewModel.OnEvent.OnAddVideoClicked)
+                    onUserEvent(ProductDetailViewModel.UserEvent.OnAddVideoClicked)
                 }
             ) {
                 Text(text = stringResource(R.string.add_video))
@@ -120,7 +120,6 @@ fun ProductDetailView(
                 )
                 AssistChip(
                     onClick = {
-
                     },
                     label = {
                         Text(uiState.product.category)

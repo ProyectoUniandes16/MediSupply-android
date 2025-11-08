@@ -2,13 +2,10 @@ package com.uniandes.medisupply.presentation.viewmodel.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
-import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.model.ProductUI
-import com.uniandes.medisupply.presentation.model.StockStatusUI
 import com.uniandes.medisupply.presentation.navigation.ProductDestination
 import com.uniandes.medisupply.presentation.navigation.ProductDestination.ProductDetail.PRODUCT
 import kotlinx.coroutines.flow.MutableStateFlow

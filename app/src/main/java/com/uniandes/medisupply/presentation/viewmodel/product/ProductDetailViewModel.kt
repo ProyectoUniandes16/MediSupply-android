@@ -57,19 +57,19 @@ class ProductDetailViewModel(
         }
     }
 
-    fun onEvent(event: OnEvent) {
+    fun onEvent(event: UserEvent) {
         when (event) {
-            OnEvent.OnBackClicked -> {
+            UserEvent.OnBackClicked -> {
                 internalNavigator.stepBack()
             }
-            OnEvent.OnAddVideoClicked -> {
+            UserEvent.OnAddVideoClicked -> {
                 // Handle add video click event
             }
         }
     }
 
-    sealed class OnEvent {
-        data object OnBackClicked : OnEvent()
-        data object OnAddVideoClicked : OnEvent()
+    sealed class UserEvent {
+        data object OnBackClicked : UserEvent()
+        data object OnAddVideoClicked : UserEvent()
     }
 }

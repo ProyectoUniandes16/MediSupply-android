@@ -31,7 +31,6 @@ enum class StockStatus {
     OUT_OF_STOCK
 }
 
-
 fun ProductResponse.toDomain(): Product {
     val stockDetails = this.stockDetails.map {
         StockDetail(

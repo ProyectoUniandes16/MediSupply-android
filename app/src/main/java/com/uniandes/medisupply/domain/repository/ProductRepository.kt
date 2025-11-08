@@ -3,7 +3,6 @@ package com.uniandes.medisupply.domain.repository
 import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.ProductService
 import com.uniandes.medisupply.domain.model.Product
-import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.model.toDomain
 
 interface ProductRepository {
