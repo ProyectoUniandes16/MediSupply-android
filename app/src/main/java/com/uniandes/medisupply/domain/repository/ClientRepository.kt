@@ -38,7 +38,7 @@ class ClientRepositoryImpl(
         contactEmail: String,
         companyEmail: String,
     ): Result<Boolean> {
-        return try {
+        return resultOrError {
             clientService.addClient(
                 NewClientRequest(
                     name = name,
@@ -53,9 +53,7 @@ class ClientRepositoryImpl(
                     companyEmail = companyEmail
                 )
             )
-            Result.success(true)
-        } catch (e: Exception) {
-            Result.failure(Exception(e))
+            true
         }
     }
 
