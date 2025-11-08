@@ -1,6 +1,7 @@
 package com.uniandes.medisupply.presentation.ui.feature.product
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,8 +45,10 @@ import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.component.BackNavigation
+import com.uniandes.medisupply.presentation.component.Card
 import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.model.ProductUI
+import com.uniandes.medisupply.presentation.model.StockStatusUI
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductListUiState
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductListViewModel
@@ -112,37 +113,43 @@ fun ProductListContent(
             if (uiState.isLoading) {
                 CircularProgressIndicator()
             } else {
-                if (uiState.displayedProducts.isEmpty()) {
-                    Box(Modifier.fillMaxSize()) {
-                        Text(
-                            text = stringResource(R.string.no_products_found),
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                } else {
-                    var searchQuery by remember { mutableStateOf(uiState.filterQuery) }
+                var searchQuery by remember { mutableStateOf(uiState.filterQuery) }
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                    ) {
-                        SearchBar(
-                            query = searchQuery,
-                            onQueryChange = {
-                                searchQuery = it
-                                onUserEvent(ProductListViewModel.UserEvent.OnFilterQueryChange(it))
-                            },
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    SearchBar(
+                        query = searchQuery,
+                        onQueryChange = {
+                            searchQuery = it
+                            onUserEvent(ProductListViewModel.UserEvent.OnFilterQueryChange(it))
+                        },
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    if (uiState.displayedProducts.isEmpty()) {
+                        Box(Modifier.fillMaxSize()) {
+                            Text(
+                                text = stringResource(R.string.no_products_found),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    } else {
                         LazyColumn(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(uiState.displayedProducts) { product ->
-                                ProductCard(product = product)
+                                ProductCard(
+                                    product = product,
+                                    onClickItem = {
+                                        onUserEvent(
+                                            ProductListViewModel.UserEvent.OnProductClicked(it)
+                                        )
+                                    }
+                                )
                             }
                         }
                     }
@@ -179,12 +186,14 @@ fun SearchBar(
 }
 
 @Composable
-fun ProductCard(product: ProductUI) {
+fun ProductCard(
+    modifier: Modifier = Modifier,
+    product: ProductUI,
+    onClickItem: (ProductUI) -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = modifier
+        .fillMaxWidth().clickable { onClickItem(product) },
     ) {
         Column(
             modifier = Modifier
@@ -241,7 +250,7 @@ fun ProductCard(product: ProductUI) {
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "Stock: ${product.stock}",
+                        text = "Stock: ${product.totalStock}",
                         fontSize = 13.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -256,7 +265,7 @@ fun ProductCard(product: ProductUI) {
                         modifier = Modifier.height(36.dp),
                         label = {
                             Text(
-                                text = product.stockStatus.uppercase(),
+                                text = stringResource(product.stockStatus.resId),
                                 style = MaterialTheme.typography.labelSmall,
                             )
                         }
@@ -289,9 +298,9 @@ fun ProductListScreenPreview() {
                         id = it,
                         name = "Producto $it",
                         price = 19900.0 + it * 1000,
-                        stock = 10 - it * 2,
+                        totalStock = 10 - it * 2,
                         category = if (it % 2 == 0) "Medicamento" else "Equipo",
-                        stockStatus = if (it % 3 == 0) "En stock" else if (it % 3 == 1) "Bajo stock" else "Agotado"
+                        stockStatus = if (it % 3 == 0) StockStatusUI.IN_STOCK else if (it % 3 == 1) StockStatusUI.LOW_STOCK else StockStatusUI.OUT_OF_STOCK
                     )
                 }
             )

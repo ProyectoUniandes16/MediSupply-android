@@ -20,3 +20,13 @@ sealed class Destination(val route: String) {
         const val CLIENT = "CLIENT"
     }
 }
+
+@Serializable
+sealed class ProductDestination(private val productRoute: String) : Destination(productRoute) {
+    @Serializable
+    data object ProductList : ProductDestination("ProductList")
+    @Serializable
+    data object ProductDetail : ProductDestination("ProductDetail") {
+        const val PRODUCT = "PRODUCT"
+    }
+}

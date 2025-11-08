@@ -3,47 +3,49 @@ package com.uniandes.medisupply.presentation.containers
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.presentation.navigation.navhost.ProductNavHost
+import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
 class ComposableActivity : BaseActivity(), KoinComponent {
 
     private val internalNavigator: InternalNavigator by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val composableContent = composableContent
+        val flow = intent.getParcelableExtra(KEY_FLOW, ComposableFlow::class.java)
+        if (flow == null) {
+            finish()
+            return
+        }
         setContent {
             val navController = rememberNavController()
             internalNavigator.init(navController, this)
-            if (composableContent != null) {
-                composableContent(navController)
-            } else {
-                Text("Error: No Composable content provided.")
+            when (flow) {
+                is ComposableFlow.ProductFlow -> {
+                    ProductNavHost(navHostController = navController)
+                }
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (isFinishing) {
-            composableContent = null
-        }
-    }
-
     companion object {
-
-        var composableContent: (@Composable (navController: NavController?) -> Unit)? = null
-
-        fun createIntent(context: Context, content: @Composable (navController: NavController?) -> Unit): Intent {
-            composableContent = content
-            return Intent(context, ComposableActivity::class.java)
+        private const val KEY_FLOW = "KEY_FLOW"
+        fun createIntent(context: Context, flow: ComposableFlow): Intent {
+            return Intent(context, ComposableActivity::class.java).apply {
+                putExtra(KEY_FLOW, flow)
+            }
         }
     }
+}
+
+@Parcelize
+sealed class ComposableFlow : Parcelable {
+    data object ProductFlow : ComposableFlow()
 }
