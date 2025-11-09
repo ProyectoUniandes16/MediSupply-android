@@ -69,4 +69,10 @@
     <string name="unit_price">Unit Price</string>
     <string name="default_error_title">Error</string>
     <string name="default_error_message">Try again later</string>
+    <string name="batch">Batch</string>
+    <string name="expiration_date">Expiration date</string>
+    <string name="location">Location</string>
+    <string name="price">Price</string>
+    <string name="stock">Stock</string>
+    <string name="add_video">Add video</string>
 </resources>

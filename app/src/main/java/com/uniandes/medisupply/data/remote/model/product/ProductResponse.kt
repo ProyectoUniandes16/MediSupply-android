@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProductResponse(
     @SerialName("cantidad_disponible")
-    val availableStock: Int,
+    val availableStock: Int = 0,
     @SerialName("categoria")
     val category: String,
     @SerialName("codigo_sku")
@@ -22,5 +22,15 @@ data class ProductResponse(
     @SerialName("nombre")
     val name: String,
     @SerialName("precio_unitario")
-    val unitPrice: Double
+    val unitPrice: Double,
+    @SerialName("inventarios")
+    val stockDetails: List<StockResponse> = emptyList(),
+)
+
+@Serializable
+data class StockResponse(
+    @SerialName("ubicacion")
+    val location: String,
+    @SerialName("cantidad")
+    val quantity: Int
 )

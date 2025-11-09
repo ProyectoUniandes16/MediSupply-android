@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.containers.ComposableActivity
-import com.uniandes.medisupply.presentation.ui.feature.product.ProductListScreen
+import com.uniandes.medisupply.presentation.containers.ComposableFlow
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
 
 @Composable
@@ -23,9 +23,7 @@ fun VendorHomeScreen() {
         onProductClicked = {
             val intent = ComposableActivity.createIntent(
                 context = context,
-                content = {
-                    ProductListScreen()
-                }
+                flow = ComposableFlow.ProductFlow
             )
             context.startActivity(intent)
         }

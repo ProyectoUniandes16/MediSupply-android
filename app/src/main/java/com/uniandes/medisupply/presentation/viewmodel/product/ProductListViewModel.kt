@@ -2,12 +2,12 @@ package com.uniandes.medisupply.presentation.viewmodel.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
-import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.model.ProductUI
+import com.uniandes.medisupply.presentation.navigation.ProductDestination
+import com.uniandes.medisupply.presentation.navigation.ProductDestination.ProductDetail.PRODUCT
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -32,9 +32,6 @@ class ProductListViewModel(
     private val _uiState: MutableStateFlow<ProductListUiState> =
         MutableStateFlow(ProductListUiState())
     val uiState = _uiState.asStateFlow()
-    private val lowStockString = resourcesProvider.getString(R.string.low_stock)
-    private val inStockString = resourcesProvider.getString(R.string.in_stock)
-    private val outOfStockString = resourcesProvider.getString(R.string.out_stock)
 
     fun onEvent(event: UserEvent) {
         when (event) {
@@ -55,6 +52,10 @@ class ProductListViewModel(
                     error = null
                 )
             }
+            is UserEvent.OnProductClicked -> {
+                val params = mapOf(PRODUCT to event.product)
+                internalNavigator.navigateTo(ProductDestination.ProductDetail, params)
+            }
             else -> {
             }
         }
@@ -66,13 +67,6 @@ class ProductListViewModel(
            productRepository.getProducts().onSuccess { products ->
                val uiProducts = products.map {
                    ProductUI.fromDomain(it)
-                       .copy(
-                           stockStatus = when (it.stockStatus) {
-                               StockStatus.LOW_STOCK -> lowStockString
-                               StockStatus.IN_STOCK -> inStockString
-                               StockStatus.OUT_OF_STOCK -> outOfStockString
-                           }
-                       )
                }
                _uiState.value = _uiState.value.copy(
                    isLoading = false,
@@ -93,5 +87,6 @@ class ProductListViewModel(
         data object OnBackClicked : UserEvent()
         data class OnFilterQueryChange(val query: String) : UserEvent()
         data object OnDismissErrorDialog : UserEvent()
+        data class OnProductClicked(val product: ProductUI) : UserEvent()
     }
 }

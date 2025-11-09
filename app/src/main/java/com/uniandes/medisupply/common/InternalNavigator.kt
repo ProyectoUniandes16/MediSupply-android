@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 
 interface InternalNavigator {
     fun stepBack()
-    fun navigateTo(destination: Any, params: Map<String, Any>)
+    fun navigateTo(destination: Any, params: Map<String, Any> = emptyMap())
     fun init(navController: NavController, activity: Activity)
     fun clear()
     fun addParams(params: Map<String, Any>)
