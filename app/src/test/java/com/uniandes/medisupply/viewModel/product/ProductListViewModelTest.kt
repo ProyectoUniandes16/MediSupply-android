@@ -3,7 +3,6 @@ package com.uniandes.medisupply.viewModel.product
 import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.domain.model.Product
-import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductListViewModel

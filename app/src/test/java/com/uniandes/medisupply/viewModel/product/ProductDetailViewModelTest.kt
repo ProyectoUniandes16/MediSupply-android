@@ -18,7 +18,6 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductDetailViewModelTest {
@@ -62,7 +61,6 @@ class ProductDetailViewModelTest {
         // then
         assertFalse(viewModel.uiState.value.isLoading)
         assert(viewModel.uiState.value.product == PRODUCT_UI)
-
     }
 
     @Test
