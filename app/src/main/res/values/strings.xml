@@ -75,4 +75,8 @@
     <string name="price">Price</string>
     <string name="stock">Stock</string>
     <string name="add_video">Add video</string>
+    <string name="upload_video">Upload video</string>
+    <string name="confirm_upload_video">You are about to upload \'%s\' video</string>
+    <string name="loading">Loading</string>
+    <string name="video_upload_success">Video uploaded</string>
 </resources>

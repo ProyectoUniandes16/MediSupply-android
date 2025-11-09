@@ -15,5 +15,5 @@ val productModule = module {
     }
     single<ProductRepository> { ProductRepositoryImpl(get()) }
     viewModel { ProductListViewModel(get(), get(), get()) }
-    viewModel { ProductDetailViewModel(get(), get()) }
+    viewModel { ProductDetailViewModel(get(), get(), get()) }
 }

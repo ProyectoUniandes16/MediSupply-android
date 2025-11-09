@@ -1,5 +1,8 @@
 package com.uniandes.medisupply.presentation.ui.feature.product
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,9 +25,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,15 +41,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.formatCurrency
+import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.component.BackNavigation
 import com.uniandes.medisupply.presentation.component.Card
+import com.uniandes.medisupply.presentation.component.LoadingAlertDialog
 import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.model.StockStatusUI
 import com.uniandes.medisupply.presentation.ui.theme.spaces
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailState
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailViewModel
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.material3.AlertDialog as M3AlertDialog
+
 
 @Composable
 fun ProductDetailScreen(
@@ -62,8 +76,22 @@ fun ProductDetailContent(
     onUserEvent: (ProductDetailViewModel.UserEvent) -> Unit,
     uiState: ProductDetailState
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    val snackbarMessage = stringResource(R.string.video_upload_success)
+    LaunchedEffect(uiState.showSuccessMessage) {
+       if (uiState.showSuccessMessage) {
+           scope.launch {
+               snackbarHostState.showSnackbar(snackbarMessage)
+                onUserEvent(ProductDetailViewModel.UserEvent.OnDismissSuccessMessage)
+           }
+       }
+    }
+
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = "",
@@ -73,16 +101,55 @@ fun ProductDetailContent(
             )
         },
         content = { paddingValues ->
+            if (uiState.showVideoUploadDialog) {
+                AlertDialog(
+                    title = stringResource(R.string.upload_video),
+                    message = stringResource(
+                        R.string.confirm_upload_video,
+                        uiState.videoFileName ?: ""
+                    ),
+                    onDismissRequest = {
+                        onUserEvent(ProductDetailViewModel.UserEvent.OnVideoUploadCanceled)
+                    },
+                    confirmButtonText = stringResource(R.string.ok),
+                    onConfirm = {
+                        onUserEvent(ProductDetailViewModel.UserEvent.OnVideoUploadConfirmed)
+                    }
+                )
+            }
+            if (uiState.isUploading) {
+                LoadingAlertDialog()
+            }
+            if (uiState.showError) {
+                AlertDialog(
+                    title = stringResource(R.string.default_error_title),
+                    message = uiState.error ?: stringResource(R.string.default_error_message),
+                    onDismissRequest = {
+                        onUserEvent(ProductDetailViewModel.UserEvent.OnDismissError)
+                    },
+                    confirmButtonText = stringResource(R.string.ok),
+                    onConfirm = { onUserEvent(ProductDetailViewModel.UserEvent.OnDismissError) }
+                )
+            }
             ProductDetailView(
                 modifier = Modifier.padding(paddingValues),
                 uiState = uiState
             )
         },
         bottomBar = {
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.GetContent()
+            ) { uri: Uri? ->
+                if (uri != null) {
+                    onUserEvent(ProductDetailViewModel.UserEvent.OnVideoSelected(uri))
+                }
+            }
             Button(
-                modifier = Modifier.padding(MaterialTheme.spaces.medium).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(MaterialTheme.spaces.medium)
+                    .fillMaxWidth(),
                 onClick = {
-                    onUserEvent(ProductDetailViewModel.UserEvent.OnAddVideoClicked)
+                    launcher.launch("video/*")
                 }
             ) {
                 Text(text = stringResource(R.string.add_video))
@@ -227,9 +294,8 @@ fun ProductDetailView(
             }
         }
 
-        Spacer(modifier = Modifier.height(MaterialTheme.spaces.medium))
+        /*Spacer(modifier = Modifier.height(MaterialTheme.spaces.medium))
 
-        // Recommendation Videos Card
         Card(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -249,8 +315,7 @@ fun ProductDetailView(
                 Spacer(modifier = Modifier.height(8.dp))
                 VideoItem(title = "Limpiar producto")
             }
-        }
-
+        }*/
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
