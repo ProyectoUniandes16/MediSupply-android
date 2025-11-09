@@ -18,7 +18,7 @@ interface ProductService {
     @Multipart
     @POST("/movil-producto/producto/{id}/videos")
     suspend fun uploadVideo(
-        @Path("id") id: String,
+        @Path("id") id: Int,
         @Part video: MultipartBody.Part,
         @Part("descripcion") description: String
     )

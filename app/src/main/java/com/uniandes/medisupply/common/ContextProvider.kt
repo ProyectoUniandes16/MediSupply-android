@@ -7,7 +7,7 @@ interface ContextProvider {
     suspend fun resolveFileFromUri(uri: Uri): Result<Pair<ByteArray, String?>>
 }
 
-class  ContextProviderImpl(
+class ContextProviderImpl(
     private val context: Context
 ) : ContextProvider {
 

@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,8 +52,6 @@ import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailState
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.compose.material3.AlertDialog as M3AlertDialog
-
 
 @Composable
 fun ProductDetailScreen(

@@ -122,13 +122,13 @@ class ProductDetailViewModel(
                 val result = contextProvider.resolveFileFromUri(videoUri)
                 result.onSuccess {
                     val uploadResult = productRepository.uploadProductVideo(
-                        id = product.id.toString(),
+                        id = product.id,
                         fileName = uiState.value.videoFileName ?: "video_file",
                         fileBytes = it.first,
                         mediaType = it.second,
                         description = uiState.value.description ?: "Video upload"
                     )
-                    uploadResult.onSuccess {
+                    if (uploadResult.isSuccess) {
                         _uiState.update {
                             it.copy(
                                 isUploading = false,
@@ -136,18 +136,15 @@ class ProductDetailViewModel(
                                 showSuccessMessage = true
                             )
                         }
-                    }
-                    uploadResult.onFailure {
+                    } else {
                         _uiState.update { state ->
                             state.copy(
                                 isUploading = false,
-                                error = it.message
+                                showError = true,
+                                error = uploadResult.exceptionOrNull()?.message
                             )
                         }
                     }
-                }
-                result.onFailure {
-
                 }
             }
         }

@@ -19,7 +19,9 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.model.PRODUCT_LIST
+import com.uniandes.medisupply.presentation.navigation.ProductDestination
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 
 @ExperimentalCoroutinesApi
 class ProductListViewModelTest {
@@ -51,7 +53,7 @@ class ProductListViewModelTest {
     }
 
     @Test
-    fun `OnLoadProducts SHOULD fetch products from repository successfully`() {
+    fun `OnLoadProducts SHOULD fetch products from repository successfully`() = runTest {
         // given
         val productList = PRODUCT_LIST.map {
             ProductUI.fromDomain(it)
@@ -65,7 +67,7 @@ class ProductListViewModelTest {
     }
 
     @Test
-    fun `OnLoadProducts SHOULD handle error when repository fails`() {
+    fun `OnLoadProducts SHOULD handle error when repository fails`() = runTest {
         // given
         val errorMessage = "Failed to fetch products"
         initViewModel(Result.failure(Exception(errorMessage)))
@@ -79,7 +81,7 @@ class ProductListViewModelTest {
     }
 
     @Test
-    fun `OnFilterQueryChange SHOULD filter products based on query`() {
+    fun `OnFilterQueryChange SHOULD filter products based on query`() = runTest {
         // given
         viewModel.onEvent(ProductListViewModel.UserEvent.OnLoadProducts)
         val query = "Product 1"
@@ -92,7 +94,7 @@ class ProductListViewModelTest {
     }
 
     @Test
-    fun `OnDismissErrorDialog SHOULD hide error state`() {
+    fun `OnDismissErrorDialog SHOULD hide error state`() = runTest {
         // given
         val errorMessage = "Failed to fetch products"
         initViewModel(Result.failure(Exception(errorMessage)))
@@ -106,10 +108,25 @@ class ProductListViewModelTest {
     }
 
     @Test
-    fun `OnBackClicked SHOULD request internal navigator to step back`() {
+    fun `OnBackClicked SHOULD request internal navigator to step back`() = runTest {
         // when
         viewModel.onEvent(ProductListViewModel.UserEvent.OnBackClicked)
         // then
         verify { internalNavigator.stepBack() }
+    }
+
+    @Test
+    fun `OnProductClicked SHOULD navigate to product detail screen`() = runTest {
+        viewModel.onEvent(ProductListViewModel.UserEvent.OnLoadProducts)
+        // when
+        viewModel.onEvent(
+            ProductListViewModel.UserEvent.OnProductClicked(viewModel.uiState.value.displayedProducts.first())
+        )
+        // then
+        verify {
+            internalNavigator.navigateTo(ProductDestination.ProductDetail,
+                mapOf(ProductDestination.ProductDetail.PRODUCT to viewModel.uiState.value.displayedProducts.first())
+            )
+        }
     }
 }

@@ -4,7 +4,6 @@ import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.ProductService
 import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.model.toDomain
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -13,7 +12,7 @@ interface ProductRepository {
     suspend fun getProducts(): Result<List<Product>>
     suspend fun getProductById(id: Int): Result<Product>
     suspend fun uploadProductVideo(
-        id: String,
+        id: Int,
         fileName: String,
         fileBytes: ByteArray,
         mediaType: String?,
@@ -40,7 +39,7 @@ class ProductRepositoryImpl(private val productService: ProductService) : Produc
     }
 
     override suspend fun uploadProductVideo(
-        id: String,
+        id: Int,
         fileName: String,
         fileBytes: ByteArray,
         mediaType: String?,
