@@ -54,7 +54,7 @@ class UserRepositoryTest {
             email,
             password
         )
-        coEvery { loginService.login(bodyRequest) } returns DATA_RESPONSE
+        coEvery { loginService.login(bodyRequest) } returns loginResponse
 
         // When
         val result: Result<Pair<User, String>> = userRepository.login(email, password)

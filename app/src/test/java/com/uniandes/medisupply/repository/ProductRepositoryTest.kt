@@ -20,7 +20,7 @@ class ProductRepositoryTest {
         // GIVEN
         val productList = PRODUCT_LIST
         coEvery { productService.getProducts() } returns DataResponse(
-            PRODUCT_LIST
+            productList
         )
 
         // WHEN
@@ -28,7 +28,7 @@ class ProductRepositoryTest {
 
         // THEN
         assertTrue(result.isSuccess)
-        assertEquals(PRODUCT_LIST.size, result.getOrNull()?.size)
+        assertEquals(productList.size, result.getOrNull()?.size)
     }
 
     @Test

@@ -69,4 +69,12 @@
     <string name="out_stock">Agotado</string>
     <string name="no_products_found">No hay productos</string>
     <string name="default_error_message">Intenta de nuevo</string>
+    <string name="batch">Lote</string>
+    <string name="expiration_date">Fecha de expiración</string>
+    <string name="location">Ubicación</string>
+    <string name="price">Precio</string>
+    <string name="stock">Stock</string>
+    <string name="add_video">Agregar video</string>
+    <string name="upload_video">Subir video</string>
+    <string name="confirm_upload_video">Se va a subir el video \'%s\'</string>
 </resources>
