@@ -9,7 +9,7 @@ data class NewClientRequest(
     val name: String,
     @SerialName("tipo")
     val type: String,
-    @SerialName("pais")
+    @SerialName("zona")
     val country: String,
     @SerialName("direccion")
     val address: String,
@@ -23,5 +23,7 @@ data class NewClientRequest(
     @SerialName("telefono_contacto")
     val contactPhone: String,
     @SerialName("correo_contacto")
-    val contactEmail: String
+    val contactEmail: String,
+    @SerialName("contraseña")
+    val password: String? = null
 )

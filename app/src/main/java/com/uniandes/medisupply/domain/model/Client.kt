@@ -13,12 +13,11 @@ enum class ClientType(val displayName: String) {
     OTHER("Otro")
 }
 
-enum class Country(val displayName: String) {
-    COLOMBIA("Colombia"),
-    MEXICO("Méxcio"),
-    ARGENTINA("Argentina"),
-    PERU("Perú"),
-    ECUADOR("Ecuador"),
+enum class Zone(val displayName: String) {
+    CIUDAD_DE_MEXICO("Ciudad de México"),
+    BOGOTA("Bogotá"),
+    QUITO("Quito"),
+    LIMA("Lima")
 }
 
 @Parcelize

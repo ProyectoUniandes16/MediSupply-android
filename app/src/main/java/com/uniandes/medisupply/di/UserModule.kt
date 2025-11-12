@@ -13,7 +13,7 @@ val userModule = module {
     single<UserRepository> { UserRepositoryImpl(get()) }
     viewModel {
         LoginViewModel(
-            navigationProvider = get(),
+            internalNavigator = get(),
             userRepository = get(),
             userDataProvider = get(),
             resourcesProvider = get()

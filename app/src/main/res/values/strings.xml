@@ -79,4 +79,9 @@
     <string name="confirm_upload_video">You are about to upload \'%s\' video</string>
     <string name="loading">Loading</string>
     <string name="video_upload_success">Video uploaded</string>
+    <string name="not_registered_create_account">Not registered? Create an account</string>
+    <string name="new_user">New User</string>
+    <string name="create_account">Create account</string>
+    <string name="have_account_login">You have an account?</string>
+    <string name="company_name">Company Name</string>
 </resources>

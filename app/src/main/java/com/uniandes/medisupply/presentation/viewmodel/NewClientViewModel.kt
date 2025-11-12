@@ -3,13 +3,18 @@ package com.uniandes.medisupply.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uniandes.medisupply.R
-import com.uniandes.medisupply.common.NavigationProvider
+import com.uniandes.medisupply.common.AppDestination
+import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
+import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.common.isValidEmail
 import com.uniandes.medisupply.common.isValidPhone
 import com.uniandes.medisupply.domain.model.ClientType
-import com.uniandes.medisupply.domain.model.Country
+import com.uniandes.medisupply.domain.model.Zone
+import com.uniandes.medisupply.domain.repository.UserRepository
+import com.uniandes.medisupply.presentation.containers.HomeClientActivity.Companion.USER_KEY
+import com.uniandes.medisupply.presentation.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,15 +45,20 @@ data class NewClientUiState(
     val errorCompanyEmail: String? = null,
     val primaryButtonEnabled: Boolean = false,
     val clientTypes: Map<ClientType, String> = emptyMap(),
-    val countryList: List<String> = Country.entries.toList().map { it.displayName }
+    val countryList: List<String> = Zone.entries.toList().map { it.displayName },
+    val isNewUser: Boolean = false,
+    val showCompanyEmailField: Boolean = true
 )
 
 class NewClientViewModel(
     private val clientRepository: ClientRepository,
-    private val navigationProvider: NavigationProvider,
-    private val resourcesProvider: ResourcesProvider
+    private val internalNavigator: InternalNavigator,
+    private val resourcesProvider: ResourcesProvider,
+    private val userRepository: UserRepository,
+    private val userDataProvider: UserDataProvider
 ) : ViewModel() {
 
+    private val isNewUser: Boolean = internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) as? Boolean ?: false
     private val _uiState = MutableStateFlow(NewClientUiState(
         clientTypes = ClientType.entries.associateWith { type ->
             when (type) {
@@ -60,9 +70,16 @@ class NewClientViewModel(
                 ClientType.HOSPITAL -> resourcesProvider.getString(R.string.hospital)
                 ClientType.LABORATORY -> resourcesProvider.getString(R.string.laboratory)
             }
-        }
+        },
+        isNewUser = isNewUser,
+        companyEmail = if (isNewUser) internalNavigator.getParam(Destination.NewClient.PRE_FILLED_EMAIL) as? String ?: "" else "",
+        showCompanyEmailField = isNewUser.not()
     ))
     val uiState = _uiState.asStateFlow()
+    private val password = internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) as? String ?: "".apply {
+        if (isNewUser)
+        throw IllegalArgumentException("Password must be provided for new user")
+    }
 
     fun onEvent(event: UserEvent) {
         when (event) {
@@ -124,7 +141,12 @@ class NewClientViewModel(
                 checkButtonEnable()
             }
             is UserEvent.OnSaveClientClick -> {
-                onSaveClient()
+                _uiState.update { it.copy(isLoading = true) }
+                if (isNewUser.not()) {
+                    onSaveClient()
+                } else {
+                    signUpClient()
+                }
             }
             is UserEvent.OnNitChange -> {
                 val isValidNit = isValidNit(event.nit)
@@ -155,7 +177,7 @@ class NewClientViewModel(
                 }
             }
             is UserEvent.OnBackClick -> {
-                navigationProvider.finishCurrentDestination()
+                internalNavigator.stepBack()
             }
             else -> {}
         }
@@ -185,7 +207,6 @@ class NewClientViewModel(
 
     private fun onSaveClient() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
             val result = clientRepository.addClient(
                 name = uiState.value.name,
                 type = resolveType(uiState.value.type).displayName,
@@ -201,11 +222,46 @@ class NewClientViewModel(
 
             if (result.isSuccess) {
                 _uiState.update { it.copy(isLoading = false, showError = false) }
-                navigationProvider.finishCurrentDestination(
+                internalNavigator.finishCurrentDestination(
                     success = true
                 )
             } else {
                 _uiState.update { it.copy(isLoading = false, showError = true, error = result.exceptionOrNull()?.message) }
+            }
+        }
+    }
+
+    private fun signUpClient() {
+        viewModelScope.launch {
+            val result = userRepository.signUpClient(
+                name = uiState.value.name,
+                companyEmail = uiState.value.companyEmail,
+                password = password,
+                contactName = uiState.value.contactName,
+                contactEmail = uiState.value.contactEmail,
+                contactPhone = uiState.value.contactPhone,
+                address = uiState.value.address,
+                nit = uiState.value.nit,
+                zone = uiState.value.country,
+                type = resolveType(uiState.value.type).displayName,
+                contactPosition = uiState.value.position
+            ).onSuccess { userWithToken ->
+                userDataProvider.setAccessToken(userWithToken.second)
+                userDataProvider.setUserLoggedIn(true)
+                internalNavigator.requestDestination(
+                    AppDestination.HomeClient(
+                        extraMap = mapOf(USER_KEY to userWithToken.first)
+                    )
+                )
+                _uiState.update { it.copy(isLoading = false, showError = false) }
+            }.onFailure { error ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        showError = true,
+                        error = error.message
+                    )
+                }
             }
         }
     }
