@@ -11,7 +11,6 @@ import com.uniandes.medisupply.domain.repository.UserRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -35,7 +34,6 @@ class UserRepositoryTest {
         const val nit = "nit"
         const val position = "position"
         const val phone = "1234567890"
-
 
         val USER_RESPONSE = UserResponse(
             10,
