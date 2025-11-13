@@ -6,36 +6,31 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
+import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.presentation.navigation.navhost.LobbyNavHost
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), KoinComponent {
+    private val internalNavigator: InternalNavigator by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+            internalNavigator.init(navController, this)
             MediSupplyTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainAppContent(modifier = Modifier.padding(innerPadding))
+                    LobbyNavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MainAppContent(modifier: Modifier = Modifier) {
-    LobbyNavHost(modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MediSupplyTheme {
-        MainAppContent()
     }
 }

@@ -22,6 +22,8 @@ val clientModule = module {
         NewClientViewModel(
             get(),
             get(),
+            get(),
+            get(),
             get()
         )
     }

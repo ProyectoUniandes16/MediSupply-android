@@ -10,7 +10,11 @@ sealed class Destination(val route: String) {
     @Serializable
     data object ClientList : Destination("ClientList")
     @Serializable
-    data object NewClient : Destination("NewClient")
+    data object NewClient : Destination("NewClient") {
+        const val PRE_FILLED_EMAIL = "PRE_FILLED_EMAIL"
+        const val PRE_FILLED_PASSWORD = "PRE_FILLED_PASSWORD"
+        const val IS_NEW_USER = "IS_NEW_USER"
+    }
     @Serializable
     data object ClientListOrder : Destination("ClientListOrder")
     @Serializable

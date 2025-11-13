@@ -122,7 +122,7 @@ internal fun NewClientContent(
                         },
                         isError = uiState.errorName != null,
                         supportingText = uiState.errorName,
-                        label = { Text(stringResource(R.string.name)) }
+                        label = { Text(stringResource(R.string.company_name)) }
                     )
                     SpinnerDropdown(
                         options = uiState.clientTypes.values.toList(),
@@ -159,16 +159,18 @@ internal fun NewClientContent(
                         isError = uiState.errorAddress != null,
                         supportingText = uiState.errorAddress
                     )
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uiState.companyEmail,
-                        onValueChange = {
-                            onUserEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange(it))
-                        },
-                        label = { Text(stringResource(R.string.email_company)) },
-                        isError = uiState.errorCompanyEmail != null,
-                        supportingText = uiState.errorCompanyEmail
-                    )
+                    if (uiState.showCompanyEmailField) {
+                        TextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = uiState.companyEmail,
+                            onValueChange = {
+                                onUserEvent(NewClientViewModel.UserEvent.OnCompanyEmailChange(it))
+                            },
+                            label = { Text(stringResource(R.string.email_company)) },
+                            isError = uiState.errorCompanyEmail != null,
+                            supportingText = uiState.errorCompanyEmail
+                        )
+                    }
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = uiState.contactName,

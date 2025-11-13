@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.component.SecureTextField
 import com.uniandes.medisupply.presentation.component.TextField
-import com.uniandes.medisupply.presentation.model.LoginUiState
 import com.uniandes.medisupply.presentation.ui.theme.MediSupplyTheme
 import com.uniandes.medisupply.presentation.ui.theme.spaces
+import com.uniandes.medisupply.presentation.viewmodel.LoginUiState
 import com.uniandes.medisupply.presentation.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -103,7 +104,7 @@ fun LoginContent(
                 modifier = modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(text = stringResource(R.string.login))
+                Text(text = stringResource(uiState.titleStringId))
                 TextField(
                     value = uiState.email,
                     onValueChange = { onEvent(LoginViewModel.UserEvent.OnEmailChange(it)) },
@@ -130,7 +131,14 @@ fun LoginContent(
                     enabled = uiState.loginButtonEnable,
 
                 ) {
-                    Text(stringResource(R.string.login))
+                    Text(stringResource(uiState.primaryButtonStringId))
+                }
+                Button(
+                    onClick = { onEvent(LoginViewModel.UserEvent.OnSecondaryButtonClick) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.textButtonColors()
+                ) {
+                    Text(stringResource(uiState.secondaryButtonStringId))
                 }
                 Text(
                     modifier = Modifier.clickable {

@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.containers.HomeClientActivity.Companion.USER_KEY
 import com.uniandes.medisupply.common.AppDestination
-import com.uniandes.medisupply.common.NavigationProvider
+import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.repository.UserRepository
-import com.uniandes.medisupply.presentation.model.LoginUiState
 import com.uniandes.medisupply.common.isValidEmail
+import com.uniandes.medisupply.presentation.navigation.Destination
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,9 +18,27 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+data class LoginUiState(
+    val isLoading: Boolean,
+    val email: String,
+    val password: String,
+    val showError: Boolean = false,
+    val error: String? = null,
+    val emailError: String? = null,
+    val passwordError: String? = null,
+    val loginButtonEnable: Boolean = false,
+    val baseUrl: String = "",
+    val showHiddenDialog: Boolean = false,
+    val isLogin: Boolean = true,
+) {
+    val titleStringId = if (isLogin) R.string.login else R.string.new_user
+    val primaryButtonStringId = if (isLogin) R.string.login else R.string.create_account
+    val secondaryButtonStringId = if (isLogin) R.string.not_registered_create_account else R.string.have_account_login
+}
+
 class LoginViewModel(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val navigationProvider: NavigationProvider,
+    private val internalNavigator: InternalNavigator,
     private val userRepository: UserRepository,
     private val userDataProvider: UserDataProvider,
     private val resourcesProvider: ResourcesProvider
@@ -32,17 +50,21 @@ class LoginViewModel(
 
     init {
         if (userDataProvider.isUserLoggedIn()) {
-            navigationProvider.requestDestination(
+            internalNavigator.requestDestination(
                 AppDestination.HomeClient()
             )
-            navigationProvider.finishCurrentDestination()
+            internalNavigator.finishCurrentDestination()
         }
     }
 
     fun onEvent(event: UserEvent) {
         when (event) {
             is UserEvent.OnPrimaryButtonClick -> {
-                login()
+                if (_uiState.value.isLogin) {
+                    login()
+                } else {
+                    createClient()
+                }
             }
             is UserEvent.OnEmailChange -> {
                 onEmailChange(event.email)
@@ -82,8 +104,33 @@ class LoginViewModel(
                 userDataProvider.setBaseUrl(_uiState.value.baseUrl)
             }
 
-            else -> {}
+            is UserEvent.OnSecondaryButtonClick -> {
+               /* internalNavigator.navigateTo(
+                    Destination.NewClient,
+                    mapOf(Destination.NewClient.IS_NEW_USER to true)
+                )*/
+                _uiState.update {
+                    it.copy(
+                        isLogin = !it.isLogin,
+                    )
+                }
+            }
+
+            else -> {
+            }
         }
+    }
+
+    private fun createClient() {
+        val params = mapOf(
+            Destination.NewClient.PRE_FILLED_EMAIL to _uiState.value.email,
+            Destination.NewClient.PRE_FILLED_PASSWORD to _uiState.value.password,
+            Destination.NewClient.IS_NEW_USER to true
+        )
+        internalNavigator.navigateTo(
+            Destination.NewClient,
+            params
+        )
     }
 
     private fun onPasswordChange(password: String) {
@@ -127,7 +174,7 @@ class LoginViewModel(
             result.onSuccess {
                 userDataProvider.setAccessToken(it.second)
                 userDataProvider.setUserLoggedIn(true)
-                navigationProvider.requestDestination(
+                internalNavigator.requestDestination(
                     AppDestination.HomeClient(
                         extraMap = mapOf(USER_KEY to it.first)
                     )
@@ -156,5 +203,6 @@ class LoginViewModel(
         data object OnHiddenAccess : UserEvent()
         data class OnBaseUrlChange(val baseUrl: String) : UserEvent()
         data object OnSaveBaseUrl : UserEvent()
+        data object OnSecondaryButtonClick : UserEvent()
     }
 }
