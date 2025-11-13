@@ -69,7 +69,7 @@ fun ProductListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductListContent(
+private fun ProductListContent(
     modifier: Modifier = Modifier,
     uiState: ProductListUiState,
     onUserEvent: (ProductListViewModel.UserEvent) -> Unit = { }

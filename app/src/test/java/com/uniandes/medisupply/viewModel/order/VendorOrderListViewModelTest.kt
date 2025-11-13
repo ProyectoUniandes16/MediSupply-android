@@ -8,7 +8,7 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class OrderListViewModelTest {
+class VendorOrderListViewModelTest {
     private lateinit var viewModel: OrderListViewModel
     private val navigationProvider: NavigationProvider = mockk(relaxed = true)
 

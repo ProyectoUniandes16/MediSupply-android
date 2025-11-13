@@ -18,11 +18,20 @@ sealed class Destination(val route: String) {
     @Serializable
     data object ClientListOrder : Destination("ClientListOrder")
     @Serializable
-    data object OrderList : Destination("OrderList")
+    data object VendorOrderList : Destination("VendorOrderList")
     @Serializable
     data object CreateOrder : Destination("ClientProductOrder") {
         const val CLIENT = "CLIENT"
     }
+}
+
+@Serializable
+sealed class HomeClientDestination(private val clientRoute: String) : Destination(clientRoute) {
+    @Serializable
+    data object ClientOrderList : HomeClientDestination("ClientOrderList")
+
+    @Serializable
+    data object ProductList : HomeClientDestination("ProductList")
 }
 
 @Serializable
