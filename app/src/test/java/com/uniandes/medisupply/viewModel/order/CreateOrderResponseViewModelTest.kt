@@ -25,7 +25,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CreateOrderViewModelTest {
+class CreateOrderResponseViewModelTest {
     private lateinit var viewModel: CreateOrderViewModel
     private val internalNavigator: InternalNavigator = mockk(relaxed = true)
     private val productRepository: ProductRepository = mockk(relaxed = true)

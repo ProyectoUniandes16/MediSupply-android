@@ -82,12 +82,14 @@ private fun ProductListContent(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.products),
-                navigationIcon = BackNavigation {
-                    onUserEvent(ProductListViewModel.UserEvent.OnBackClicked)
-                }
-            )
+            if (uiState.isStandAlone) {
+                TopAppBar(
+                    title = stringResource(R.string.products),
+                    navigationIcon = BackNavigation {
+                        onUserEvent(ProductListViewModel.UserEvent.OnBackClicked)
+                    }
+                )
+            }
         },
         modifier = modifier
     ) { paddingValues ->

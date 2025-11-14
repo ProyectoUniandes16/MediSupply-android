@@ -37,7 +37,9 @@ sealed class HomeClientDestination(private val clientRoute: String) : Destinatio
 @Serializable
 sealed class ProductDestination(private val productRoute: String) : Destination(productRoute) {
     @Serializable
-    data object ProductList : ProductDestination("ProductList")
+    data object ProductList : ProductDestination("ProductList") {
+        const val IS_STANDALONE = "IS_STANDALONE"
+    }
     @Serializable
     data object ProductDetail : ProductDestination("ProductDetail") {
         const val PRODUCT = "PRODUCT"

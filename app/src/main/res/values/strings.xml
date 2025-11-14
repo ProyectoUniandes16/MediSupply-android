@@ -84,4 +84,13 @@
     <string name="create_account">Create account</string>
     <string name="have_account_login">You have an account?</string>
     <string name="company_name">Company Name</string>
+    <string name="n_products">%s products</string>
+    <string name="date">Date</string>
+    <string name="delivery">Delivery</string>
+    <string name="pending">Pending</string>
+    <string name="in_progress">In progress</string>
+    <string name="canceled">Canceled</string>
+    <string name="delivered">Delivered</string>
+    <string name="in_transit">In transit</string>
+    <string name="no_orders_found">No orders found</string>
 </resources>

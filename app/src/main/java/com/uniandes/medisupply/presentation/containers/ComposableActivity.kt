@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.presentation.navigation.ProductDestination
 import com.uniandes.medisupply.presentation.navigation.navhost.ProductNavHost
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.inject
@@ -29,10 +30,18 @@ class ComposableActivity : BaseActivity(), KoinComponent {
             internalNavigator.init(navController, this)
             when (flow) {
                 is ComposableFlow.ProductFlow -> {
+                    internalNavigator.addParams(mapOf(
+                        ProductDestination.ProductList.IS_STANDALONE to true
+                    ))
                     ProductNavHost(navHostController = navController)
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        internalNavigator.clear()
     }
 
     companion object {

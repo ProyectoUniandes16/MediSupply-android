@@ -30,7 +30,6 @@ class UserDataProviderImpl(
         userPreferences.setRole(user.role.displayName)
     }
 
-
     override fun setBaseUrl(baseUrl: String) {
         userPreferences.setBaseUrl(baseUrl)
     }

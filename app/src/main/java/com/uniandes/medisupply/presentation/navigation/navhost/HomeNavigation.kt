@@ -102,7 +102,7 @@ fun HomeClientNavHost(
             BottomBar(
                 selectedTab = selectedTab.value,
                 items = tabItems,
-                onSelectedItem =  { selectedItem ->
+                onSelectedItem = { selectedItem ->
                     selectedTab.value = selectedItem
                     changeScreen(navController, selectedItem)
                 }

@@ -4,9 +4,11 @@ import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.OrderService
 import com.uniandes.medisupply.domain.model.Order
 import com.uniandes.medisupply.domain.model.toDataModel
+import com.uniandes.medisupply.domain.model.toDomain
 
 interface OrderRepository {
     suspend fun placeOrder(order: Order): Result<Unit>
+    suspend fun getOrders(): Result<List<Order>>
 }
 
 class OrderRepositoryImpl(
@@ -16,6 +18,12 @@ class OrderRepositoryImpl(
     override suspend fun placeOrder(order: Order): Result<Unit> {
         return resultOrError {
             service.placeOrder(order.toDataModel())
+        }
+    }
+
+    override suspend fun getOrders(): Result<List<Order>> {
+        return resultOrError {
+            service.getOrders().data.map { it.toDomain() }
         }
     }
 }
