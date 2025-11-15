@@ -2,6 +2,7 @@ package com.uniandes.medisupply.presentation.ui.feature.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -158,7 +159,12 @@ private fun ClientOrderListContent(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         items(uiState.displayedOrders) {
-                            OrderCard(it)
+                            OrderCard(
+                                it,
+                                onItemClick = {
+                                    onEvent(OrderListViewModel.UserEvent.OnOrderClicked(it))
+                                }
+                            )
                         }
                     }
                 } else {
@@ -181,12 +187,14 @@ private fun ClientOrderListContent(
 
 @Composable
 fun OrderCard(
-    order: OrderUI
+    order: OrderUI,
+    onItemClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onItemClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -201,7 +209,7 @@ fun OrderCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = order.id?.let { "#$it" } ?: "N/A",
+                    text = order.id.let { "#$it" } ?: "N/A",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -261,19 +269,21 @@ fun OrderCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
             ) {
-                OutlinedButton(
-                    onClick = { },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color(0xFF6B5B95)
-                    ),
-                    border = BorderStroke(1.dp, Color(0xFFDDDDDD))
-                ) {
-                    Text(
-                        text = "Editar",
-                        style = MaterialTheme.typography.labelSmall
-                    )
+                if (order.status == OrderStatusUI.PENDING) {
+                    OutlinedButton(
+                        onClick = { },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFF6B5B95)
+                        ),
+                        border = BorderStroke(1.dp, Color(0xFFDDDDDD))
+                    ) {
+                        Text(
+                            text = stringResource(R.string.edit_order),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 }
 
                 Button(
@@ -285,7 +295,7 @@ fun OrderCard(
                     )
                 ) {
                     Text(
-                        text = "Volver a pedir",
+                        text = stringResource(R.string.reorder),
                         style = MaterialTheme.typography.labelSmall
                     )
                 }

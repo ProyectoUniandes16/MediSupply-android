@@ -2,7 +2,10 @@ package com.uniandes.medisupply.presentation.viewmodel.client
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uniandes.medisupply.common.AppDestination
+import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.domain.repository.OrderRepository
+import com.uniandes.medisupply.presentation.containers.ComposableFlow
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
 import com.uniandes.medisupply.presentation.model.OrderUI
 import com.uniandes.medisupply.presentation.model.toUI
@@ -22,7 +25,8 @@ data class OrderListUiState(
 }
 
 class OrderListViewModel(
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val internalNavigator: InternalNavigator
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -41,6 +45,13 @@ class OrderListViewModel(
                 _uiState.update {
                     it.copy(selectedStatus = event.status)
                 }
+            }
+            is UserEvent.OnOrderClicked -> {
+                internalNavigator.requestDestination(
+                    appDestination = AppDestination.ComposableDestination(
+                        flow = ComposableFlow.OrderFlow(event.order)
+                    )
+                )
             }
         }
     }
@@ -70,5 +81,6 @@ class OrderListViewModel(
     sealed class UserEvent {
         data object LoadOrders : UserEvent()
         data class OnFilterChanged(val status: OrderStatusUI) : UserEvent()
+        data class OnOrderClicked(val order: OrderUI) : UserEvent()
     }
 }

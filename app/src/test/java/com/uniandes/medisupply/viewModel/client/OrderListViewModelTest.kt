@@ -1,5 +1,6 @@
 package com.uniandes.medisupply.viewModel.client
 
+import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.domain.model.OrderStatus
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.model.TEST_ORDER
@@ -23,11 +24,12 @@ class OrderListViewModelTest {
     private lateinit var viewModel: OrderListViewModel
     private val orderRepository: OrderRepository = mockk(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val internalNavigator = mockk<InternalNavigator>(relaxed = true)
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = OrderListViewModel(orderRepository)
+        viewModel = OrderListViewModel(orderRepository, internalNavigator)
     }
 
     @Test

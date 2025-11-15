@@ -43,7 +43,7 @@ fun List<Pair<Product, Int>>.toDataModel() = map { (product, quantity) ->
 
 fun OrderResponse.toDomain() = Order(
     clientId = clientId,
-    products = emptyList(),
+    products = products.map { Pair(it.product.toDomain(), it.quantity) },
     total = total,
     status = OrderStatus.fromString(status),
     totalProducts = totalProducts,

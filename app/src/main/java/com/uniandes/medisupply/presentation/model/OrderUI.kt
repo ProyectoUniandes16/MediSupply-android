@@ -1,12 +1,15 @@
 package com.uniandes.medisupply.presentation.model
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.domain.model.Order
 import com.uniandes.medisupply.domain.model.OrderStatus
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@Parcelize
 data class OrderUI(
     val id: Int,
     val clientId: Int,
@@ -16,7 +19,8 @@ data class OrderUI(
     val deliveryDate: String,
     val total: Double,
     val totalProducts: Int,
-)
+    val products: List<Pair<ProductUI, Int>> = emptyList()
+) : Parcelable
 
 fun Order.toUI() = OrderUI(
     id = id ?: 0,
@@ -32,6 +36,7 @@ fun Order.toUI() = OrderUI(
     deliveryDate = orderDate?.substringBefore('T')?.let { addTwoWeeks(it) } ?: "",
     total = total,
     totalProducts = totalProducts,
+    products = products.map { (product, quantity) -> Pair(product.toUi(), quantity) }
 )
 
 enum class OrderStatusUI(val statusResId: Int) {

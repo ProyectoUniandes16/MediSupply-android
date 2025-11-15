@@ -65,14 +65,14 @@ private val VENDOR_BOTTOM_ITEMS = listOf(
 
 private val CLIENT_BOTTOM_ITEMS = listOf(
     BottomTabItem(
-        destination = HomeClientDestination.ProductList,
-        title = R.string.clients,
-        icon = R.drawable.clients
-    ),
-    BottomTabItem(
         destination = HomeClientDestination.ClientOrderList,
         title = R.string.orders,
         icon = R.drawable.orders
+    ),
+    BottomTabItem(
+        destination = HomeClientDestination.ProductList,
+        title = R.string.products,
+        icon = R.drawable.clients
     )
 )
 

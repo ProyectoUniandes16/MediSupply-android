@@ -8,8 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.presentation.model.OrderUI
+import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.navigation.ProductDestination
 import com.uniandes.medisupply.presentation.navigation.navhost.ProductNavHost
+import com.uniandes.medisupply.presentation.ui.feature.order.OrderDetailScreen
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -35,6 +38,14 @@ class ComposableActivity : BaseActivity(), KoinComponent {
                     ))
                     ProductNavHost(navHostController = navController)
                 }
+                is ComposableFlow.OrderFlow -> {
+                    internalNavigator.addParams(
+                        mapOf(
+                            Destination.OrderDetail.ORDER to flow.orderUI
+                        )
+                    )
+                    OrderDetailScreen()
+                }
             }
         }
     }
@@ -57,4 +68,5 @@ class ComposableActivity : BaseActivity(), KoinComponent {
 @Parcelize
 sealed class ComposableFlow : Parcelable {
     data object ProductFlow : ComposableFlow()
+    data class OrderFlow(val orderUI: OrderUI) : ComposableFlow()
 }

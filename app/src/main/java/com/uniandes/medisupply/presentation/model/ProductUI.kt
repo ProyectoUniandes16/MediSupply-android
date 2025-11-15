@@ -1,24 +1,28 @@
 package com.uniandes.medisupply.presentation.model
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.model.StockStatus
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Parcelize
 data class ProductUI(
     val id: Int,
     val name: String,
     val price: Double,
-    val totalStock: Int,
+    val totalStock: Int = 0,
     val category: String,
-    val stockStatus: StockStatusUI,
+    val stockStatus: StockStatusUI = StockStatusUI.OUT_OF_STOCK,
     val sku: String = "",
     val expirationDate: String = "",
     val storageInfo: String = "",
     val batchNumber: String = "",
     val status: String = "",
     val stock: List<StockUi> = emptyList()
-) {
+) : Parcelable {
     companion object {
         fun fromDomain(
             product: Product
@@ -28,10 +32,11 @@ data class ProductUI(
     }
 }
 
+@Parcelize
 data class StockUi(
     val location: String,
     val quantity: Int
-)
+) : Parcelable
 
 enum class StockStatusUI(@StringRes val resId: Int) {
     IN_STOCK(R.string.in_stock),

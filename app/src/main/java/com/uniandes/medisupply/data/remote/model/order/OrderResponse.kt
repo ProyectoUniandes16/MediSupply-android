@@ -1,5 +1,6 @@
 package com.uniandes.medisupply.data.remote.model.order
 
+import com.uniandes.medisupply.data.remote.model.product.ProductResponse
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
@@ -16,7 +17,17 @@ data class OrderResponse(
     @SerialName("total")
     val total: Double,
     @SerialName("total_productos")
-    val totalProducts: Int,
+    val totalProducts: Int = 0,
     @SerialName("vendedor_id")
-    val sellerId: String
+    val sellerId: String,
+    @SerialName("productos")
+    val products: List<ProductOrderResponse> = emptyList()
+)
+
+@Serializable
+data class ProductOrderResponse(
+    @SerialName("cantidad")
+    val quantity: Int,
+    @SerialName("producto")
+    val product: ProductResponse
 )
