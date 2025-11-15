@@ -6,7 +6,6 @@ import com.uniandes.medisupply.R
 import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.model.StockStatus
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Serializable
 
 @Parcelize
 data class ProductUI(

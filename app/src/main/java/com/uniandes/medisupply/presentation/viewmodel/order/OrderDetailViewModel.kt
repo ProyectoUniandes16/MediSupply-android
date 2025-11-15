@@ -18,7 +18,7 @@ data class OrderDetailUiState(
     val order: OrderUI
 )
 
-class OrderDetailViewModel (
+class OrderDetailViewModel(
     private val orderRepository: OrderRepository,
     private val internalNavigator: InternalNavigator
 ) : ViewModel() {
@@ -67,5 +67,4 @@ class OrderDetailViewModel (
     sealed class UserEvent {
        data object OnBackClicked : UserEvent()
     }
-
 }
