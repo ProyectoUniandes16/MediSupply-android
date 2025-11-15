@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,7 +73,7 @@ fun ClientOrderListScreen(
 }
 
 @Composable
-private fun ClientOrderListContent(
+internal fun ClientOrderListContent(
     modifier: Modifier = Modifier,
     uiState: OrderListUiState,
     onEvent: (OrderListViewModel.UserEvent) -> Unit
@@ -102,7 +103,9 @@ private fun ClientOrderListContent(
         contentAlignment = Alignment.Center
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(
+                Modifier.testTag("LOADING")
+            )
         } else {
             var selectedTab by remember { mutableIntStateOf(0) }
             val tabs = listOf(

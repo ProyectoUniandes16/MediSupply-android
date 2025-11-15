@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,12 +38,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.formatCurrency
+import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
 import com.uniandes.medisupply.presentation.model.OrderUI
 import com.uniandes.medisupply.presentation.model.ProductUI
@@ -89,6 +92,22 @@ fun OrderDetailContent(
             )
         }
     ) { paddingValues ->
+
+        if (uiState.showError) {
+            AlertDialog(
+                title = stringResource(R.string.default_error),
+                message = uiState.error ?: stringResource(R.string.default_error_message),
+                confirmButtonText = null,
+                dismissButtonText = stringResource(R.string.ok),
+                onDismissRequest = {
+                    onBackClick()
+                },
+                onConfirm = {
+                    onBackClick()
+                }
+            )
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -178,8 +197,16 @@ fun OrderDetailContent(
                     }
                 }
 
-                items(uiState.order.products) { (product, quantity) ->
-                    ProductItem(product, quantity)
+                if (uiState.isLoading) {
+                    item {
+                        CircularProgressIndicator(
+                            Modifier.testTag("LOADING")
+                        )
+                    }
+                } else {
+                    items(uiState.order.products) { (product, quantity) ->
+                        ProductItem(product, quantity)
+                    }
                 }
             }
         }
