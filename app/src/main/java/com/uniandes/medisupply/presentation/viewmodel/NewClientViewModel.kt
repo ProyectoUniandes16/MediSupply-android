@@ -246,8 +246,7 @@ class NewClientViewModel(
                 type = resolveType(uiState.value.type).displayName,
                 contactPosition = uiState.value.position
             ).onSuccess { userWithToken ->
-                userDataProvider.setAccessToken(userWithToken.second)
-                userDataProvider.setUserLoggedIn(true)
+                userDataProvider.setUserData(userWithToken.second, userWithToken.first)
                 internalNavigator.requestDestination(
                     AppDestination.HomeClient(
                         extraMap = mapOf(USER_KEY to userWithToken.first)

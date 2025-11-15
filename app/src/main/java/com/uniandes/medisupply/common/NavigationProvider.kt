@@ -3,6 +3,7 @@ package com.uniandes.medisupply.common
 import android.app.Activity
 import android.os.Parcelable
 import android.util.Log
+import com.uniandes.medisupply.presentation.containers.ComposableActivity
 import com.uniandes.medisupply.presentation.containers.HomeClientActivity
 import com.uniandes.medisupply.presentation.containers.NewClientActivity
 import com.uniandes.medisupply.presentation.containers.NewOrderActivity
@@ -33,6 +34,12 @@ class NavigationProviderImpl : NavigationProvider {
                }
                is AppDestination.NewOrder -> {
                     NewOrderActivity.createIntent(activity)
+               }
+               is AppDestination.ComposableDestination -> {
+                   ComposableActivity.createIntent(
+                       activity,
+                       appDestination.flow
+                   )
                }
                else -> {
                    Log.w(TAG, "Unknown destination: $appDestination")

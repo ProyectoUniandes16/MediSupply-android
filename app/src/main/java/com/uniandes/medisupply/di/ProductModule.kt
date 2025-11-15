@@ -14,6 +14,6 @@ val productModule = module {
         createAuthService(ProductService::class.java)
     }
     single<ProductRepository> { ProductRepositoryImpl(get()) }
-    viewModel { ProductListViewModel(get(), get(), get()) }
+    viewModel { ProductListViewModel(get(), get()) }
     viewModel { ProductDetailViewModel(get(), get(), get()) }
 }

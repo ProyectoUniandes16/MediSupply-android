@@ -20,7 +20,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ClientListOrderViewModelTest {
+class ClientListOrderResponseViewModelTest {
 
     private lateinit var viewModel: ClientListOrderViewModel
     private val clientRepository: ClientRepository = mockk(relaxed = true)

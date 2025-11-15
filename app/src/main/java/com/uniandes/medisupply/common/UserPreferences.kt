@@ -10,6 +10,7 @@ class UserPreferences private constructor(private val prefs: SharedPreferences) 
         private const val KEY_ACCESS_TOKEN = "access_token"
         private const val IS_LOGGED_IN = "is_logged_in"
         private const val BASE_URL = "base_url"
+        private const val ROLE = "role"
 
         @Volatile
         private var INSTANCE: UserPreferences? = null
@@ -51,6 +52,10 @@ class UserPreferences private constructor(private val prefs: SharedPreferences) 
     fun setBaseUrl(baseUrl: String) {
         prefs.edit().putString(BASE_URL, baseUrl).apply()
     }
+    fun setRole(role: String) {
+        prefs.edit().putString(ROLE, role).apply()
+    }
+    fun getRole(): String? = prefs.getString(ROLE, null)
 }
 
 fun Context.userPreferences(): UserPreferences = UserPreferences.getInstance(this)

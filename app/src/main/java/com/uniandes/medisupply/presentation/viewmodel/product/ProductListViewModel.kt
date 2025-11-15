@@ -3,7 +3,6 @@ package com.uniandes.medisupply.presentation.viewmodel.product
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uniandes.medisupply.common.InternalNavigator
-import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.navigation.ProductDestination
@@ -18,6 +17,7 @@ data class ProductListUiState(
     val error: String? = null,
     private val products: List<ProductUI> = emptyList(),
     val filterQuery: String = "",
+    val isStandAlone: Boolean = true
 ) {
     val displayedProducts: List<ProductUI> = if (filterQuery.isEmpty()) products else products.filter {
         it.name.contains(filterQuery, ignoreCase = true)
@@ -25,12 +25,13 @@ data class ProductListUiState(
 }
 class ProductListViewModel(
     private val productRepository: ProductRepository,
-    resourcesProvider: ResourcesProvider,
     private val internalNavigator: InternalNavigator
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<ProductListUiState> =
-        MutableStateFlow(ProductListUiState())
+        MutableStateFlow(ProductListUiState(
+            isStandAlone = internalNavigator.getParam(ProductDestination.ProductList.IS_STANDALONE) as Boolean? ?: false
+        ))
     val uiState = _uiState.asStateFlow()
 
     fun onEvent(event: UserEvent) {

@@ -24,7 +24,7 @@ data class ProductResponse(
     @SerialName("precio_unitario")
     val unitPrice: Double,
     @SerialName("inventarios")
-    val stockDetails: List<StockResponse> = emptyList(),
+    val stockDetails: List<StockResponse> = emptyList()
 )
 
 @Serializable

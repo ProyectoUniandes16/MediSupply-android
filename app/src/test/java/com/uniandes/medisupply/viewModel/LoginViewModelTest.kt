@@ -5,6 +5,7 @@ import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.model.User
+import com.uniandes.medisupply.domain.model.UserRole
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.viewmodel.LoginViewModel
@@ -61,7 +62,7 @@ class LoginViewModelTest {
         val email = "john.archibald.campbell@example-pet-store.com"
         val password = "password"
         val token = "token_123"
-        val result = Result.success(Pair(User(1, "John", email), token))
+        val result = Result.success(Pair(User(1, "John", email, UserRole.VENDOR), token))
         coEvery { userRepository.login(email, password) } returns result
 
         // When
@@ -73,8 +74,7 @@ class LoginViewModelTest {
         assertEquals(email, loginViewModel.uiState.value.email)
         assertEquals(password, loginViewModel.uiState.value.password)
 
-        coVerify { userDataProvider.setAccessToken(token) }
-        coVerify { userDataProvider.setUserLoggedIn(true) }
+        coVerify { userDataProvider.setUserData(token, result.getOrNull()!!.first) }
 
         val slot = slot<AppDestination>()
         coVerify { internalNavigator.requestDestination(capture(slot)) }
@@ -101,8 +101,7 @@ class LoginViewModelTest {
         assertEquals(email, loginViewModel.uiState.value.email)
         assertEquals(password, loginViewModel.uiState.value.password)
 
-        coVerify(atLeast = 0) { userDataProvider.setAccessToken(token) }
-        coVerify(atLeast = 0) { userDataProvider.setUserLoggedIn(true) }
+        coVerify(atLeast = 0) { userDataProvider.setUserData(any(), any()) }
         assertTrue(loginViewModel.uiState.value.showError)
         assertEquals("Invalid credentials", loginViewModel.uiState.value.error)
     }

@@ -5,6 +5,7 @@ import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.model.User
+import com.uniandes.medisupply.domain.model.UserRole
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.navigation.Destination
@@ -372,7 +373,7 @@ class NewClientViewModelTest {
         every { internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) } returns true
         every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_EMAIL) } returns companyEmail
         every { internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) } returns password
-        val user = User(1, name, companyEmail)
+        val user = User(1, name, companyEmail, UserRole.VENDOR)
         val token = "token_123"
         val result = Result.success(Pair(user, token))
         coEvery {
