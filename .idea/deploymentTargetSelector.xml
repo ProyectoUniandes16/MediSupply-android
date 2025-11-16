@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="orderDetailScreen_displaysError()">
+      <SelectionState runConfigName="newClientScreen_displayed_data_filled_correctly()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="orderDetailScreen_displayLoading()">
+      <SelectionState runConfigName="newClientScreen_button_not_enabled_on_valid_form()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OrderListScreenTest">
+      <SelectionState runConfigName="NewClientScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="orderDetailScreen_onBackClick_invoked()">
+      <SelectionState runConfigName="newClientScreen_show_error_and_dismiss()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="orderDetailScreen_displaysError_and_Dismiss()">
+      <SelectionState runConfigName="newClientScreen_show_loading_indicator()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
