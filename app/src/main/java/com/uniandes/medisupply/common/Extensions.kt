@@ -52,3 +52,7 @@ fun Double.formatCurrency(currencyCode: String? = "USD"): String {
     }
     return nf.format(this)
 }
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FUNCTION)
+annotation class ExcludeFromJacocoGeneratedReport

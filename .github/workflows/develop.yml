@@ -63,7 +63,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
             api-level: 29
-            script: ./gradlew connectedCheck
+            script: ./gradlew jacocoTestReport verifyJacocoCoverage
 
   kover-test:
     needs: checkout-and-merge

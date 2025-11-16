@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.3"
     alias(libs.plugins.ktlint)
+    id("jacoco")
 }
 
 android {
@@ -28,6 +29,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            enableAndroidTestCoverage = true
         }
     }
     compileOptions {
@@ -85,6 +89,74 @@ kover {
                     minValue = 80
                 }
             }
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("connectedDebugAndroidTest")
+
+    val coverageFile = fileTree("$buildDir/outputs/code_coverage/debugAndroidTest/connected") {
+        include("**/*.ec")
+    }
+    executionData.setFrom(coverageFile)
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+
+    classDirectories.setFrom(
+        files(
+            fileTree("$buildDir/intermediates/javac/debug") {
+                include("com/uniandes/medisupply/presentation/ui/feature/**/*.class")
+                exclude("**/*Preview*.class")
+            },
+            fileTree("$buildDir/tmp/kotlin-classes/debug") {
+                include("com/uniandes/medisupply/presentation/ui/feature/**/*.class")
+                exclude("**/*Preview*.class")
+            }
+
+        )
+    )
+
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+}
+tasks.register("verifyJacocoCoverage") {
+    mustRunAfter("jacocoTestReport")
+    doLast {
+        println("== Running verifyJacocoCoverage ==")
+        val reportFile = file("$buildDir/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+        println("XML report exists: ${reportFile.exists()}")
+        if (!reportFile.exists()) {
+            throw GradleException("Coverage XML report not found at ${reportFile.absolutePath}")
+        }
+
+        val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance()
+        factory.isValidating = false
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        val parser = factory.newDocumentBuilder()
+        val doc = parser.parse(reportFile)
+        val counters = doc.getElementsByTagName("counter")
+        var missed = 0
+        var covered = 0
+        for (i in 0 until counters.length) {
+            val c = counters.item(i)
+            if (c.attributes.getNamedItem("type").nodeValue == "INSTRUCTION") {
+                missed = c.attributes.getNamedItem("missed").nodeValue.toInt()
+                covered = c.attributes.getNamedItem("covered").nodeValue.toInt()
+            }
+        }
+        val percent = if (missed + covered == 0) 100.0 else covered.toDouble() / (missed + covered) * 100.0
+        val minCoverage = 10.0
+        println("Jacoco Instruction coverage: $percent% (min required: $minCoverage%)")
+
+        if (percent < minCoverage) {
+            throw GradleException("Coverage ($percent%) is below threshold ($minCoverage%)!")
         }
     }
 }

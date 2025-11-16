@@ -49,6 +49,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.common.ExcludeFromJacocoGeneratedReport
 import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
@@ -57,6 +58,7 @@ import com.uniandes.medisupply.presentation.viewmodel.client.OrderListUiState
 import com.uniandes.medisupply.presentation.viewmodel.client.OrderListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun ClientOrderListScreen(
     modifier: Modifier = Modifier,
@@ -322,6 +324,7 @@ fun OrdersScreenPreview() {
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun OrdersScreenErrorPreview() {

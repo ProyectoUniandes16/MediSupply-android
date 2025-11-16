@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.common.ExcludeFromJacocoGeneratedReport
 import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
@@ -53,6 +53,7 @@ import com.uniandes.medisupply.presentation.viewmodel.order.OrderDetailUiState
 import com.uniandes.medisupply.presentation.viewmodel.order.OrderDetailViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel = koinViewModel()
@@ -78,12 +79,7 @@ fun OrderDetailContent(
                 title = { },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.Share, "Share")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, stringResource(R.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -100,9 +96,6 @@ fun OrderDetailContent(
                 confirmButtonText = null,
                 dismissButtonText = stringResource(R.string.ok),
                 onDismissRequest = {
-                    onBackClick()
-                },
-                onConfirm = {
                     onBackClick()
                 }
             )
@@ -275,6 +268,7 @@ private fun ProductItem(product: ProductUI, quantity: Int) {
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview
 @Composable
 fun OrderDetailScreenPreview() {
