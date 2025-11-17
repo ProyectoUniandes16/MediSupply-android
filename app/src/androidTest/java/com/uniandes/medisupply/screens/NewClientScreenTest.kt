@@ -46,6 +46,9 @@ class NewClientScreenTest {
             )
         }
         composeTestRule.waitForIdle()
+        composeTestRule.waitUntil(timeoutMillis = 10_000L) {
+            true
+        }
     }
 
     @Test
