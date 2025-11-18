@@ -25,9 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.common.ExcludeFromJacocoGeneratedReport
 import com.uniandes.medisupply.presentation.component.SpinnerDropdown
 import com.uniandes.medisupply.presentation.component.TextField
 import com.uniandes.medisupply.presentation.component.TopAppBar
@@ -37,6 +39,7 @@ import com.uniandes.medisupply.presentation.viewmodel.NewClientUiState
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun NewClientScreen(
     modifier: Modifier = Modifier,
@@ -102,6 +105,7 @@ internal fun NewClientContent(
             if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier
+                        .testTag("LOADING")
                         .align(Alignment.Center)
                 )
             } else {
@@ -228,6 +232,7 @@ internal fun NewClientContent(
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun NewClientScreenPreview() {

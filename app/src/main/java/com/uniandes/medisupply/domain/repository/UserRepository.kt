@@ -5,6 +5,7 @@ import com.uniandes.medisupply.data.remote.service.LoginService
 import com.uniandes.medisupply.data.remote.model.LoginRequest
 import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.domain.model.User
+import com.uniandes.medisupply.domain.model.UserRole
 
 interface UserRepository {
     suspend fun login(email: String, password: String): Result<Pair<User, String>>
@@ -37,7 +38,8 @@ class UserRepositoryImpl(
                 User(
                     id = user.id,
                     name = user.name + " " + user.lastName,
-                    email = user.email
+                    email = user.email,
+                    role = UserRole.fromDisplayName(user.role) ?: throw Exception("Invalid role")
                 ),
                 token
             )
@@ -79,7 +81,8 @@ class UserRepositoryImpl(
                 User(
                     id = user.id,
                     name = user.name + " " + user.lastName,
-                    email = user.email
+                    email = user.email,
+                    role = UserRole.fromDisplayName(user.role) ?: throw Exception("Invalid role")
                 ),
                 token
             )

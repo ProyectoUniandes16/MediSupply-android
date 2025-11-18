@@ -1,7 +1,6 @@
 package com.uniandes.medisupply.viewModel.product
 
 import com.uniandes.medisupply.common.InternalNavigator
-import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.repository.ProductRepository
 import com.uniandes.medisupply.presentation.model.ProductUI
@@ -17,7 +16,6 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import com.uniandes.medisupply.R
 import com.uniandes.medisupply.model.PRODUCT_LIST
 import com.uniandes.medisupply.presentation.navigation.ProductDestination
 import io.mockk.verify
@@ -29,7 +27,6 @@ class ProductListViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var viewModel: ProductListViewModel
     private val productRepository: ProductRepository = mockk(relaxed = true)
-    private val resourcesProvider: ResourcesProvider = mockk(relaxed = true)
     private val internalNavigator: InternalNavigator = mockk(relaxed = true)
 
     @Before
@@ -42,12 +39,9 @@ class ProductListViewModelTest {
         result: Result<List<Product>> = Result.success(PRODUCT_LIST)
     ) {
         coEvery { productRepository.getProducts() } returns result
-        coEvery { resourcesProvider.getString(R.string.low_stock) } returns "Low Stock"
-        coEvery { resourcesProvider.getString(R.string.in_stock) } returns "In Stock"
-        coEvery { resourcesProvider.getString(R.string.out_stock) } returns "Out Stock"
+        coEvery { internalNavigator.getParam(ProductDestination.ProductList.IS_STANDALONE) } returns false
         viewModel = ProductListViewModel(
             productRepository,
-            resourcesProvider,
             internalNavigator
         )
     }

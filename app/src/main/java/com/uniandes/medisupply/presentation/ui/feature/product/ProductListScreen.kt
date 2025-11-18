@@ -69,7 +69,7 @@ fun ProductListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductListContent(
+private fun ProductListContent(
     modifier: Modifier = Modifier,
     uiState: ProductListUiState,
     onUserEvent: (ProductListViewModel.UserEvent) -> Unit = { }
@@ -82,12 +82,14 @@ fun ProductListContent(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.products),
-                navigationIcon = BackNavigation {
-                    onUserEvent(ProductListViewModel.UserEvent.OnBackClicked)
-                }
-            )
+            if (uiState.isStandAlone) {
+                TopAppBar(
+                    title = stringResource(R.string.products),
+                    navigationIcon = BackNavigation {
+                        onUserEvent(ProductListViewModel.UserEvent.OnBackClicked)
+                    }
+                )
+            }
         },
         modifier = modifier
     ) { paddingValues ->

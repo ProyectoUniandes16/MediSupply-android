@@ -21,8 +21,8 @@ import com.uniandes.medisupply.presentation.ui.theme.spaces
 fun AlertDialog(
     title: String = stringResource(R.string.default_error_title),
     message: String,
-    onDismissRequest: () -> Unit,
-    onConfirm: () -> Unit,
+    onDismissRequest: () -> Unit = {},
+    onConfirm: () -> Unit = {},
     confirmButtonText: String? = stringResource(R.string.retry),
     dismissButtonText: String = stringResource(R.string.cancel)
 ) {

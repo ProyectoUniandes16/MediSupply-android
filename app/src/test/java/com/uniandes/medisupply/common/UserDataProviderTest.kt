@@ -1,5 +1,7 @@
 package com.uniandes.medisupply.common
 
+import com.uniandes.medisupply.domain.model.User
+import com.uniandes.medisupply.domain.model.UserRole
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -19,6 +21,28 @@ class UserDataProviderTest {
     }
 
     @Test
+    fun `setUserData SHOULD save  user preferences`() {
+        // Given
+        val user = User(
+            id = 1,
+            name = "John Doe",
+            email = "email@email.com",
+            role = UserRole.VENDOR
+        )
+        val token = "mocked_access_token"
+
+        // When
+        userDataProvider.setUserData(token, user)
+
+        // Then
+        verify {
+            userPreferences.setAccessToken(token)
+            userPreferences.setRole(user.role.displayName)
+            userPreferences.setLoggedIn(true)
+        }
+    }
+
+    @Test
     fun `getAccessToken SHOULD return access token from user preferences`() {
         // Given
         val expectedToken = "mocked_access_token"
@@ -31,17 +55,6 @@ class UserDataProviderTest {
     }
 
     @Test
-    fun `setAccessToken SHOULD call setAccessToken on user preferences`() {
-        // Given
-        val expectedToken = "mocked_access_token"
-        // When
-        val token = userDataProvider.setAccessToken(expectedToken)
-
-        // Then
-        verify { userPreferences.setAccessToken(expectedToken) }
-    }
-
-    @Test
     fun `isLoggedIn SHOULD return value from user preferences`() {
         // Given
         every { userPreferences.isLoggedIn() } returns false
@@ -50,16 +63,5 @@ class UserDataProviderTest {
 
         // Then
         assertFalse(isLoggedIn)
-    }
-
-    @Test
-    fun `setUserLoggedIn SHOULD call setAccessToken on user preferences`() {
-        // Given
-        val expectedValue = true
-        // When
-        val token = userDataProvider.setUserLoggedIn(expectedValue)
-
-        // Then
-        verify { userPreferences.setLoggedIn(expectedValue) }
     }
 }

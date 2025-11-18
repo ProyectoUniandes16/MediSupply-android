@@ -26,7 +26,7 @@ class UserRepositoryTest {
         const val password = "password"
         const val name = "name"
         const val lastName = "lastName"
-        const val rol = "vendor"
+        const val role = "vendedor"
         const val token = "token"
         const val type = "type"
         const val country = "country"
@@ -37,15 +37,15 @@ class UserRepositoryTest {
 
         val USER_RESPONSE = UserResponse(
             10,
-            name,
-            lastName,
-            email,
-            rol,
+            name = name,
+            lastName = lastName,
+            email = email,
+            role = role,
         )
 
         val USER_WRAPPER_RESPONSE = UserWrapperResponse(
             USER_RESPONSE,
-            token
+            token,
         )
         val DATA_RESPONSE = DataResponse<UserWrapperResponse>(
             USER_WRAPPER_RESPONSE

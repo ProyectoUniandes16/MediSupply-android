@@ -12,6 +12,7 @@ interface InternalNavigator {
     fun getParam(key: String): Any?
     fun requestDestination(appDestination: AppDestination, requestResultCode: Int? = null)
     fun finishCurrentDestination(extras: Map<String, Any> = emptyMap(), success: Boolean = false)
+    fun getActivity(): Activity?
 }
 
 class InternalNavigatorImpl(
@@ -48,6 +49,10 @@ class InternalNavigatorImpl(
 
     override fun finishCurrentDestination(extras: Map<String, Any>, success: Boolean) {
         navigationProvider.finishCurrentDestination(extras, success)
+    }
+
+    override fun getActivity(): Activity? {
+        return activity
     }
 
     override fun stepBack() {

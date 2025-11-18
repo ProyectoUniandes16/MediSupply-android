@@ -77,4 +77,20 @@
     <string name="add_video">Agregar video</string>
     <string name="upload_video">Subir video</string>
     <string name="confirm_upload_video">Se va a subir el video \'%s\'</string>
+    <string name="loading">Cargando</string>
+    <string name="video_upload_success">Video cargado</string>
+    <string name="not_registered_create_account">¿No tienes cuenta? Crea una</string>
+    <string name="new_user">Nuevo usuario</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="have_account_login">¿Ya tienes cuenta?</string>
+    <string name="company_name">Nombre de empresa</string>
+    <string name="n_products">%s productos</string>
+    <string name="date">Fecha</string>
+    <string name="delivery">Entrega</string>
+    <string name="pending">Pendiente</string>
+    <string name="in_progress">En progreso</string>
+    <string name="canceled">Cancelado</string>
+    <string name="delivered">Entregado</string>
+    <string name="in_transit">En tránsito</string>
+    <string name="no_orders_found">No hay pedidos</string>
 </resources>

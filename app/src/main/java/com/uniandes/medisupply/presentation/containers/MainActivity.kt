@@ -33,4 +33,9 @@ class MainActivity : BaseActivity(), KoinComponent {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        internalNavigator.clear()
+    }
 }

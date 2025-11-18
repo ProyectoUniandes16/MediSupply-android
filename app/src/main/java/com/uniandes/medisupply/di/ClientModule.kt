@@ -6,6 +6,8 @@ import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.domain.repository.ClientRepositoryImpl
 import com.uniandes.medisupply.presentation.viewmodel.ClientListViewModel
 import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
+import com.uniandes.medisupply.presentation.viewmodel.client.OrderListViewModel
+import com.uniandes.medisupply.presentation.viewmodel.order.OrderDetailViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,6 +25,18 @@ val clientModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get()
+        )
+    }
+    viewModel {
+        OrderListViewModel(
+            get(),
+            get()
+        )
+    }
+    viewModel {
+        OrderDetailViewModel(
             get(),
             get()
         )

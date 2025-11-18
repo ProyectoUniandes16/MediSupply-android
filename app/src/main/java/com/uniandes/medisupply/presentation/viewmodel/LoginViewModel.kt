@@ -172,8 +172,7 @@ class LoginViewModel(
                 _uiState.value.password
             )
             result.onSuccess {
-                userDataProvider.setAccessToken(it.second)
-                userDataProvider.setUserLoggedIn(true)
+                userDataProvider.setUserData(it.second, it.first)
                 internalNavigator.requestDestination(
                     AppDestination.HomeClient(
                         extraMap = mapOf(USER_KEY to it.first)
