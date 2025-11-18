@@ -46,12 +46,8 @@ class NewClientScreenTest {
             )
         }
         composeTestRule.waitForIdle()
-        composeTestRule.waitUntil(timeoutMillis = 10_000L) {
-            true
-        }
     }
 
-    @Test
     fun newClientScreen_displayedCorrectly() {
         // then
         val activity = composeTestRule.activity
