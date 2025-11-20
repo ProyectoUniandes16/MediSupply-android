@@ -84,6 +84,7 @@ internal fun VisitVendorContent(
                 onEvent(VisitListViewmodel.UserEvent.OnErrorDialogDismissed)
             },
             dismissButtonText = stringResource(R.string.retry),
+            confirmButtonText = null,
             onConfirm = {}
         )
     }

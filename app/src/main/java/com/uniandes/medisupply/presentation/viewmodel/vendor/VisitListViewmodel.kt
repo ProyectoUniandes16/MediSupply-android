@@ -45,7 +45,7 @@ class VisitListViewmodel(
         _uiState.update { it.copy(isLoading = true, showError = false, errorMessage = null) }
         viewModelScope.launch {
             vendorRepository.getVisits(
-                "2025-11-20", "2025-11-30"
+                dateRange.first(), dateRange.last()
             ).onSuccess {
                 visitList = it.map { v-> v.toUi() }
                 _uiState.update { state ->
