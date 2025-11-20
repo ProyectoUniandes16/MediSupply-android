@@ -8,6 +8,7 @@ import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.model.StockStatus
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.domain.repository.ProductRepository
+import com.uniandes.medisupply.presentation.model.toUi
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.viewmodel.order.CreateOrderViewModel
 import io.mockk.coEvery
@@ -53,7 +54,7 @@ class CreateOrderResponseViewModelTest {
 
         // THEN
         assertEquals(true, viewModel.uiState.value.showProductBottomSheet)
-        assertEquals(PRODUCT_LIST.sortedBy { p -> p.name }, viewModel.uiState.value.productList)
+        assertEquals(PRODUCT_UI_LIST.sortedBy { p -> p.name }, viewModel.uiState.value.productList)
     }
 
     @Test
@@ -113,49 +114,49 @@ class CreateOrderResponseViewModelTest {
     @Test
     fun `OnProductSelected SHOULD add product to order`() = runTest {
         // WHEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT_UI))
 
         // THEN
-        assertTrue(viewModel.uiState.value.productOrder.contains(Pair(PRODUCT, 1)))
+        assertTrue(viewModel.uiState.value.productOrder.contains(Pair(PRODUCT_UI, 1)))
     }
 
     @Test
     fun `OnIncreaseQuantityClicked SHOULD sum 1 to product quantity in order`() = runTest {
         // GIVEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT_UI))
 
         // WHEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnIncreaseQuantityClicked(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnIncreaseQuantityClicked(PRODUCT_UI))
 
         // THEN
-        val quantity = viewModel.uiState.value.productOrder.first { it.first.id == PRODUCT.id }.second
+        val quantity = viewModel.uiState.value.productOrder.first { it.first.id == PRODUCT_UI.id }.second
         assertEquals(2, quantity)
     }
 
     @Test
     fun `OnDecreaseQuantityClicked SHOULD substract 1 to product quantity in order`() = runTest {
         // GIVEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT))
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnIncreaseQuantityClicked(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT_UI))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnIncreaseQuantityClicked(PRODUCT_UI))
 
         // WHEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnDecreaseQuantityClicked(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnDecreaseQuantityClicked(PRODUCT_UI))
 
         // THEN
-        val quantity = viewModel.uiState.value.productOrder.first { it.first.id == PRODUCT.id }.second
+        val quantity = viewModel.uiState.value.productOrder.first { it.first.id == PRODUCT_UI.id }.second
         assertEquals(1, quantity)
     }
 
     @Test
     fun `OnDecreaseQuantityClicked SHOULD remove product from order if quantity is 1`() = runTest {
         // GIVEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(PRODUCT_UI))
 
         // WHEN
-        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnDecreaseQuantityClicked(PRODUCT))
+        viewModel.onEvent(CreateOrderViewModel.UserEvent.OnDecreaseQuantityClicked(PRODUCT_UI))
 
         // THEN
-        val containsProduct = viewModel.uiState.value.productOrder.any { it.first.id == PRODUCT.id }
+        val containsProduct = viewModel.uiState.value.productOrder.any { it.first.id == PRODUCT_UI.id }
         assertEquals(false, containsProduct)
     }
 
@@ -185,8 +186,12 @@ class CreateOrderResponseViewModelTest {
             stockStatus = StockStatus.IN_STOCK
         )
 
+        private val PRODUCT_UI = PRODUCT.toUi()
+
         private val PRODUCT_LIST = List(10) {
             PRODUCT.copy(id = it + 1, name = "Product ${it + 1}")
         }
+
+        private val PRODUCT_UI_LIST = PRODUCT_LIST.map { it.toUi() }
     }
 }

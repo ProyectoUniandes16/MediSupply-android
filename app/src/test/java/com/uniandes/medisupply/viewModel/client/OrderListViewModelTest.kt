@@ -1,9 +1,13 @@
 package com.uniandes.medisupply.viewModel.client
 
+import com.uniandes.medisupply.common.AppDestination
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.common.UserDataProvider
+import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.OrderStatus
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.model.TEST_ORDER
+import com.uniandes.medisupply.presentation.containers.ComposableFlow
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
 import com.uniandes.medisupply.presentation.viewmodel.client.OrderListViewModel
 import io.mockk.coEvery
@@ -25,11 +29,16 @@ class OrderListViewModelTest {
     private val orderRepository: OrderRepository = mockk(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
     private val internalNavigator = mockk<InternalNavigator>(relaxed = true)
+    private val userDataProvider: UserDataProvider = mockk(relaxed = true)
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = OrderListViewModel(orderRepository, internalNavigator)
+        viewModel = OrderListViewModel(
+            orderRepository,
+            internalNavigator,
+            userDataProvider
+        )
     }
 
     @Test
@@ -63,7 +72,6 @@ class OrderListViewModelTest {
     @Test
     fun `on event OnFilterChanged, should update selected status in ui state`() = runTest {
         // Given
-        val newStatus = OrderStatusUI.DELIVERED
         val orderList = ORDER_LIST
         coEvery { orderRepository.getOrders() } returns Result.success(orderList)
         // When
@@ -79,6 +87,59 @@ class OrderListViewModelTest {
             viewModel.onEvent(OrderListViewModel.UserEvent.OnFilterChanged(status))
             assertEquals(status, viewModel.uiState.value.selectedStatus)
             assertEquals(expectedCount, viewModel.uiState.value.displayedOrders.size)
+        }
+    }
+
+    @Test
+    fun `on event OnNewOrderClicked, should request navigation to NewOrder destination`() = runTest {
+        // given
+        coEvery { userDataProvider.getName() } returns "John Doe"
+        coEvery { userDataProvider.getEmail() } returns "email@mail.com"
+        coEvery { userDataProvider.getPhone() } returns "1234567890"
+        val client = Client(
+            id = -1,
+            name = userDataProvider.getName(),
+            contactInfo = com.uniandes.medisupply.domain.model.ClientContactInfo(
+                name = userDataProvider.getName(),
+                email = userDataProvider.getEmail(),
+                phone = userDataProvider.getPhone(),
+                position = "",
+            ),
+            address = "",
+            email = userDataProvider.getEmail()
+        )
+        // When
+        viewModel.onEvent(OrderListViewModel.UserEvent.OnNewOrderClicked)
+
+        // Then
+        coEvery {
+            internalNavigator.requestDestination(
+                appDestination = AppDestination.NewOrder(
+                    client
+                ),
+                AppDestination.NewOrder.REQUEST_CODE
+            )
+        }
+    }
+
+    @Test
+    fun `on event OnOrderClicked, should request navigation to OrderFlow destination`() = runTest {
+        // Given
+        val orderList = ORDER_LIST
+        coEvery { orderRepository.getOrders() } returns Result.success(orderList)
+        viewModel.onEvent(OrderListViewModel.UserEvent.LoadOrders)
+        val orderToClick = viewModel.uiState.value.displayedOrders.first()
+
+        // When
+        viewModel.onEvent(OrderListViewModel.UserEvent.OnOrderClicked(orderToClick))
+
+        // Then
+        coEvery {
+            internalNavigator.requestDestination(
+                appDestination = AppDestination.ComposableDestination(
+                    flow = ComposableFlow.OrderFlow(orderToClick)
+                )
+            )
         }
     }
 

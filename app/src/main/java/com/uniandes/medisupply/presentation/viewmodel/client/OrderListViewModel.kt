@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uniandes.medisupply.common.AppDestination
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.common.UserDataProvider
+import com.uniandes.medisupply.domain.model.Client
+import com.uniandes.medisupply.domain.model.ClientContactInfo
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.presentation.containers.ComposableFlow
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
@@ -19,14 +22,15 @@ data class OrderListUiState(
     private val orders: List<OrderUI> = emptyList(),
     val error: String? = null,
     val hasError: Boolean = false,
-    val selectedStatus: OrderStatusUI = OrderStatusUI.PENDING
+    val selectedStatus: OrderStatusUI = OrderStatusUI.PENDING,
 ) {
     val displayedOrders: List<OrderUI> = orders.filter { it.status == selectedStatus }
 }
 
 class OrderListViewModel(
     private val orderRepository: OrderRepository,
-    private val internalNavigator: InternalNavigator
+    private val internalNavigator: InternalNavigator,
+    private val userDataProvider: UserDataProvider
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -51,6 +55,25 @@ class OrderListViewModel(
                     appDestination = AppDestination.ComposableDestination(
                         flow = ComposableFlow.OrderFlow(event.order)
                     )
+                )
+            }
+            is UserEvent.OnNewOrderClicked -> {
+                internalNavigator.requestDestination(
+                    appDestination = AppDestination.NewOrder(
+                        client = Client(
+                            id = -1,
+                            name = userDataProvider.getName(),
+                            contactInfo = ClientContactInfo(
+                                name = userDataProvider.getName(),
+                                email = userDataProvider.getEmail(),
+                                phone = userDataProvider.getPhone(),
+                                position = "",
+                            ),
+                            address = "",
+                            email = userDataProvider.getEmail()
+                        )
+                    ),
+                    requestResultCode = AppDestination.NewOrder.REQUEST_CODE
                 )
             }
         }
@@ -82,5 +105,6 @@ class OrderListViewModel(
         data object LoadOrders : UserEvent()
         data class OnFilterChanged(val status: OrderStatusUI) : UserEvent()
         data class OnOrderClicked(val order: OrderUI) : UserEvent()
+        data object OnNewOrderClicked : UserEvent()
     }
 }

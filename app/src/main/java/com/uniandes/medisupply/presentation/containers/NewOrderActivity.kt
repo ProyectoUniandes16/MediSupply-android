@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.common.BaseActivity
 import com.uniandes.medisupply.common.InternalNavigator
+import com.uniandes.medisupply.common.getParcelableExtraProvider
 import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.ui.feature.order.ClientListOrderScreen
@@ -25,7 +26,7 @@ class NewOrderActivity : BaseActivity(), KoinComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val client: Client? = intent.getParcelableExtra(Destination.CreateOrder.CLIENT, Client::class.java)
+        val client: Client? = intent.getParcelableExtraProvider(Destination.CreateOrder.CLIENT)
         setContent {
             val navController = rememberNavController()
             internalNavigator.init(navController, this)

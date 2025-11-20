@@ -20,7 +20,8 @@ data class ProductUI(
     val storageInfo: String = "",
     val batchNumber: String = "",
     val status: String = "",
-    val stock: List<StockUi> = emptyList()
+    val stock: List<StockUi> = emptyList(),
+    val availableStock: Int = 0,
 ) : Parcelable {
     companion object {
         fun fromDomain(
@@ -61,7 +62,8 @@ fun Product.toUi(): ProductUI {
                 location = it.location,
                 quantity = it.quantity
             )
-        }
+        },
+        availableStock = this.stock
     )
 }
 
@@ -71,4 +73,20 @@ fun StockStatus.toUi(): StockStatusUI {
         StockStatus.LOW_STOCK -> StockStatusUI.LOW_STOCK
         StockStatus.OUT_OF_STOCK -> StockStatusUI.OUT_OF_STOCK
     }
+}
+
+fun ProductUI.toDomain(): Product {
+    return Product(
+        id = this.id,
+        name = this.name,
+        price = this.price,
+        stock = this.totalStock,
+        category = this.category,
+        stockStatus = StockStatus.IN_STOCK,
+        sku = this.sku.ifBlank { null },
+        expirationDate = if (this.expirationDate.isBlank()) null else this.expirationDate,
+        storageInfo = if (this.storageInfo.isBlank()) null else this.storageInfo,
+        batchNumber = if (this.batchNumber.isBlank()) null else this.batchNumber,
+        status = if (this.status.isBlank()) null else this.status,
+    )
 }

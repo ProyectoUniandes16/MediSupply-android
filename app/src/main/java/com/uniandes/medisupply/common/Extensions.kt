@@ -1,5 +1,8 @@
 package com.uniandes.medisupply.common
 
+import android.content.Intent
+import android.os.Build
+import android.os.Parcelable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -56,3 +59,13 @@ fun Double.formatCurrency(currencyCode: String? = "USD"): String {
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 annotation class ExcludeFromJacocoGeneratedReport
+
+inline fun <reified T : Parcelable> Intent.getParcelableExtraProvider(key: String): T? {
+    // The 'inline' and 'reified' keywords allow you to get the class type T at runtime.
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelableExtra(key, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getParcelableExtra(key) as? T
+    }
+}

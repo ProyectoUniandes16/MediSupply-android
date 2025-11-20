@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,15 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -54,6 +53,7 @@ import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
 import com.uniandes.medisupply.presentation.model.OrderUI
+import com.uniandes.medisupply.presentation.ui.theme.spaces
 import com.uniandes.medisupply.presentation.viewmodel.client.OrderListUiState
 import com.uniandes.medisupply.presentation.viewmodel.client.OrderListViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -154,14 +154,20 @@ internal fun ClientOrderListContent(
                     }
                 }
 
-                Divider(color = Color(0xFFE0E0E0), thickness = 0.5.dp)
+                HorizontalDivider(color = Color(0xFFE0E0E0), thickness = 0.5.dp)
 
                 if (uiState.displayedOrders.isNotEmpty()) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .padding(horizontal = MaterialTheme.spaces.medium),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(
+                            top = MaterialTheme.spaces.medium,
+                            bottom = MaterialTheme.spaces.xLarge +
+                                    MaterialTheme.spaces.xLarge +
+                                    MaterialTheme.spaces.xLarge
+                        )
                     ) {
                         items(uiState.displayedOrders) {
                             OrderCard(
@@ -185,6 +191,20 @@ internal fun ClientOrderListContent(
                         )
                     }
                 }
+            }
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    onEvent(OrderListViewModel.UserEvent.OnNewOrderClicked)
+                }
+            ) {
+                Text(
+                    modifier = Modifier.padding(MaterialTheme.spaces.medium),
+                    text = stringResource(R.string.new_order)
+                )
             }
         }
     }
@@ -259,49 +279,6 @@ fun OrderCard(
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
-                    )
-                }
-            }
-
-            Divider(
-                modifier = Modifier.padding(vertical = 12.dp),
-                color = Color(0xFFE0E0E0),
-                thickness = 1.dp
-            )
-
-            // Botones
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
-            ) {
-                if (order.status == OrderStatusUI.PENDING) {
-                    OutlinedButton(
-                        onClick = { },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Color(0xFF6B5B95)
-                        ),
-                        border = BorderStroke(1.dp, Color(0xFFDDDDDD))
-                    ) {
-                        Text(
-                            text = stringResource(R.string.edit_order),
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                }
-
-                Button(
-                    onClick = { },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6B5B95)
-                    )
-                ) {
-                    Text(
-                        text = stringResource(R.string.reorder),
-                        style = MaterialTheme.typography.labelSmall
                     )
                 }
             }

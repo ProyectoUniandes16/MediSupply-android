@@ -32,6 +32,7 @@ val clientModule = module {
     viewModel {
         OrderListViewModel(
             get(),
+            get(),
             get()
         )
     }
