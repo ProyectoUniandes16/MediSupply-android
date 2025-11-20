@@ -1,6 +1,7 @@
 package com.uniandes.medisupply.domain.model
 
 import android.os.Parcelable
+import com.uniandes.medisupply.data.remote.model.client.ClientResponse
 import kotlinx.parcelize.Parcelize
 
 enum class ClientType(val displayName: String) {
@@ -36,3 +37,17 @@ data class ClientContactInfo(
     val email: String,
     val position: String
 ) : Parcelable
+
+
+fun ClientResponse.toDomain() = Client(
+    id = this.id,
+    name = this.name,
+    address = this.address,
+    email = this.email,
+    contactInfo = ClientContactInfo(
+        name = this.contact.name,
+        phone = this.contact.phone,
+        email = this.contact.email,
+        position = this.contact.position
+    )
+)

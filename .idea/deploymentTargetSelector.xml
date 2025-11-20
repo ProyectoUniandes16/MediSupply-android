@@ -8,9 +8,6 @@
       <SelectionState runConfigName="ClientOrderScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="clientOrderScreen_displayedCorrectly_with_no_products()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="clientOrderScreen_displayedCorrectly_with__products()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

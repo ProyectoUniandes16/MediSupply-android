@@ -1,4 +1,4 @@
-package com.uniandes.medisupply.data.remote.model
+package com.uniandes.medisupply.data.remote.model.user
 
 import kotlinx.serialization.Serializable
 
