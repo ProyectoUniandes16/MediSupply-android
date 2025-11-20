@@ -21,18 +21,17 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class VisitVendorViewModelTest  {
+class VisitVendorViewModelTest {
 
     private lateinit var viewmodel: VisitListViewmodel
     private val vendorRepository = mockk<VendorRepository>(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
 
-
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         viewmodel = VisitListViewmodel(
-            vendorRepository =  vendorRepository
+            vendorRepository = vendorRepository
         )
     }
 

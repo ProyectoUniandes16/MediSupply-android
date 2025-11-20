@@ -38,7 +38,6 @@ data class ClientContactInfo(
     val position: String
 ) : Parcelable
 
-
 fun ClientResponse.toDomain() = Client(
     id = this.id,
     name = this.name,

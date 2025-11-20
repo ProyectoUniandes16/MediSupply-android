@@ -47,11 +47,11 @@ class VisitListViewmodel(
             vendorRepository.getVisits(
                 dateRange.first(), dateRange.last()
             ).onSuccess {
-                visitList = it.map { v-> v.toUi() }
+                visitList = it.map { v -> v.toUi() }
                 _uiState.update { state ->
                     state.copy(
                         isLoading = false,
-                        visitList =  filterVisitsByDate(state.selectedDate)
+                        visitList = filterVisitsByDate(state.selectedDate)
                     )
                 }
             }.onFailure {
@@ -65,7 +65,7 @@ class VisitListViewmodel(
             }
         }
     }
-    
+
     fun onEvent(event: UserEvent) {
         when (event) {
             is UserEvent.OnScreenLoaded -> {
@@ -108,11 +108,10 @@ class VisitListViewmodel(
             }
         }
     }
-    
+
     private fun filterVisitsByDate(date: String): List<VisitUI> {
         return visitList.filter { it.visitDate == date }
     }
-
 
     sealed class UserEvent {
         data object OnScreenLoaded : UserEvent()

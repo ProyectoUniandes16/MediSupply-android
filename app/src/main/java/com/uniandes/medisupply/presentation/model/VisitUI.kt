@@ -20,7 +20,7 @@ enum class VisitStatusUI(@StringRes val resId: Int) {
 
 fun Visit.toUi(): VisitUI {
     return VisitUI(
-        status = when(this.status) {
+        status = when (this.status) {
             "finalizado" -> VisitStatusUI.COMPLETED
             "pendiente" -> VisitStatusUI.PENDING
             else -> VisitStatusUI.IN_PROGRESS

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -278,7 +277,7 @@ private fun PreviewVisitCard() {
             selectedDate = "2025-11-20",
             visitList = List(10) {
                 VisitUI(
-                    status = when(it % 3) {
+                    status = when (it % 3) {
                         0 -> VisitStatusUI.COMPLETED
                         1 -> VisitStatusUI.PENDING
                         else -> VisitStatusUI.IN_PROGRESS
