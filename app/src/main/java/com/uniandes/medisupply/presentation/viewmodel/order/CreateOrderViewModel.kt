@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.Order
-import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.domain.repository.ProductRepository
+import com.uniandes.medisupply.presentation.model.ProductUI
+import com.uniandes.medisupply.presentation.model.toDomain
+import com.uniandes.medisupply.presentation.model.toUi
 import com.uniandes.medisupply.presentation.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,12 +19,13 @@ import kotlinx.coroutines.launch
 data class CreateOrderUiState(
     val showProductBottomSheet: Boolean = false,
     val isConfirmation: Boolean = false,
-    val productList: List<Product> = emptyList(),
-    val productOrder: List<Pair<Product, Int>> = emptyList(),
+    val productList: List<ProductUI> = emptyList(),
+    val productOrder: List<Pair<ProductUI, Int>> = emptyList(),
     val totalAmount: Double = 0.0,
     val isLoadingConfirmation: Boolean = false,
     val showError: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val isLoadingProducts: Boolean = false
 )
 
 class CreateOrderViewModel(
@@ -41,7 +44,7 @@ class CreateOrderViewModel(
                 internalNavigator.stepBack()
             }
             is UserEvent.OnAddProductClicked -> {
-                _uiState.update { it.copy(showProductBottomSheet = true) }
+                _uiState.update { it.copy(showProductBottomSheet = true, isLoadingProducts = true) }
                 viewModelScope.launch {
                     val result = productRepository.getProducts()
                     if (result.isSuccess) {
@@ -49,12 +52,14 @@ class CreateOrderViewModel(
                         val availableProducts = result.getOrNull()?.filterNot { currentOrderProducts.contains(it.id) } ?: emptyList()
                         _uiState.update {
                             it.copy(
-                                productList = availableProducts.sortedBy { p -> p.name }
+                                isLoadingProducts = false,
+                                productList = availableProducts.map { it.toUi() }.sortedBy { p -> p.name }
                             )
                         }
                     } else {
                         _uiState.update {
                             it.copy(
+                                isLoadingProducts = false,
                                 productList = emptyList()
                             )
                         }
@@ -102,7 +107,7 @@ class CreateOrderViewModel(
         viewModelScope.launch {
             val order = Order(
                 clientId = client.id,
-                products = uiState.value.productOrder,
+                products = uiState.value.productOrder.map { it.first.toDomain() to it.second },
                 total = uiState.value.totalAmount
             )
             val result = orderRepository.placeOrder(order)
@@ -122,7 +127,7 @@ class CreateOrderViewModel(
         }
     }
 
-    private fun onProductSelected(product: Product) {
+    private fun onProductSelected(product: ProductUI) {
         _uiState.update {
             it.copy(
                 productOrder = it.productOrder + (product to 1),
@@ -133,12 +138,12 @@ class CreateOrderViewModel(
         }
     }
 
-    private fun increaseProductQuantity(product: Product) {
+    private fun increaseProductQuantity(product: ProductUI) {
         val currentOrder = uiState.value.productOrder.toMutableList()
         val index = currentOrder.indexOfFirst { it.first.id == product.id }
         if (index != -1) {
             val currentProduct = currentOrder[index]
-            if (currentProduct.first.stock >= currentProduct.second + 1) {
+            if (currentProduct.first.availableStock >= currentProduct.second + 1) {
                 currentOrder[index] = currentProduct.copy(second = currentProduct.second + 1)
             }
             _uiState.update {
@@ -150,7 +155,7 @@ class CreateOrderViewModel(
         }
     }
 
-    private fun decreaseProductQuantity(product: Product) {
+    private fun decreaseProductQuantity(product: ProductUI) {
         val currentOrder = uiState.value.productOrder.toMutableList()
         val index = currentOrder.indexOfFirst { it.first.id == product.id }
         if (index != -1) {
@@ -174,7 +179,7 @@ class CreateOrderViewModel(
         }
     }
 
-    private fun calculateTotalAmount(productOrder: List<Pair<Product, Int>>): Double {
+    private fun calculateTotalAmount(productOrder: List<Pair<ProductUI, Int>>): Double {
         return productOrder.sumOf { it.first.price.times(it.second) }
     }
 
@@ -184,9 +189,9 @@ class CreateOrderViewModel(
         data object OnDismissProductBottomSheet : UserEvent()
         data object OnConfirmClicked : UserEvent()
         data object OnCompleteClicked : UserEvent()
-        data class OnProductSelected(val product: Product) : UserEvent()
-        data class OnIncreaseQuantityClicked(val product: Product) : UserEvent()
-        data class OnDecreaseQuantityClicked(val product: Product) : UserEvent()
+        data class OnProductSelected(val product: ProductUI) : UserEvent()
+        data class OnIncreaseQuantityClicked(val product: ProductUI) : UserEvent()
+        data class OnDecreaseQuantityClicked(val product: ProductUI) : UserEvent()
         data object OnEditOrderClicked : UserEvent()
     }
 }

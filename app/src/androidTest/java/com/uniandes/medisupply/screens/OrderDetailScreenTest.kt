@@ -9,12 +9,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.uniandes.medisupply.R
-import com.uniandes.medisupply.presentation.model.OrderStatusUI
-import com.uniandes.medisupply.presentation.model.OrderUI
-import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.ui.feature.order.OrderDetailContent
 import com.uniandes.medisupply.presentation.viewmodel.order.OrderDetailUiState
-
+import com.uniandes.medisupply.screens.utils.ORDER_UI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
@@ -25,27 +22,9 @@ import kotlin.test.assertTrue
 class OrderDetailScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-    val uiState = MutableStateFlow(
+    private val uiState = MutableStateFlow(
         OrderDetailUiState(
-            order = OrderUI(
-                id = 1234,
-                status = OrderStatusUI.DELIVERED,
-                total = 150.0,
-                clientId = 1,
-                orderDate = "2025-09-16",
-                deliveryDate = "2025-09-30",
-                totalProducts = 30,
-                products = List(5) {
-                    Pair(
-                        ProductUI(
-                            id = it,
-                            name = "Product $it",
-                            price = 10.0,
-                            category = "Category",
-                        ), it * 2
-                    )
-                }
-            )
+            order = ORDER_UI
         )
     )
     private var onBackClickedInvoked = false

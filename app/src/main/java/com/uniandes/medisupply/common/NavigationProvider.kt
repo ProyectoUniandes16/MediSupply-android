@@ -47,10 +47,23 @@ class NavigationProviderImpl : NavigationProvider {
                }
            }.apply {
                appDestination.extras.forEach {
-                   if (it.value is Parcelable) {
-                       putExtra(it.key, it.value as Parcelable)
-                   } else {
-                       Log.w(TAG, "Extra ${it.key} is not a parcelable")
+                   when (it.value) {
+                       is Int -> putExtra(it.key, it.value as Int)
+                       is String -> putExtra(it.key, it.value as String)
+                       is Boolean -> putExtra(it.key, it.value as Boolean)
+                       is Float -> putExtra(it.key, it.value as Float)
+                       is Double -> putExtra(it.key, it.value as Double)
+                       is Long -> putExtra(it.key, it.value as Long)
+                       is Char -> putExtra(it.key, it.value as Char)
+                       is Short -> putExtra(it.key, it.value as Short)
+                       is Byte -> putExtra(it.key, it.value as Byte)
+                       else -> {
+                           if (it.value is Parcelable) {
+                               putExtra(it.key, it.value as Parcelable)
+                           } else {
+                               Log.w(TAG, "Extra ${it.key} is not a parcelable")
+                           }
+                       }
                    }
                }
            }

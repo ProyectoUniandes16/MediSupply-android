@@ -55,6 +55,40 @@ class UserDataProviderTest {
     }
 
     @Test
+    fun `getName SHOULD return name from user preferences`() {
+        // Given
+        val expectedName = "John Doe"
+        every { userPreferences.getName() } returns expectedName
+        // When
+        val name = userDataProvider.getName()
+
+        // Then
+        assertEquals(expectedName, name)
+    }
+
+    @Test
+    fun `getEmail SHOULD return email from user preferences`() {
+        // Given
+        val expectedEmail = "email"
+        every { userPreferences.getEmail() } returns expectedEmail
+        // When
+        val email = userDataProvider.getEmail()
+        // Then
+        assertEquals(expectedEmail, email)
+    }
+
+    @Test
+    fun `getPhone SHOULD return phone from user preferences`() {
+        // Given
+        val expectedPhone = "123456789"
+        every { userPreferences.getPhone() } returns expectedPhone
+        // When
+        val phone = userDataProvider.getPhone()
+        // Then
+        assertEquals(expectedPhone, phone)
+    }
+
+    @Test
     fun `isLoggedIn SHOULD return value from user preferences`() {
         // Given
         every { userPreferences.isLoggedIn() } returns false

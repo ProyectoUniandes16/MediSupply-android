@@ -9,6 +9,9 @@ interface UserDataProvider {
     fun getRole(): String
     fun isUserLoggedIn(): Boolean
     fun clearAll()
+    fun getName(): String
+    fun getEmail(): String
+    fun getPhone(): String
 }
 
 class UserDataProviderImpl(
@@ -28,6 +31,9 @@ class UserDataProviderImpl(
         userPreferences.setAccessToken(accessToken)
         userPreferences.setLoggedIn(true)
         userPreferences.setRole(user.role.displayName)
+        userPreferences.setName(user.name)
+        userPreferences.setEmail(user.email)
+        userPreferences.setPhone(user.email)
     }
 
     override fun setBaseUrl(baseUrl: String) {
@@ -47,5 +53,17 @@ class UserDataProviderImpl(
 
     override fun clearAll() {
         return userPreferences.clearAll()
+    }
+
+    override fun getName(): String {
+        return userPreferences.getName() ?: ""
+    }
+
+    override fun getEmail(): String {
+        return userPreferences.getEmail() ?: ""
+    }
+
+    override fun getPhone(): String {
+        return userPreferences.getPhone() ?: ""
     }
 }

@@ -24,7 +24,7 @@ fun AvatarText(initial: String) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = initial.first().toString(),
+            text = if (initial.isEmpty()) "?" else initial.first().toString(),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer

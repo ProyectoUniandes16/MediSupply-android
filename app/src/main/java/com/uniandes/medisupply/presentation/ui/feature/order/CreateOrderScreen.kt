@@ -30,23 +30,26 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.common.ExcludeFromJacocoGeneratedReport
 import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.ClientContactInfo
-import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.presentation.component.AvatarText
 import com.uniandes.medisupply.presentation.component.BackNavigation
 import com.uniandes.medisupply.presentation.component.TopAppBar
+import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.ui.theme.spaces
 import com.uniandes.medisupply.presentation.viewmodel.order.CreateOrderUiState
 import com.uniandes.medisupply.presentation.viewmodel.order.CreateOrderViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun ClientOrderScreen(
     viewModel: CreateOrderViewModel = koinViewModel()
@@ -89,6 +92,7 @@ fun ClientOrderContent(
                     if (uiState.isLoadingConfirmation) {
                         CircularProgressIndicator(
                             Modifier.size(50.dp)
+                                .testTag("CONFIRMATION_ORDER_LOADING_INDICATOR")
                         )
                     } else {
                         Button(
@@ -168,15 +172,33 @@ fun ClientOrderContent(
                     stringResource(R.string.product_list),
                     style = MaterialTheme.typography.titleMedium
                 )
-                LazyColumn {
-                   items(uiState.productList) { product ->
-                       ProductItem(
-                           onItemClick = {
-                               onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(it))
-                           },
-                           product = product
-                       )
-                   }
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    if (uiState.isLoadingProducts) {
+                        CircularProgressIndicator(
+                            Modifier.align(Alignment.Center)
+                        )
+                    } else {
+                        if (uiState.productList.isNotEmpty()) {
+                            LazyColumn {
+                                items(uiState.productList) { product ->
+                                    ProductItem(
+                                        onItemClick = {
+                                            onEvent(CreateOrderViewModel.UserEvent.OnProductSelected(it))
+                                        },
+                                        product = product
+                                    )
+                                }
+                            }
+                        } else {
+                            Text(
+                                stringResource(R.string.no_products_found),
+                                modifier = Modifier.align(Alignment.Center),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -222,12 +244,12 @@ private fun ClientInfoOrderHeader(
 @Composable
 private fun OrderProductList(
     modifier: Modifier = Modifier,
-    productOrder: List<Pair<Product, Int>>,
+    productOrder: List<Pair<ProductUI, Int>>,
     isConfirmation: Boolean,
     onAddProductClicked: () -> Unit,
     onEditOrderClicked: () -> Unit,
-    onIncreaseClicked: (product: Product) -> Unit,
-    onDecreaseClicked: (product: Product) -> Unit
+    onIncreaseClicked: (product: ProductUI) -> Unit,
+    onDecreaseClicked: (product: ProductUI) -> Unit
 ) {
     Card(modifier = modifier) {
         Column(
@@ -283,7 +305,7 @@ private fun OrderProductList(
 @Composable
 private fun ProductOrderItem(
     modifier: Modifier = Modifier,
-    productItem: Pair<Product, Int>,
+    productItem: Pair<ProductUI, Int>,
     onIncreaseClicked: () -> Unit,
     onDecreaseClicked: () -> Unit,
 ) {
@@ -318,8 +340,8 @@ private fun ProductOrderItem(
 @Composable
 private fun ProductItem(
     modifier: Modifier = Modifier,
-    product: Product,
-    onItemClick: (Product) -> Unit
+    product: ProductUI,
+    onItemClick: (ProductUI) -> Unit
 ) {
     Row(
         modifier = modifier.clickable {
@@ -339,10 +361,11 @@ private fun ProductItem(
         Text(
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
-            text = stringResource(R.string.available_stock, product.stock.toString()))
+            text = stringResource(R.string.available_stock, product.availableStock.toString()))
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 @Preview
 fun ClientOrderScreenPreview() {
