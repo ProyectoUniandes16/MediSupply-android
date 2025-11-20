@@ -2,7 +2,7 @@ package com.uniandes.medisupply.domain.repository
 
 import com.uniandes.medisupply.common.resultOrError
 import com.uniandes.medisupply.data.remote.service.LoginService
-import com.uniandes.medisupply.data.remote.model.LoginRequest
+import com.uniandes.medisupply.data.remote.model.user.LoginRequest
 import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.domain.model.User
 import com.uniandes.medisupply.domain.model.UserRole

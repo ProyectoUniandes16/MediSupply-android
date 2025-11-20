@@ -128,7 +128,11 @@ internal fun ClientDetailContent(
                         .fillMaxSize()
                         .padding(horizontal = MaterialTheme.spaces.medium),
                     contentPadding = PaddingValues(
-                        vertical = MaterialTheme.spaces.medium
+                        top = MaterialTheme.spaces.medium,
+                        bottom = MaterialTheme.spaces.medium +
+                            MaterialTheme.spaces.xLarge +
+                            MaterialTheme.spaces.xLarge +
+                            MaterialTheme.spaces.small
                     ),
                     verticalArrangement = Arrangement.spacedBy(
                         MaterialTheme.spaces.medium
@@ -271,7 +275,7 @@ fun ClientCard(
                     )
                 ) {
                     Text(
-                        stringResource(R.string.order),
+                        stringResource(R.string.new_order),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     )

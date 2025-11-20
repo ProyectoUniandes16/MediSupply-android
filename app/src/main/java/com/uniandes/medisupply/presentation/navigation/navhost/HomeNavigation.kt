@@ -31,6 +31,7 @@ import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientOrderListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.OrderListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.VendorHomeScreen
+import com.uniandes.medisupply.presentation.ui.feature.home.VisitVendorScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -52,7 +53,7 @@ private val VENDOR_BOTTOM_ITEMS = listOf(
         icon = R.drawable.clients
     ),
     BottomTabItem(
-        destination = Destination.HomeVendor,
+        destination = Destination.VisitList,
         title = R.string.routes,
         icon = R.drawable.commute
     ),
@@ -134,6 +135,9 @@ fun HomeClientNavHost(
             }
             composable<HomeClientDestination.ClientOrderList> {
                 ClientOrderListScreen()
+            }
+            composable<Destination.VisitList> {
+                VisitVendorScreen()
             }
         }
     }

@@ -27,6 +27,9 @@ sealed class Destination(val route: String) {
     data object OrderDetail : Destination("OrderDetail") {
         const val ORDER = "ORDER"
     }
+
+    @Serializable
+    data object VisitList : Destination("VisitList")
 }
 
 @Serializable

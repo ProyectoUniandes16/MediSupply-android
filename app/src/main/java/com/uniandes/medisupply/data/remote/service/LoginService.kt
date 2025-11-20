@@ -1,6 +1,6 @@
 package com.uniandes.medisupply.data.remote.service
 
-import com.uniandes.medisupply.data.remote.model.LoginRequest
+import com.uniandes.medisupply.data.remote.model.user.LoginRequest
 import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.data.remote.model.common.DataResponse
 import com.uniandes.medisupply.data.remote.model.user.UserWrapperResponse

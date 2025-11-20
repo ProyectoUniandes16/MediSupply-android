@@ -94,4 +94,8 @@
     <string name="in_transit">In transit</string>
     <string name="no_orders_found">No orders found</string>
     <string name="reorder">Re order</string>
+    <string name="visit_end">End Visit</string>
+    <string name="visit_start">Start Visit</string>
+    <string name="forwrard">Forward</string>
+    <string name="no_visits_today">No visits for today</string>
 </resources>

@@ -6,6 +6,7 @@ import com.uniandes.medisupply.di.orderModule
 import com.uniandes.medisupply.di.userModule
 import com.uniandes.medisupply.di.clientModule
 import com.uniandes.medisupply.di.productModule
+import com.uniandes.medisupply.di.vendorModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,8 @@ class MediSupplyApp : Application() {
         userModule,
         clientModule,
         orderModule,
-        productModule
+        productModule,
+        vendorModule
     )
 
     override fun onCreate() {
