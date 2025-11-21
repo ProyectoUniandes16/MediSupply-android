@@ -2,15 +2,9 @@ package com.uniandes.medisupply.repository
 
 import com.uniandes.medisupply.data.remote.model.client.ClientResponse
 import com.uniandes.medisupply.data.remote.model.client.ContactResponse
-import com.uniandes.medisupply.data.remote.model.client.NewClientRequest
 import com.uniandes.medisupply.data.remote.model.common.DataResponse
 import com.uniandes.medisupply.data.remote.model.visit.VisitResponse
-import com.uniandes.medisupply.data.remote.service.ClientService
 import com.uniandes.medisupply.data.remote.service.VendorService
-import com.uniandes.medisupply.domain.model.ClientContactInfo
-import com.uniandes.medisupply.domain.model.Visit
-import com.uniandes.medisupply.domain.model.VisitStatus
-import com.uniandes.medisupply.domain.repository.ClientRepositoryImpl
 import com.uniandes.medisupply.domain.repository.VendorRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -89,5 +83,4 @@ class VendorRepositoryTest {
         assertNotNull(exception)
         assertEquals(error, exception.message)
     }
-
 }

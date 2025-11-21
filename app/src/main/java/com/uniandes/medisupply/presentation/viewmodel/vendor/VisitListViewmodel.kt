@@ -155,7 +155,6 @@ class VisitListViewmodel(
                     }
                 }
         }
-
     }
 
     sealed class UserEvent {
