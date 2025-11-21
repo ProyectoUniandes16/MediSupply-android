@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
 import com.uniandes.medisupply.presentation.model.OrderUI
-import com.uniandes.medisupply.presentation.ui.feature.home.ClientOrderListContent
+import com.uniandes.medisupply.presentation.ui.feature.home.OrderListContent
 import com.uniandes.medisupply.presentation.viewmodel.client.OrderListUiState
 
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +29,7 @@ class OrderListScreenTest {
         // when
         composeTestRule.setContent {
             val uiState = uiState.collectAsState()
-            ClientOrderListContent(
+            OrderListContent(
                 uiState = uiState.value,
                 onEvent = {
                 }
