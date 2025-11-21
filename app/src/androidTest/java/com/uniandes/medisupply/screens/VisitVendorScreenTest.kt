@@ -31,7 +31,8 @@ class VisitVendorScreenTest {
             visitDate = "2025-11-21",
             clientName = "Client $i",
             clientAddress = "Address $i",
-            contactName = "Contact $i"
+            contactName = "Contact $i",
+            id = i
         )
     }
 

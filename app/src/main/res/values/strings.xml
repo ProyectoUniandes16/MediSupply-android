@@ -98,4 +98,5 @@
     <string name="visit_start">Start Visit</string>
     <string name="forwrard">Forward</string>
     <string name="no_visits_today">No visits for today</string>
+    <string name="successful_visit">Successful visit</string>
 </resources>

@@ -2,6 +2,7 @@ package com.uniandes.medisupply.viewModel.vendor
 
 import com.uniandes.medisupply.companion.CLIENT
 import com.uniandes.medisupply.domain.model.Visit
+import com.uniandes.medisupply.domain.model.VisitStatus
 import com.uniandes.medisupply.domain.repository.VendorRepository
 import com.uniandes.medisupply.presentation.viewmodel.vendor.VisitListViewmodel
 import io.mockk.coEvery
@@ -148,9 +149,10 @@ class VisitVendorViewModelTest {
 
     companion object {
         private val TEST_VISIT = Visit(
-            status = "COMPLETED",
+            status = VisitStatus.COMPLETED,
             visitDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
-            client = CLIENT
+            client = CLIENT,
+            id = 1
         )
         val TEST_VISIT_LIST = List(10) {
             TEST_VISIT.copy(
