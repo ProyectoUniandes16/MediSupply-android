@@ -28,7 +28,6 @@ import com.uniandes.medisupply.R
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.navigation.HomeClientDestination
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
-import com.uniandes.medisupply.presentation.ui.feature.home.ClientOrderListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.OrderListScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.VendorHomeScreen
 import com.uniandes.medisupply.presentation.ui.feature.home.VisitVendorScreen
@@ -58,7 +57,7 @@ private val VENDOR_BOTTOM_ITEMS = listOf(
         icon = R.drawable.commute
     ),
     BottomTabItem(
-        destination = Destination.VendorOrderList,
+        destination = HomeClientDestination.ClientOrderList,
         title = R.string.orders,
         icon = R.drawable.orders
     )
@@ -124,9 +123,6 @@ fun HomeClientNavHost(
             composable<Destination.VendorOrderList> {
                 Text(text = "Home Client")
             }
-            composable<Destination.VendorOrderList> {
-                OrderListScreen()
-            }
             composable<HomeClientDestination.ProductList> {
                 val internalNavController = rememberNavController()
                 ProductNavHost(
@@ -134,7 +130,7 @@ fun HomeClientNavHost(
                 )
             }
             composable<HomeClientDestination.ClientOrderList> {
-                ClientOrderListScreen()
+                OrderListScreen()
             }
             composable<Destination.VisitList> {
                 VisitVendorScreen()

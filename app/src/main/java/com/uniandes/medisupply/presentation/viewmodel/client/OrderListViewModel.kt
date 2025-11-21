@@ -7,6 +7,7 @@ import com.uniandes.medisupply.common.InternalNavigator
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.ClientContactInfo
+import com.uniandes.medisupply.domain.model.UserRole
 import com.uniandes.medisupply.domain.repository.OrderRepository
 import com.uniandes.medisupply.presentation.containers.ComposableFlow
 import com.uniandes.medisupply.presentation.model.OrderStatusUI
@@ -39,6 +40,7 @@ class OrderListViewModel(
         )
     )
     val uiState = _uiState.asStateFlow()
+    private val isVendor = userDataProvider.getRole() == UserRole.VENDOR.displayName
 
     fun onEvent(event: UserEvent) {
         when (event) {
@@ -60,7 +62,7 @@ class OrderListViewModel(
             is UserEvent.OnNewOrderClicked -> {
                 internalNavigator.requestDestination(
                     appDestination = AppDestination.NewOrder(
-                        client = Client(
+                        client = if (isVendor) null else Client(
                             id = -1,
                             name = userDataProvider.getName(),
                             contactInfo = ClientContactInfo(
