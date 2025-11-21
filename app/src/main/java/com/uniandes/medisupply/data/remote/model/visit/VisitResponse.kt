@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 data class VisitResponse(
     @SerialName("estado") val status: String,
     @SerialName("fecha_visita") val visitDate: String,
-    @SerialName("id_visita") val visitId: Int,
-    @SerialName("cliente") val client: ClientResponse
+    @SerialName("id_visita") val id: Int,
+    @SerialName("cliente") val client: ClientResponse,
 )

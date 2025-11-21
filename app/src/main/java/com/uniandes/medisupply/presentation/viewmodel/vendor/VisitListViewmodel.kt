@@ -2,7 +2,9 @@ package com.uniandes.medisupply.presentation.viewmodel.vendor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uniandes.medisupply.domain.model.VisitStatus
 import com.uniandes.medisupply.domain.repository.VendorRepository
+import com.uniandes.medisupply.presentation.model.VisitStatusUI
 import com.uniandes.medisupply.presentation.model.VisitUI
 import com.uniandes.medisupply.presentation.model.toUi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +53,7 @@ class VisitListViewmodel(
                 _uiState.update { state ->
                     state.copy(
                         isLoading = false,
-                        visitList = filterVisitsByDate(state.selectedDate)
+                        visitList = filterVisitsByDateAndMarkStarted(state.selectedDate)
                     )
                 }
             }.onFailure {
@@ -79,7 +81,7 @@ class VisitListViewmodel(
                     _uiState.update { state ->
                         state.copy(
                             selectedDate = newDate,
-                            visitList = filterVisitsByDate(newDate)
+                            visitList = filterVisitsByDateAndMarkStarted(newDate)
                         )
                     }
                 }
@@ -92,7 +94,7 @@ class VisitListViewmodel(
                     _uiState.update { state ->
                         state.copy(
                             selectedDate = newDate,
-                            visitList = filterVisitsByDate(newDate)
+                            visitList = filterVisitsByDateAndMarkStarted(newDate)
                         )
                     }
                 }
@@ -106,11 +108,53 @@ class VisitListViewmodel(
                 }
                 loadVisits()
             }
+            is UserEvent.OnUpdateVisitClicked -> {
+                updateVisitStatus(event.visit.id, event.visit.status)
+            }
         }
     }
 
-    private fun filterVisitsByDate(date: String): List<VisitUI> {
-        return visitList.filter { it.visitDate == date }
+    private fun filterVisitsByDateAndMarkStarted(date: String): List<VisitUI> {
+        var isPendingOrInProgressAny = false
+        val list = visitList.filter {
+            it.visitDate == date
+        }.map {
+           val item: VisitUI
+            when (it.status) {
+                VisitStatusUI.COMPLETED -> {
+                    item = it.copy(canBeStarted = false)
+                }
+                else -> {
+                    item = it.copy(canBeStarted = isPendingOrInProgressAny.not())
+                    isPendingOrInProgressAny = true
+                }
+            }
+            item
+        }
+        return list
+    }
+
+    private fun updateVisitStatus(visitId: Int, status: VisitStatusUI) {
+        _uiState.update { it.copy(isLoading = true, showError = false, errorMessage = null) }
+        viewModelScope.launch {
+            val newVisitStatus = if (status == VisitStatusUI.PENDING) {
+                VisitStatus.IN_PROGRESS
+            } else {
+                VisitStatus.COMPLETED
+            }
+            vendorRepository.updateVisitStatus(visitId, newVisitStatus)
+                .onSuccess {
+                    loadVisits()
+                }
+                .onFailure {
+                    _uiState.update { state ->
+                        state.copy(
+                            showError = true,
+                            errorMessage = it.message
+                        )
+                    }
+                }
+        }
     }
 
     sealed class UserEvent {
@@ -118,5 +162,6 @@ class VisitListViewmodel(
         data object OnForwardDateClicked : UserEvent()
         data object OnBackwardDateClicked : UserEvent()
         data object OnErrorDialogDismissed : UserEvent()
+        data class OnUpdateVisitClicked(val visit: VisitUI) : UserEvent()
     }
 }

@@ -32,9 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -149,7 +149,10 @@ internal fun VisitVendorContent(
                             itemsIndexed(uiState.visitList) { index, visit ->
                                 VisitCard(
                                     visit = visit,
-                                    position = index + 1
+                                    position = index + 1,
+                                    onUpdateVisitStatus = {
+                                        onEvent(VisitListViewmodel.UserEvent.OnUpdateVisitClicked(it))
+                                    }
                                 )
                             }
                         }
@@ -164,7 +167,8 @@ internal fun VisitVendorContent(
 fun VisitCard(
     modifier: Modifier = Modifier,
     visit: VisitUI,
-    position: Int
+    position: Int,
+    onUpdateVisitStatus: (VisitUI) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -218,9 +222,11 @@ fun VisitCard(
                 when (visit.status) {
                     VisitStatusUI.COMPLETED -> {
                         Text(
-                            text = "VISITA EXITOSAAS_DSADASDSA",
-                            color = Color.Green,
-                            fontSize = 12.sp
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.successful_visit),
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.labelSmall
                         )
                     }
                     VisitStatusUI.IN_PROGRESS -> {
@@ -232,10 +238,12 @@ fun VisitCard(
                                 modifier = Modifier.weight(1f),
                                 text = stringResource(visit.status.resId),
                                 color = MaterialTheme.colorScheme.tertiary,
-                                fontSize = 12.sp
+                                style = MaterialTheme.typography.labelSmall
                             )
                             Spacer(Modifier.width(8.dp))
-                            Button(onClick = { /* acción */ }) {
+                            Button(onClick = {
+                                 onUpdateVisitStatus(visit)
+                            }) {
                                 Text(stringResource(R.string.visit_end))
                             }
                         }
@@ -247,7 +255,10 @@ fun VisitCard(
                         ) {
                             Button(
                                 modifier = Modifier.weight(1f),
-                                onClick = {}
+                                onClick = {
+                                    onUpdateVisitStatus(visit)
+                                },
+                                enabled = visit.canBeStarted
                             ) {
                                 Text(stringResource(R.string.visit_start))
                             }
@@ -286,6 +297,7 @@ private fun PreviewVisitCard() {
                     clientName = "Health Corp",
                     clientAddress = "123 Main St, City",
                     contactName = "John Doe",
+                    id = it
                 )
             }
         ),
