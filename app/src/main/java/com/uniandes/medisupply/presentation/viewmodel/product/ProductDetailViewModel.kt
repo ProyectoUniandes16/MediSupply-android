@@ -23,7 +23,7 @@ data class ProductDetailState(
     val videoFileName: String? = null,
     val isUploading: Boolean = false,
     val description: String? = null,
-    val showSuccessMessage: Boolean = false
+    val showSuccessMessage: Boolean = false,
 )
 
 class ProductDetailViewModel(
@@ -107,6 +107,13 @@ class ProductDetailViewModel(
                     )
                 }
             }
+            is UserEvent.OnDescriptionChanged -> {
+                _uiState.update { state ->
+                    state.copy(
+                        description = event.description
+                    )
+                }
+            }
         }
     }
 
@@ -161,5 +168,6 @@ class ProductDetailViewModel(
         data object OnVideoUploadCanceled : UserEvent()
         data object OnDismissError : UserEvent()
         data object OnDismissSuccessMessage : UserEvent()
+        data class OnDescriptionChanged(val description: String) : UserEvent()
     }
 }

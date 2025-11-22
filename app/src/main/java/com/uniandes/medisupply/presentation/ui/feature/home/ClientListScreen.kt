@@ -123,32 +123,41 @@ internal fun ClientDetailContent(
                     CircularProgressIndicator()
                 }
             } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = MaterialTheme.spaces.medium),
-                    contentPadding = PaddingValues(
-                        top = MaterialTheme.spaces.medium,
-                        bottom = MaterialTheme.spaces.medium +
-                            MaterialTheme.spaces.xLarge +
-                            MaterialTheme.spaces.xLarge +
-                            MaterialTheme.spaces.small
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(
-                        MaterialTheme.spaces.medium
-                    )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(uiState.clients) {
-                        ClientCard(
-                            client = it,
-                            onOrderClicked = { client ->
-                                onUserEvent(
-                                    ClientListViewModel.UserEvent.OnClientOrderClicked(
-                                        client
-                                    )
+                    if (uiState.clients.isEmpty()) {
+                        Text(stringResource(R.string.no_clients_found))
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = MaterialTheme.spaces.medium),
+                            contentPadding = PaddingValues(
+                                top = MaterialTheme.spaces.medium,
+                                bottom = MaterialTheme.spaces.medium +
+                                        MaterialTheme.spaces.xLarge +
+                                        MaterialTheme.spaces.xLarge +
+                                        MaterialTheme.spaces.small
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(
+                                MaterialTheme.spaces.medium
+                            )
+                        ) {
+                            items(uiState.clients) {
+                                ClientCard(
+                                    client = it,
+                                    onOrderClicked = { client ->
+                                        onUserEvent(
+                                            ClientListViewModel.UserEvent.OnClientOrderClicked(
+                                                client
+                                            )
+                                        )
+                                    }
                                 )
                             }
-                        )
+                        }
                     }
                 }
                 FloatingActionButton(

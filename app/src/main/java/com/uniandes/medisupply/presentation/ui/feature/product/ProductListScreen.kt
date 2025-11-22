@@ -224,7 +224,7 @@ fun ProductCard(
                     label = {
                         Text(
                             text = product.category.uppercase(),
-                            style = MaterialTheme.typography.labelSmall
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 )
@@ -240,7 +240,7 @@ fun ProductCard(
                 Column {
                     Text(
                         text = stringResource(R.string.unit_price),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     Text(
                         text = product.price.formatCurrency(),
@@ -268,7 +268,7 @@ fun ProductCard(
                         label = {
                             Text(
                                 text = stringResource(product.stockStatus.resId),
-                                style = MaterialTheme.typography.labelSmall,
+                                style = MaterialTheme.typography.labelMedium,
                             )
                         }
                     )

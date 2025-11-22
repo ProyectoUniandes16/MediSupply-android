@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.common.ExcludeFromJacocoGeneratedReport
+import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.domain.model.Client
 import com.uniandes.medisupply.domain.model.ClientContactInfo
 import com.uniandes.medisupply.presentation.component.AvatarText
@@ -236,7 +237,7 @@ private fun ClientInfoOrderHeader(
                 )
             }
             Text(stringResource(R.string.products_added, orderSize))
-            Text(stringResource(R.string.total_price, totalAmount.toString()))
+            Text(stringResource(R.string.total_price, totalAmount.formatCurrency()))
         }
     }
 }
@@ -319,7 +320,7 @@ private fun ProductOrderItem(
     ) {
         Column {
             Text(productItem.first.name)
-            Text(stringResource(R.string.price_value, productItem.first.price.toString()))
+            Text(productItem.first.displayedPrice)
         }
         Row {
             IconButton(
@@ -356,7 +357,7 @@ private fun ProductItem(
                 .padding(MaterialTheme.spaces.small)
         ) {
             Text(product.name, style = MaterialTheme.typography.titleMedium)
-            Text(stringResource(R.string.price_value, product.price.toString()))
+            Text(product.displayedPrice)
         }
         Text(
             modifier = Modifier.weight(1f),
