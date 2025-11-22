@@ -246,7 +246,7 @@ fun OrderCard(
                     label = {
                         Text(
                             text = stringResource(order.status.statusResId).uppercase(),
-                            style = MaterialTheme.typography.labelSmall,
+                            style = MaterialTheme.typography.labelMedium,
                             fontSize = 10.sp
                         )
                     }

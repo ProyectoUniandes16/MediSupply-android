@@ -30,7 +30,7 @@ class HomeClientActivity : BaseActivity() {
         try {
             role = UserRole.fromDisplayName(userDataProvider.getRole()) ?: throw Exception("Invalid role")
         } catch (e: Exception) {
-            userDataProvider.clearAll()
+            userDataProvider.clearUserData()
             finish()
             return
         }
@@ -40,7 +40,11 @@ class HomeClientActivity : BaseActivity() {
             ) { paddingValues ->
                 HomeClientNavHost(
                     modifier = Modifier.padding(paddingValues),
-                    isVendor = role == UserRole.VENDOR
+                    isVendor = role == UserRole.VENDOR,
+                    onLogout = {
+                        userDataProvider.clearUserData()
+                        finish()
+                    }
                 )
             }
         }

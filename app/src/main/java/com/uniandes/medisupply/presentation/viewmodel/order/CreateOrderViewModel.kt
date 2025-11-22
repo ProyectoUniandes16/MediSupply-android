@@ -53,7 +53,7 @@ class CreateOrderViewModel(
                         _uiState.update {
                             it.copy(
                                 isLoadingProducts = false,
-                                productList = availableProducts.map { it.toUi() }.sortedBy { p -> p.name }
+                                productList = availableProducts.map { it.toUi() }.filter { it.availableStock > 0 }.sortedBy { p -> p.name }
                             )
                         }
                     } else {

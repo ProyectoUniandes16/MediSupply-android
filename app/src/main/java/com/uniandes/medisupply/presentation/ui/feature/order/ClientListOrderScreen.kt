@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -79,24 +80,34 @@ private fun ClientOrderListContent(
             modifier = modifier.padding(innerPadding).fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(MaterialTheme.spaces.medium)
-                    .fillMaxSize()
-            ) {
-                item {
+            if (uiState.isLoading) {
+                CircularProgressIndicator()
+            } else {
+                if (uiState.clients.isEmpty()) {
                     Text(
-                        stringResource(R.string.select_client),
-                        style = MaterialTheme.typography.titleMedium,
+                        text = stringResource(R.string.no_clients_found)
                     )
-                }
-                items(uiState.clients) {
-                    ClientOrderListItem(
-                        client = it,
-                        onClick = { client ->
-                            onEvent(ClientListOrderViewModel.UserEvent.OnClientClicked(client))
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(MaterialTheme.spaces.medium)
+                            .fillMaxSize()
+                    ) {
+                        item {
+                            Text(
+                                stringResource(R.string.select_client),
+                                style = MaterialTheme.typography.titleMedium,
+                            )
                         }
-                    )
+                        items(uiState.clients) {
+                            ClientOrderListItem(
+                                client = it,
+                                onClick = { client ->
+                                    onEvent(ClientListOrderViewModel.UserEvent.OnClientClicked(client))
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

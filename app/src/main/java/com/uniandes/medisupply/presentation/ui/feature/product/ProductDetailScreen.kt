@@ -3,6 +3,7 @@ package com.uniandes.medisupply.presentation.ui.feature.product
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +18,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -44,10 +47,12 @@ import com.uniandes.medisupply.presentation.component.AlertDialog
 import com.uniandes.medisupply.presentation.component.BackNavigation
 import com.uniandes.medisupply.presentation.component.Card
 import com.uniandes.medisupply.presentation.component.LoadingAlertDialog
+import com.uniandes.medisupply.presentation.component.TextField
 import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.model.StockStatusUI
 import com.uniandes.medisupply.presentation.ui.theme.spaces
+import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailState
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailViewModel
 import kotlinx.coroutines.launch
@@ -99,16 +104,15 @@ fun ProductDetailContent(
         },
         content = { paddingValues ->
             if (uiState.showVideoUploadDialog) {
-                AlertDialog(
-                    title = stringResource(R.string.upload_video),
-                    message = stringResource(
-                        R.string.confirm_upload_video,
-                        uiState.videoFileName ?: ""
-                    ),
+                VideoAlertDialog(
+                    videoName = uiState.videoFileName ?: "",
+                    videoRecommendation = uiState.description ?: "",
+                    onRecommendationChanged = { description ->
+                        onUserEvent(ProductDetailViewModel.UserEvent.OnDescriptionChanged(description))
+                    },
                     onDismissRequest = {
                         onUserEvent(ProductDetailViewModel.UserEvent.OnVideoUploadCanceled)
                     },
-                    confirmButtonText = stringResource(R.string.ok),
                     onConfirm = {
                         onUserEvent(ProductDetailViewModel.UserEvent.OnVideoUploadConfirmed)
                     }
@@ -260,7 +264,7 @@ fun ProductDetailView(
                             .padding(MaterialTheme.spaces.medium)
                     ) {
                         Text(
-                            text = stringResource(R.string.stock),
+                            text = stringResource(R.string.stock_details),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -334,24 +338,60 @@ private fun InfoRow(label: String, value: String) {
         )
     }
 }
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun VideoItem(title: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Icon(
-            imageVector = Icons.Default.PlayArrow,
-            contentDescription = "Reproducir video",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
+fun VideoAlertDialog(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    videoName: String,
+    videoRecommendation: String,
+    onRecommendationChanged: (String) -> Unit,
+    onConfirm: () -> Unit
+) {
+    BasicAlertDialog(
+        content = {
+            Column(
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spaces.medium),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spaces.medium)
+            ) {
+                Text(
+                    stringResource(R.string.upload_video),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(stringResource(R.string.confirm_upload_video, videoName))
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = videoRecommendation,
+                    onValueChange = onRecommendationChanged,
+                    label = { Text(stringResource(R.string.add_recommendation)) }
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = MaterialTheme.spaces.medium),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        colors = ButtonDefaults.textButtonColors(),
+                        onClick = onDismissRequest
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    Button(
+                        colors = ButtonDefaults.textButtonColors(),
+                        onClick = onConfirm
+                    ) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            }
+        },
+        onDismissRequest = onDismissRequest
+    )
 }
 
 @Composable

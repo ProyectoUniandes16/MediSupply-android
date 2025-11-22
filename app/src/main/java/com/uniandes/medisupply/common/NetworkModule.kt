@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
     private val userPreferences: UserPreferences by inject(UserPreferences::class.java)
-    private val BASE_URL = userPreferences.getBaseUrl() ?: "http://192.168.1.102:80/"
+    private val BASE_URL = userPreferences.getBaseUrl() ?: "http://a37518febc9524ac0b869ae81679165f-1414741843.us-east-2.elb.amazonaws.com/"
     private val userDataProvider: UserDataProvider by inject(UserDataProvider::class.java)
 
     private class LoggingInterceptor(private val tag: String = "Network") : Interceptor {

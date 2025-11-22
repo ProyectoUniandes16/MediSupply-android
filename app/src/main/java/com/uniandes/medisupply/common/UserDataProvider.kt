@@ -12,6 +12,7 @@ interface UserDataProvider {
     fun getName(): String
     fun getEmail(): String
     fun getPhone(): String
+    fun clearUserData()
 }
 
 class UserDataProviderImpl(
@@ -65,5 +66,11 @@ class UserDataProviderImpl(
 
     override fun getPhone(): String {
         return userPreferences.getPhone() ?: ""
+    }
+
+    override fun clearUserData() {
+        val url = userPreferences.getBaseUrl() ?: ""
+        userPreferences.clearAll()
+        userPreferences.setBaseUrl(url)
     }
 }

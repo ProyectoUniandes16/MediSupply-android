@@ -5,8 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -25,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.navigation.Destination
 import com.uniandes.medisupply.presentation.navigation.HomeClientDestination
 import com.uniandes.medisupply.presentation.ui.feature.home.ClientListScreen
@@ -76,10 +82,12 @@ private val CLIENT_BOTTOM_ITEMS = listOf(
     )
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeClientNavHost(
     modifier: Modifier = Modifier,
     isVendor: Boolean = true,
+    onLogout: () -> Unit
 ) {
     val tabItems = if (isVendor) VENDOR_BOTTOM_ITEMS else CLIENT_BOTTOM_ITEMS
     val navController = rememberNavController()
@@ -88,15 +96,21 @@ fun HomeClientNavHost(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Box(
+            TopAppBar(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .background(color = Color.Black)
-                    .padding(end = 20.dp)
-
-            ) {
-            }
+                    .height(56.dp)
+                    .background(Color.White),
+                navigationIcon = {
+                    IconButton(
+                        onClick = onLogout
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ExitToApp,
+                            contentDescription = stringResource(id = R.string.exit_user),
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             BottomBar(
@@ -174,7 +188,7 @@ private fun BottomBar(
                     label = {
                         Text(
                             text = stringResource(id = item.title),
-                            style = MaterialTheme.typography.labelSmall
+                            style = MaterialTheme.typography.labelMedium
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(

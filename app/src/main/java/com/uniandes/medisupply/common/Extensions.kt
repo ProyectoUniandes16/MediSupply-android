@@ -47,13 +47,27 @@ inline fun <T> resultOrError(block: () -> T): Result<T> {
     }
 }
 
-fun Double.formatCurrency(currencyCode: String? = "USD"): String {
+// kotlin
+fun Double.formatCurrency(
+    currencyCode: String? = "USD",
+    perUnits: Int = 1,
+    usdToCop: Double = 3802.50,
+    usdToMxn: Double = 18.45
+): String {
     val locale = Locale.getDefault()
-    val nf = NumberFormat.getCurrencyInstance(locale)
-    if (currencyCode != null) {
-        try { nf.currency = Currency.getInstance(currencyCode) } catch (_: Exception) {}
+    val (targetCode, rate) = when {
+        locale.language == "es" && locale.country.equals("MX", ignoreCase = true) -> "MXN" to usdToMxn
+        locale.language == "es" && locale.country.equals("CO", ignoreCase = true) -> "COP" to usdToCop
+        else -> (currencyCode ?: "USD") to 1.0
     }
-    return nf.format(this)
+
+    val converted = perUnits * rate * this
+
+    val nf = NumberFormat.getCurrencyInstance(locale)
+    try { nf.currency = Currency.getInstance(targetCode) } catch (_: Exception) {}
+
+    val formatted = nf.format(converted)
+    return "$formatted $targetCode"
 }
 
 @Retention(AnnotationRetention.RUNTIME)
