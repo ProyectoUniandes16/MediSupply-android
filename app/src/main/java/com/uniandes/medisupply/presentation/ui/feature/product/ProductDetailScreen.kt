@@ -49,6 +49,7 @@ import com.uniandes.medisupply.presentation.component.TopAppBar
 import com.uniandes.medisupply.presentation.model.ProductUI
 import com.uniandes.medisupply.presentation.model.StockStatusUI
 import com.uniandes.medisupply.presentation.ui.theme.spaces
+import com.uniandes.medisupply.presentation.viewmodel.NewClientViewModel
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailState
 import com.uniandes.medisupply.presentation.viewmodel.product.ProductDetailViewModel
 import kotlinx.coroutines.launch
