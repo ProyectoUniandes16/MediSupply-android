@@ -3,6 +3,7 @@ package com.uniandes.medisupply.presentation.model
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.uniandes.medisupply.R
+import com.uniandes.medisupply.common.formatCurrency
 import com.uniandes.medisupply.domain.model.Product
 import com.uniandes.medisupply.domain.model.StockStatus
 import kotlinx.parcelize.Parcelize
@@ -30,6 +31,7 @@ data class ProductUI(
             return product.toUi()
         }
     }
+    val displayedPrice = price.formatCurrency()
 }
 
 @Parcelize

@@ -130,7 +130,7 @@ fun OrderDetailContent(
                             label = {
                                 Text(
                                     stringResource(uiState.order.status.statusResId),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    style = MaterialTheme.typography.labelMedium,
                                     color = Color.Black
                                 )
                             }
@@ -150,19 +150,19 @@ fun OrderDetailContent(
                             InfoRow(
                                 icon = Icons.Default.DateRange,
                                 label = stringResource(R.string.date),
-                                value = "2025-09-16"
+                                value = uiState.order.orderDate
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             InfoRow(
                                 icon = Icons.Default.Place,
                                 label = stringResource(R.string.delivery),
-                                value = "2025-09-30"
+                                value = uiState.order.deliveryDate
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             InfoRow(
                                 icon = Icons.Default.Place,
                                 label = stringResource(R.string.address),
-                                value = "Ave. Siempre Viva 742, Springfield."
+                                value = ""
                             )
                         }
                     }
@@ -228,7 +228,7 @@ private fun InfoRow(
         Column {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = Color.Gray
             )
             Text(
