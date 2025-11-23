@@ -226,7 +226,7 @@ fun VisitCard(
                             text = stringResource(R.string.successful_visit),
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.labelSmall
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                     VisitStatusUI.IN_PROGRESS -> {
@@ -238,7 +238,7 @@ fun VisitCard(
                                 modifier = Modifier.weight(1f),
                                 text = stringResource(visit.status.resId),
                                 color = MaterialTheme.colorScheme.tertiary,
-                                style = MaterialTheme.typography.labelSmall
+                                style = MaterialTheme.typography.labelMedium
                             )
                             Spacer(Modifier.width(8.dp))
                             Button(onClick = {

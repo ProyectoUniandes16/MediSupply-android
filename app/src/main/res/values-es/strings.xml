@@ -6,7 +6,7 @@
     <string name="home">Inicio</string>
     <string name="clients">Clientes</string>
     <string name="routes">Rutas</string>
-    <string name="orders">Órdenes</string>
+    <string name="orders">Pedidos</string>
     <string name="new_client">Nuevo cliente</string>
     <string name="error_login">Error al iniciar sesión</string>
     <string name="default_error">Error en el servicio</string>
@@ -45,7 +45,7 @@
     <string name="new_order">Nuevo Pedido</string>
     <string name="select_client">Seleccionar cliente</string>
     <string name="products_added">%n Productos agregados</string>
-    <string name="total_price">Total: $%s</string>
+    <string name="total_price">Total: %s</string>
     <string name="confirm_order">Confirmar pedido</string>
     <string name="add_product">Agregar producto</string>
     <string name="retry">Reintentar</string>
@@ -54,10 +54,10 @@
     <string name="edit_order">Editar pedido</string>
     <string name="product_list">Lista de productos</string>
     <string name="price_value">$%s</string>
-    <string name="empty_order">Orden vacía</string>
+    <string name="empty_order">Pedido vacío</string>
     <string name="available_stock">Disponible: %s</string>
     <string name="remove">Quitar</string>
-    <string name="order_created">Orden Creada</string>
+    <string name="order_created">Pedido Creado</string>
     <string name="cancel">Cancelar</string>
     <string name="unit_price">Precio unitario</string>
     <string name="default_error_title">Error</string>
@@ -93,4 +93,14 @@
     <string name="delivered">Entregado</string>
     <string name="in_transit">En tránsito</string>
     <string name="no_orders_found">No hay pedidos</string>
+    <string name="reorder">Volver a ordenar</string>
+    <string name="visit_end">Finalizar visita</string>
+    <string name="visit_start">Iniciar visita</string>
+    <string name="forwrard">Siguiente</string>
+    <string name="no_visits_today">No hay visitas para hoy</string>
+    <string name="successful_visit">Visita finalizada correctamente</string>
+    <string name="no_clients_found">No hay clientes</string>
+    <string name="exit_user">Cerrar sesión</string>
+    <string name="add_recommendation">Agregar recomendación</string>
+    <string name="stock_details">Detalle de inventario</string>
 </resources>
