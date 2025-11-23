@@ -6,6 +6,7 @@ import com.uniandes.medisupply.common.ResourcesProvider
 import com.uniandes.medisupply.common.UserDataProvider
 import com.uniandes.medisupply.domain.model.User
 import com.uniandes.medisupply.domain.model.UserRole
+import com.uniandes.medisupply.domain.repository.CatalogRepository
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.navigation.Destination
@@ -40,6 +41,7 @@ class NewClientViewModelTest {
     private val userRepository = mockk<UserRepository>(relaxed = true)
     private val userDataProvider = mockk<UserDataProvider>(relaxed = true)
     private val internalNavigator = mockk<InternalNavigator>(relaxed = true)
+    private val catalogRepository = mockk<CatalogRepository>(relaxed = true)
 
     companion object {
         const val name = "name"
@@ -60,6 +62,9 @@ class NewClientViewModelTest {
         coEvery {
             resourcesProvider.getString(any())
         } returns "Hospital"
+        coEvery {
+            catalogRepository.getZones()
+        } returns Result.success(List(1) { "COUNTRY" })
         initViewModel()
     }
 
@@ -70,6 +75,7 @@ class NewClientViewModelTest {
             resourcesProvider,
             userRepository,
             userDataProvider,
+            catalogRepository
         )
     }
 

@@ -12,6 +12,7 @@ import com.uniandes.medisupply.common.isValidEmail
 import com.uniandes.medisupply.common.isValidPhone
 import com.uniandes.medisupply.domain.model.ClientType
 import com.uniandes.medisupply.domain.model.Zone
+import com.uniandes.medisupply.domain.repository.CatalogRepository
 import com.uniandes.medisupply.domain.repository.UserRepository
 import com.uniandes.medisupply.presentation.containers.HomeClientActivity.Companion.USER_KEY
 import com.uniandes.medisupply.presentation.navigation.Destination
@@ -55,7 +56,8 @@ class NewClientViewModel(
     private val internalNavigator: InternalNavigator,
     private val resourcesProvider: ResourcesProvider,
     private val userRepository: UserRepository,
-    private val userDataProvider: UserDataProvider
+    private val userDataProvider: UserDataProvider,
+    private val catalogRepository: CatalogRepository
 ) : ViewModel() {
 
     private val isNewUser: Boolean = internalNavigator.getParam(Destination.NewClient.IS_NEW_USER) as? Boolean ?: false
@@ -79,6 +81,24 @@ class NewClientViewModel(
     private val password = internalNavigator.getParam(Destination.NewClient.PRE_FILLED_PASSWORD) as? String ?: "".apply {
         if (isNewUser)
         throw IllegalArgumentException("Password must be provided for new user")
+    }
+
+    init {
+        fetchZones()
+    }
+
+    private fun fetchZones() {
+        viewModelScope.launch {
+            catalogRepository.getZones()
+                .onSuccess { zones ->
+                    _uiState.update {
+                        it.copy(
+                            countryList = zones
+                        )
+                    }
+                }.onFailure {
+                }
+        }
     }
 
     fun onEvent(event: UserEvent) {
