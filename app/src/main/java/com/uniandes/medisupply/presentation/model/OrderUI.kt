@@ -1,25 +1,22 @@
 package com.uniandes.medisupply.presentation.model
 
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import com.uniandes.medisupply.R
 import com.uniandes.medisupply.domain.model.Order
 import com.uniandes.medisupply.domain.model.OrderStatus
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Parcelize
 data class OrderUI(
     val id: Int,
     val clientId: Int,
-    @StringRes
     val status: OrderStatusUI,
     val orderDate: String,
     val deliveryDate: String,
     val total: Double,
     val totalProducts: Int,
-    val products: List<Pair<ProductUI, Int>> = emptyList()
+    val products: List<Pair<ProductUI, Int>> = emptyList(),
+    val client: ClientUI? = null
 ) : Parcelable
 
 fun Order.toUI() = OrderUI(
@@ -36,7 +33,8 @@ fun Order.toUI() = OrderUI(
     deliveryDate = orderDate?.substringBefore('T')?.let { addTwoWeeks(it) } ?: "",
     total = total,
     totalProducts = totalProducts,
-    products = products.map { (product, quantity) -> Pair(product.toUi(), quantity) }
+    products = products.map { (product, quantity) -> Pair(product.toUi(), quantity) },
+    client = client?.toUI()
 )
 
 enum class OrderStatusUI(val statusResId: Int) {
@@ -49,8 +47,14 @@ enum class OrderStatusUI(val statusResId: Int) {
 
 private fun addTwoWeeks(dateString: String): String {
     if (dateString.isBlank()) return ""
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(dateString, formatter)
-    val newDate = date.plusWeeks(2)
-    return newDate.format(formatter)
+    return try {
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+        sdf.isLenient = false
+        val parsed = sdf.parse(dateString) ?: return ""
+        val cal = java.util.Calendar.getInstance().apply { time = parsed }
+        cal.add(java.util.Calendar.DAY_OF_YEAR, 14)
+        sdf.format(cal.time)
+    } catch (e: Exception) {
+        ""
+    }
 }

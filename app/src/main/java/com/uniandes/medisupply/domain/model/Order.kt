@@ -11,7 +11,8 @@ data class Order(
     val total: Double,
     val status: OrderStatus? = null,
     val totalProducts: Int = products.sumOf { it.second },
-    val orderDate: String? = null
+    val orderDate: String? = null,
+    val client: Client? = null
 )
 
 enum class OrderStatus(private val status: String) {
@@ -49,4 +50,5 @@ fun OrderResponse.toDomain() = Order(
     totalProducts = totalProducts,
     orderDate = orderDate,
     id = id,
+    client = client?.toDomain()
 )

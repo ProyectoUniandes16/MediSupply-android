@@ -103,4 +103,5 @@
     <string name="exit_user">Exit User</string>
     <string name="add_recommendation">Add a recommendation</string>
     <string name="stock_details">Stock details</string>
+    <string name="welcome_vendor_message">Hello %s</string>
 </resources>

@@ -119,7 +119,7 @@ class VisitListViewmodel(
         val list = visitList.filter {
             it.visitDate == date
         }.map {
-           val item: VisitUI
+           var item: VisitUI
             when (it.status) {
                 VisitStatusUI.COMPLETED -> {
                     item = it.copy(canBeStarted = false)
@@ -128,6 +128,10 @@ class VisitListViewmodel(
                     item = it.copy(canBeStarted = isPendingOrInProgressAny.not())
                     isPendingOrInProgressAny = true
                 }
+            }
+            val todayString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(today)
+            if (item.visitDate != todayString) {
+                item = item.copy(canBeStarted = false)
             }
             item
         }

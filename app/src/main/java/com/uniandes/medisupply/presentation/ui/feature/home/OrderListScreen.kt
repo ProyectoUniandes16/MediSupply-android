@@ -260,14 +260,32 @@ fun OrderCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text(
-                        text = "${stringResource(R.string.date)}: ${order.orderDate}",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = "${stringResource(R.string.delivery)}: ${order.deliveryDate}",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.date),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            text = order.orderDate,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.delivery),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            text = order.deliveryDate,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
