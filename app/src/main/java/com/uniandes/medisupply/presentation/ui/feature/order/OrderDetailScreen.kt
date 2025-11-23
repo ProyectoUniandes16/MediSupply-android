@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
@@ -148,13 +149,18 @@ fun OrderDetailContent(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             InfoRow(
+                                icon = Icons.Default.Person,
+                                label = stringResource(R.string.contact_name ),
+                                value = uiState.order.client?.name ?: ""
+                            )
+                            InfoRow(
                                 icon = Icons.Default.DateRange,
                                 label = stringResource(R.string.date),
                                 value = uiState.order.orderDate
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             InfoRow(
-                                icon = Icons.Default.Place,
+                                icon = Icons.Default.DateRange,
                                 label = stringResource(R.string.delivery),
                                 value = uiState.order.deliveryDate
                             )
@@ -162,7 +168,7 @@ fun OrderDetailContent(
                             InfoRow(
                                 icon = Icons.Default.Place,
                                 label = stringResource(R.string.address),
-                                value = ""
+                                value = uiState.order.client?.address ?: ""
                             )
                         }
                     }

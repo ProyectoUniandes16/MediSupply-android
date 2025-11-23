@@ -87,7 +87,6 @@ private val CLIENT_BOTTOM_ITEMS = listOf(
 fun HomeClientNavHost(
     modifier: Modifier = Modifier,
     isVendor: Boolean = true,
-    onLogout: () -> Unit
 ) {
     val tabItems = if (isVendor) VENDOR_BOTTOM_ITEMS else CLIENT_BOTTOM_ITEMS
     val navController = rememberNavController()
@@ -95,23 +94,6 @@ fun HomeClientNavHost(
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .height(56.dp)
-                    .background(Color.White),
-                navigationIcon = {
-                    IconButton(
-                        onClick = onLogout
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ExitToApp,
-                            contentDescription = stringResource(id = R.string.exit_user),
-                        )
-                    }
-                }
-            )
-        },
         bottomBar = {
             BottomBar(
                 selectedTab = selectedTab.value,

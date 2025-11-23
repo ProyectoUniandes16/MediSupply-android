@@ -1,7 +1,11 @@
 package com.uniandes.medisupply.di
 
 import com.uniandes.medisupply.common.NetworkModule.createAuthService
+import com.uniandes.medisupply.common.NetworkModule.createService
+import com.uniandes.medisupply.data.remote.service.CatalogService
 import com.uniandes.medisupply.data.remote.service.ClientService
+import com.uniandes.medisupply.domain.repository.CatalogRepository
+import com.uniandes.medisupply.domain.repository.CatalogRepositoryImpl
 import com.uniandes.medisupply.domain.repository.ClientRepository
 import com.uniandes.medisupply.domain.repository.ClientRepositoryImpl
 import com.uniandes.medisupply.presentation.viewmodel.ClientListViewModel
@@ -14,6 +18,8 @@ import org.koin.dsl.module
 val clientModule = module {
     single<ClientService> { createAuthService(ClientService::class.java) }
     single<ClientRepository> { ClientRepositoryImpl(get()) }
+    single<CatalogRepository> { CatalogRepositoryImpl(get()) }
+    single<CatalogService> { createService(CatalogService::class.java) }
     viewModel {
         ClientListViewModel(
             navigationProvider = get(),
@@ -22,6 +28,7 @@ val clientModule = module {
     }
     viewModel {
         NewClientViewModel(
+            get(),
             get(),
             get(),
             get(),

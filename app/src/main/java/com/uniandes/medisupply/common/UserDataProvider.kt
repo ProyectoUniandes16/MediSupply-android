@@ -29,6 +29,7 @@ class UserDataProviderImpl(
 
     override fun setUserData(accessToken: String, user: User) {
         this.accessToken = accessToken
+        this.role = user.role.displayName
         userPreferences.setAccessToken(accessToken)
         userPreferences.setLoggedIn(true)
         userPreferences.setRole(user.role.displayName)
@@ -69,8 +70,6 @@ class UserDataProviderImpl(
     }
 
     override fun clearUserData() {
-        val url = userPreferences.getBaseUrl() ?: ""
         userPreferences.clearAll()
-        userPreferences.setBaseUrl(url)
     }
 }
