@@ -171,7 +171,7 @@ fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
-        placeholder = { Text("Buscar producto", color = Color.Gray) },
+        placeholder = { Text(stringResource(R.string.search_products), color = Color.Gray) },
         leadingIcon = {
             Icon(Icons.Default.FavoriteBorder, contentDescription = "Favoritos", tint = Color.Gray)
         },
@@ -204,30 +204,36 @@ fun ProductCard(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.Top
             ) {
                 Text(
+                    modifier = Modifier.height(32.dp).weight(1f),
                     text = product.name,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
-                AssistChip(
-                    onClick = { },
-                    shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(
-                        width = 1.dp,
-                        brush = SolidColor(MaterialTheme.colorScheme.primary)
-                    ),
-                    modifier = Modifier.height(32.dp),
-                    label = {
-                        Text(
-                            text = product.category.uppercase(),
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                    }
-                )
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    AssistChip(
+                        onClick = { },
+                        shape = RoundedCornerShape(8.dp),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            brush = SolidColor(MaterialTheme.colorScheme.primary)
+                        ),
+                        modifier = Modifier.height(32.dp),
+                        label = {
+                            Text(
+                                text = product.category.uppercase(),
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
