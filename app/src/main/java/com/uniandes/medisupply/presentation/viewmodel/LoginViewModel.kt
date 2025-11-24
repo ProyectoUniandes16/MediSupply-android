@@ -178,6 +178,7 @@ class LoginViewModel(
                         extraMap = mapOf(USER_KEY to it.first)
                     )
                 )
+                internalNavigator.finishCurrentDestination()
                 _uiState.update { state ->
                     state.copy(isLoading = false)
                 }

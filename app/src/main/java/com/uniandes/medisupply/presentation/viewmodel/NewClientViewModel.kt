@@ -272,6 +272,7 @@ class NewClientViewModel(
                         extraMap = mapOf(USER_KEY to userWithToken.first)
                     )
                 )
+                internalNavigator.finishCurrentDestination()
                 _uiState.update { it.copy(isLoading = false, showError = false) }
             }.onFailure { error ->
                 _uiState.update {

@@ -104,4 +104,5 @@
     <string name="add_recommendation">Add a recommendation</string>
     <string name="stock_details">Stock details</string>
     <string name="welcome_vendor_message">Hello %s</string>
+    <string name="search_products">Buscar producto</string>
 </resources>
